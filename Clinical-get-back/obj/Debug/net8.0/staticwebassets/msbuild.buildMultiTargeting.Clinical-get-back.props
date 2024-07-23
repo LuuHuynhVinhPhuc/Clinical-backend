@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\Clinical-get-back.props" />
+</Project>

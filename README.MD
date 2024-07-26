@@ -11,7 +11,7 @@ Brief description of what the project does and its purpose.
 - [Contributing](#contributing)
 - [License](#license)
 - [Contact](#contact)
-- [Conventional Commits](#conventional_commits)
+- [Conventional Commits](#conventional-commits)
 
 ## Overview
 

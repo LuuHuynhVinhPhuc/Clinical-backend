@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Working\\Clinical-project\\Clinical-get-back\\Clinical-get-back\\Clinical-get-back.csproj": {}
+    "C:\\Users\\Haipham\\Source\\Repos\\LuuHuynhVinhPhuc\\Clinical-backend\\Clinical-get-back\\Clinical-get-back.csproj": {}
   },
   "projects": {
-    "D:\\Working\\Clinical-project\\Clinical-get-back\\Clinical-get-back\\Clinical-get-back.csproj": {
+    "C:\\Users\\Haipham\\Source\\Repos\\LuuHuynhVinhPhuc\\Clinical-backend\\Clinical-get-back\\Clinical-get-back.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Working\\Clinical-project\\Clinical-get-back\\Clinical-get-back\\Clinical-get-back.csproj",
+        "projectUniqueName": "C:\\Users\\Haipham\\Source\\Repos\\LuuHuynhVinhPhuc\\Clinical-backend\\Clinical-get-back\\Clinical-get-back.csproj",
         "projectName": "Clinical-get-back",
-        "projectPath": "D:\\Working\\Clinical-project\\Clinical-get-back\\Clinical-get-back\\Clinical-get-back.csproj",
-        "packagesPath": "C:\\Users\\vinhp\\.nuget\\packages\\",
-        "outputPath": "D:\\Working\\Clinical-project\\Clinical-get-back\\Clinical-get-back\\obj\\",
+        "projectPath": "C:\\Users\\Haipham\\Source\\Repos\\LuuHuynhVinhPhuc\\Clinical-backend\\Clinical-get-back\\Clinical-get-back.csproj",
+        "packagesPath": "C:\\Users\\Haipham\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Haipham\\Source\\Repos\\LuuHuynhVinhPhuc\\Clinical-backend\\Clinical-get-back\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\vinhp\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\Haipham\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -26,7 +22,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -39,17 +34,25 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": {
+              "target": "Package",
+              "version": "[1.19.5, )"
+            },
+            "Serilog.AspNetCore": {
+              "target": "Package",
+              "version": "[8.0.1, )"
+            },
+            "SonarAnalyzer.CSharp": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.0.68202, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.4.0, )"
@@ -74,7 +77,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.300/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

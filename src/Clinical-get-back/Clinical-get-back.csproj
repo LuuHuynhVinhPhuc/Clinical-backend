@@ -16,15 +16,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Controllers\" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<EditorConfigFiles Remove="C:\Users\Haipham\Source\Repos\LuuHuynhVinhPhuc\Clinical-backend\Clinical-get-back\.editorconfig" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<None Include="C:\Users\Haipham\Source\Repos\LuuHuynhVinhPhuc\Clinical-backend\Clinical-get-back\.editorconfig" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Controllers\" />
 	</ItemGroup>
 
 </Project>

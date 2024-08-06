@@ -2,7 +2,8 @@
 
 namespace ClinicalBackend.Domain.Entities
 {
-    public class Example : BaseEntitty<int>
+    public class Role : BaseEntitty<int>
     {
+        public string Name { get; set; }
     }
 }

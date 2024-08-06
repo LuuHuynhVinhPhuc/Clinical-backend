@@ -7,12 +7,14 @@ namespace ClinicalBackend.Persistence.Repositories
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
         private readonly ApplicationDbContext _context;
-        public IExampleRepository ExampleRepository { get; }
+        public IUserRepository Users { get; }
+        public IRoleRepository Roles { get; }
 
-        public UnitOfWork(ApplicationDbContext context, IExampleRepository exampleRepository)
+        public UnitOfWork(ApplicationDbContext context, IUserRepository users, IRoleRepository roles)
         {
             _context = context;
-            ExampleRepository = exampleRepository;
+            Users = users;
+            Roles = roles;
         }
 
         public void Dispose()

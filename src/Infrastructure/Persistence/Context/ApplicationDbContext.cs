@@ -11,7 +11,8 @@ namespace ClinicalBackend.Persistence.Context
             : base(options)
         {
         }
-        public DbSet<Example> Examples { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

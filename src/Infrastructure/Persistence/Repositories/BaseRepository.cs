@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace Domain.Common
 {
-    internal class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class
+    public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class
     {
         protected readonly ApplicationDbContext _context;
         internal DbSet<TEntity> dbSet;

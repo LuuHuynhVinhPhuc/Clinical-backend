@@ -4,7 +4,8 @@ namespace Domain.Interfaces
 {
     public interface IUnitOfWork
     {
-        IExampleRepository ExampleRepository { get; }
+        IUserRepository Users { get; }
+        IRoleRepository Roles { get; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 }

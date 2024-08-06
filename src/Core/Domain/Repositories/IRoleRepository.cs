@@ -3,8 +3,8 @@ using Domain.Interfaces;
 
 namespace ClinicalBackend.Domain.Repositories
 {
-    public interface IExampleRepository : IBaseRepository<Example>
+    public interface IRoleRepository : IBaseRepository<Role>
     {
-        Task<Example> GetByIdAsync(int id);
+        Task<Role> GetByIdAsync(int id);
     }
 }

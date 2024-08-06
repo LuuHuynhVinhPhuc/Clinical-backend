@@ -15,5 +15,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\Core\Services.Abstractions\Services.Abstractions.csproj" />
+		<ProjectReference Include="..\..\Core\Services\Services.csproj" />
 	</ItemGroup>
 </Project>

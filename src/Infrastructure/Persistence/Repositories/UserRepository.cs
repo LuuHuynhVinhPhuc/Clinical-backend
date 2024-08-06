@@ -5,13 +5,14 @@ using Domain.Common;
 
 namespace ClinicalBackend.Persistence.Repositories
 {
-    internal class ExampleRepository : BaseRepository<Example>, IExampleRepository
+    public class UserRepository : BaseRepository<User>, IUserRepository
     {
-        internal ExampleRepository(ApplicationDbContext context) : base(context)
+        public UserRepository(ApplicationDbContext context) : base(context)
         {
         }
 
-        public async Task<Example> GetByIdAsync(int id)
+
+        public async Task<User> GetByIdAsync(Guid id)
         {
             return await dbSet.FindAsync(id);
         }

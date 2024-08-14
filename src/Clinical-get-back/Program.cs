@@ -1,3 +1,4 @@
+using ClinicalBackend.Persistence;
 using ClinicalBackend.Presentation.Controllers;
 using Serilog;
 
@@ -25,6 +26,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    Seed.ApplySeeding(app.Services.CreateScope().ServiceProvider);
     app.UseSwagger();
     app.UseSwaggerUI();
 }

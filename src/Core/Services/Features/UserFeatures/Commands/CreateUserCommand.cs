@@ -1,5 +1,5 @@
-﻿using ClinicalBackend.Domain.Common;
-using ClinicalBackend.Domain.Entities;
+﻿using ClinicalBackend.Domain.Entities;
+using ClinicalBackend.Services.Common;
 using ClinicalBackend.Services.Constants;
 using ClinicalBackend.Services.Interfaces;
 using Domain.Interfaces;
@@ -44,7 +44,7 @@ namespace ClinicalBackend.Services.Features.UserFeatures.Commands
             {
                 UserName = command.Name,
                 HashPassword = BCrypt.Net.BCrypt.HashPassword(command.Password),
-                RoleId = (int)ROLEL.User
+                RoleId = (int)ROLE.User
             };
 
             _unitOfWork.Users.Add(user);

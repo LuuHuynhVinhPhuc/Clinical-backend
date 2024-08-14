@@ -1,5 +1,5 @@
-﻿using ClinicalBackend.Domain.Common;
-using ClinicalBackend.Domain.Entities;
+﻿using ClinicalBackend.Domain.Entities;
+using ClinicalBackend.Services.Common;
 using ClinicalBackend.Services.Interfaces;
 using Domain.Interfaces;
 using MediatR;
@@ -32,7 +32,19 @@ namespace ClinicalBackend.Services.Features.UserFeatures.Commands
 
         public async Task<Result<UserLoginResponse>> Handle(LoginUserCommand command, CancellationToken cancellationToken)
         {
-            User? existingUser = await _unitOfWork.Users.GetByCondition(u => u.UserName == command.Name).FirstAsync();
+            User? existingUser;
+            try
+            {
+                existingUser = await _unitOfWork
+                        .Users
+                        .GetByCondition(u => u.UserName == command.Name)
+                        .Include(u => u.Role)
+                        .FirstAsync(cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                return Result.Failure<UserLoginResponse>(new Error("unknown", ex.Message));
+            }
 
             if (existingUser is null || !BCrypt.Net.BCrypt.Verify(command.Password, existingUser.HashPassword))
             {
@@ -41,7 +53,7 @@ namespace ClinicalBackend.Services.Features.UserFeatures.Commands
 
             string token = _jwtProvider.Generate(existingUser);
 
-            return Result.Success<UserLoginResponse>(new UserLoginResponse() { Id = existingUser.Id, Token = token });
+            return Result.Success(new UserLoginResponse() { Id = existingUser.Id, Token = token });
         }
     }
 }

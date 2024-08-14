@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using Microsoft.AspNetCore.Mvc;
 
-namespace ClinicalBackend.Domain.Common
+namespace ClinicalBackend.Services.Common
 {
     /// <summary>
     /// Represents a result of some operation, with status information and an error message.
@@ -92,6 +89,16 @@ namespace ClinicalBackend.Domain.Common
             }
 
             return Success();
+        }
+
+        public static IActionResult Ok<TResult>(TResult result)
+        {
+            return new OkObjectResult(result);
+        }
+
+        public static IActionResult BadRequest<TError>(TError error)
+        {
+            return new BadRequestObjectResult(error);
         }
     }
 

@@ -1,4 +1,4 @@
-﻿using ClinicalBackend.Domain.Common;
+﻿using ClinicalBackend.Services.Common;
 
 namespace ClinicalBackend.Services.Features.UserFeatures
 {

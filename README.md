@@ -28,7 +28,7 @@ Provide a detailed description of the project. Explain the problem it solves, it
 
 - Ensure you have a [GitHub account](https://github.com/join). If not, [sign up](https://github.com/join) for one.
 - [Git](https://git-scm.com/) installed on your machine.
-- [.NET SDK](https://dotnet.microsoft.com/download) installed (version 8 or higher).
+- [.NET SDK](https://dotnet.microsoft.com/download) installed (version X.X or higher).
 
 ### Login to GitHub
 

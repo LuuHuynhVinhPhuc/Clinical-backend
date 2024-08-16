@@ -1,4 +1,6 @@
+using ClinicalBackend.Services.Common;
 using ClinicalBackend.Services.Features.MedicineFeatures.Commands;
+using ClinicalBackend.Services.Features.MedicineFeatures.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,9 +21,23 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetMedicine(int id)
+        public async Task<IActionResult> GetMedicineById(int id)
         {
-            throw new NotImplementedException();
+            var result = await _mediator.Send(new GetMedicineQuery { Id = id });
+            return result.Match(
+                onSuccess: () => Result.Ok(result.Value),
+                onFailure: error => BadRequest(error)
+                );
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllMedicines()
+        {
+            var result = await _mediator.Send(new GetAllMedicinesQuery());
+            return result.Match(
+                onSuccess: () => Result.Ok(result),
+                onFailure: error => BadRequest(error)
+                );
         }
     }
 }

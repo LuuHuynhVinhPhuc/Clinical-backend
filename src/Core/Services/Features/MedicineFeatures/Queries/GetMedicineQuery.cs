@@ -7,7 +7,7 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Queries
 {
     public class GetMedicineQuery : IRequest<Result<Medicine>>
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
     }
 
     public class GetMedicineQueryHandler : IRequestHandler<GetMedicineQuery, Result<Medicine>>

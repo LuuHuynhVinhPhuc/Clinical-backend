@@ -21,7 +21,7 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetMedicineById(int id)
+        public async Task<IActionResult> GetMedicineById(Guid id)
         {
             var result = await _mediator.Send(new GetMedicineQuery { Id = id });
             return result.Match(

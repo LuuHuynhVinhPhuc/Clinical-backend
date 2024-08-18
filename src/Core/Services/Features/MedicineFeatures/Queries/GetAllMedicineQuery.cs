@@ -23,6 +23,6 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Queries
         {
             var medicines = await _unitOfWork.Medicines.GetAllAsync();
             return Result.Success(medicines);
-    }
+        }
     }
 }

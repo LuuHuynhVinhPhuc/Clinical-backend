@@ -40,7 +40,7 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
             }
 
             // Create a new Medicine entity
-            var medicine = new Medicine
+            var medicine = new Medicine 
             {
                 Name = command.Name,
                 Company = command.Company,

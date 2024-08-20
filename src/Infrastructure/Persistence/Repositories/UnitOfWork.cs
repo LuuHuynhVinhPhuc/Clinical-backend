@@ -9,12 +9,14 @@ namespace ClinicalBackend.Persistence.Repositories
         private readonly ApplicationDbContext _context;
         public IUserRepository Users { get; }
         public IRoleRepository Roles { get; }
+        public IMedicineRepository Medicines { get; }
 
-        public UnitOfWork(ApplicationDbContext context, IUserRepository users, IRoleRepository roles)
+        public UnitOfWork(ApplicationDbContext context, IUserRepository users, IRoleRepository roles, IMedicineRepository medicines)
         {
             _context = context;
             Users = users;
             Roles = roles;
+            Medicines = medicines;
         }
 
         public void Dispose()

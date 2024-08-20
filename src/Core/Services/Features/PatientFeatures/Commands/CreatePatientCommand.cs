@@ -21,10 +21,10 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
         public string PhoneNumber { get; set; }
     }
 
-    // Response
+    // Response : for return a string value to alert 
     public class PatientCreatedResponse
     {
-        public string Response { get; set; }
+        public required string Response { get; set; }
     }
 
     // Task

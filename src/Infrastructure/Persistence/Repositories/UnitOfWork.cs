@@ -12,11 +12,12 @@ namespace ClinicalBackend.Persistence.Repositories
         public IMedicineRepository Medicines { get; }
         public IPatientInfoRepository PatientInfo { get; }
 
-        public UnitOfWork(ApplicationDbContext context, IUserRepository users, IRoleRepository roles, IPatientInfoRepository patientInfo)
+        public UnitOfWork(ApplicationDbContext context, IUserRepository users, IRoleRepository roles, IMedicineRepository medicines, IPatientInfoRepository patientInfo)
         {
             _context = context;
             Users = users;
             Roles = roles;
+            Medicines = medicines;
             PatientInfo = patientInfo;
         }
 

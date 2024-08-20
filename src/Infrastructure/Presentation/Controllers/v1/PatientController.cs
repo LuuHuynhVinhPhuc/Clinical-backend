@@ -1,6 +1,6 @@
 ﻿using ClinicalBackend.Services.Common;
 using ClinicalBackend.Services.Features.PatientFeatures.Commands;
-using ClinicalBackend.Services.Features.PatientFeatures.PatientFind;
+using ClinicalBackend.Services.Features.PatientFeatures.PatientQueries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -23,21 +23,21 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         public async Task<IActionResult> CreatePatient(CreatePatientCommand command)
         {
             var result = await _mediator.Send(command);
-            return Ok(result);
-        }
-
-        // Find Patient with input name
-        [HttpGet("{name}")]
-        public async Task<IActionResult> FindPatientByName(string name)
-        {
-            var res = await _mediator.Send(new FindPatientWithName { Name = name });
-
-            // return 
-            return res.Match(
-                    onSuccess: () => Result.Ok(res.Value),
+            return result.Match(
+                    onSuccess: () => Result.Ok(result.Value),
                     onFailure: error => BadRequest(error)
                 );
         }
 
+        // Find Patient with input name
+        [HttpGet]
+        public async Task<IActionResult> GetAllPatient() 
+        {
+            var result = await _mediator.Send(new GetAllPatientAsync());
+            return result.Match(
+                onSuccess: () => Result.Ok(result),
+                onFailure: error => BadRequest(error)
+                );
+        }
     }
 }

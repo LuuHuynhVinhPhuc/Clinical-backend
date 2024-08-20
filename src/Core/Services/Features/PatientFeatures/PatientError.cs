@@ -1,5 +1,4 @@
 ﻿using ClinicalBackend.Services.Common;
-using ClinicalBackend.Services.Common;
 
 namespace ClinicalBackend.Services.Features.PatientFeatures
 {
@@ -7,6 +6,9 @@ namespace ClinicalBackend.Services.Features.PatientFeatures
     {
         // If patient is exist
         public static readonly Error PatientNameExist = new Error("Patients.Patient", "Patient name is already exist");
+
+        // If patient is exist
+        public static readonly Error PatientListNotFound = new Error("Patients.Patient", "Patient list is not found in DB");
 
         // Patient name is not exist
         public static Error NotFound(string Name) => new Error(

@@ -15,6 +15,7 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
         public int Quantity { get; set; }
         public float Price { get; set; }
         public string Status { get; set; }
+        public string Type { get; set; }
     }
 
     public class MedicineCreatedResponse {

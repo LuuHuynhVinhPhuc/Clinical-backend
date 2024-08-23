@@ -5,7 +5,8 @@ namespace ClinicalBackend.Domain.Repositories
 {
     public interface IMedicineRepository : IBaseRepository<Medicine>
     {
-        Task<Medicine> GetByIdAsync(Guid id);
+        Task<List<Medicine>> SearchByNameAsync(string Name);
         Task<IEnumerable<Medicine>> GetAllAsync();
+        Task<Medicine> GetByIdAsync(Guid Id);
     }
 }

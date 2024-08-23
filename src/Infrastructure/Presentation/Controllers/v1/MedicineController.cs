@@ -1,6 +1,6 @@
+using System.Runtime.CompilerServices;
 using ClinicalBackend.Services.Common;
 using ClinicalBackend.Services.Features.MedicineFeatures.Commands;
-using ClinicalBackend.Services.Features.MedicineFeatures.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,24 +20,31 @@ namespace ClinicalBackend.Presentation.Controllers.v1
             return Ok(result);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetMedicineById(Guid id)
+        [HttpGet("{Name}")]
+        public async Task<IActionResult> GetMedicineById(string Name)
         {
-            var result = await _mediator.Send(new GetMedicineQuery { Id = id });
-            return result.Match(
-                onSuccess: () => Result.Ok(result.Value),
-                onFailure: error => BadRequest(error)
-                );
+            var result = await _mediator.Send(new GetMedicineCommand { Name = Name });
+            return Ok(result);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllMedicines()
         {
-            var result = await _mediator.Send(new GetAllMedicinesQuery());
-            return result.Match(
-                onSuccess: () => Result.Ok(result),
-                onFailure: error => BadRequest(error)
-                );
+            var result = await _mediator.Send(new GetAllMedicineCommand());
+            return Ok(result);
+        }
+
+        [HttpPut("{Id}")]
+        public async Task<IActionResult> EditMedicine(Guid id)
+        {
+            var result = await _mediator.Send(new EditMedicineCommand{ Id = id });
+            return Ok(result);
+        }
+        [HttpDelete("{Id}")]
+        public async Task<IActionResult> DeleteMedicine(Guid id)
+        {
+            var result = await _mediator.Send(new DeleteMedicineCommand{ Id = id });
+            return Ok(result);
         }
     }
 }

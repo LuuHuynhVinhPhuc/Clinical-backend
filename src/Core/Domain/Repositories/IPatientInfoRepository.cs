@@ -11,6 +11,8 @@ namespace ClinicalBackend.Domain.Repositories
     public interface IPatientInfoRepository : IBaseRepository<PatientsInfo>
     {
         Task<PatientsInfo> GetByIdAsync(int id);
-        Task<IEnumerable<PatientsInfo>> GetAllAsysnc();
+        //Task<IEnumerable<PatientsInfo>> GetAllAsysnc();
+
+        Task<IEnumerable<PatientsInfo>> GetAllAsync();
     }
 }

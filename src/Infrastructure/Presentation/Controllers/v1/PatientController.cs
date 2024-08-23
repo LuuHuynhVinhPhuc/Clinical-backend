@@ -1,6 +1,5 @@
 ﻿using ClinicalBackend.Services.Common;
 using ClinicalBackend.Services.Features.PatientFeatures.Commands;
-using ClinicalBackend.Services.Features.PatientFeatures.PatientQueries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -34,10 +33,7 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         public async Task<IActionResult> GetAllPatient() 
         {
             var result = await _mediator.Send(new GetAllPatientAsync());
-            return result.Match(
-                onSuccess: () => Result.Ok(result),
-                onFailure: error => BadRequest(error)
-                );
+            return Ok(result);
         }
     }
 }

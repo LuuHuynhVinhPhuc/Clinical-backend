@@ -23,9 +23,8 @@ namespace ClinicalBackend.Persistence.Repositories
             return await dbSet.FindAsync(id);
         }
 
-        // find all
-
-        public async Task<IEnumerable<PatientsInfo>> GetAllAsysnc()
+        // find all           
+        public async Task<IEnumerable<PatientsInfo>> GetAllAsync()
         {
             return await dbSet.ToListAsync();
         }

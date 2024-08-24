@@ -28,12 +28,36 @@ namespace ClinicalBackend.Presentation.Controllers.v1
                 );
         }
 
-        // Find Patient with input name
+        // Find all Patients and show it with JSON list
         [HttpGet]
         public async Task<IActionResult> GetAllPatient() 
         {
             var result = await _mediator.Send(new GetAllPatientAsync());
             return Ok(result);
+        }
+
+        // Find Patient with Name and show it with JSON list 
+        [HttpGet("{Name}")]
+        public async Task<IActionResult> GetPatientwithName(string Name)
+        {
+            var res = await _mediator.Send(new GetPatientByNameAsync { Name = Name} );
+            return Ok(res);
+        }
+
+        // Edit Patient and re-update it 
+        [HttpPut("{ID}")]
+        public async Task<IActionResult> UpdatePatient( string Patient )
+        {
+            var res = await _mediator.Send(new UpdatePatientCommands { PatientName = Patient });
+            return Ok(res);
+        }
+
+        // Delete Patient and re-update it 
+        [HttpDelete("{Name}")]
+        public async Task<IActionResult> DeletePatient(string name)
+        {
+            var res = await _mediator.Send(new DeletePatientCommands { Name = name });
+            return Ok(res);
         }
     }
 }

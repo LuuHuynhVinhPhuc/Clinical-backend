@@ -28,5 +28,13 @@ namespace ClinicalBackend.Persistence.Repositories
         {
             return await dbSet.ToListAsync();
         }
+
+        // Find with Name 
+        public async Task<List<PatientsInfo>> FindWithNameAsync(string name)
+        {
+            return await dbSet
+                .Where(m => m.PatientName.Contains(name)) // Use Contains for partial matches
+                .ToListAsync();
+        }
     }
 }

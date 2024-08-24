@@ -15,5 +15,9 @@ namespace ClinicalBackend.Domain.Repositories
 
         // search with Name 
         Task<List<PatientsInfo>> FindWithNameAsync(string name);
+
+        // search with phone number 
+        Task<List<PatientsInfo>> FindWithPhoneNumberAsync(string phoneNumber);
+
     }
 }

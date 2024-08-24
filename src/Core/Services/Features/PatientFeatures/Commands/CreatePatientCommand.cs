@@ -40,8 +40,9 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
         public async Task<Result<PatientCreatedResponse>> Handle(CreatePatientCommand command, CancellationToken cancellationToken)
         {
             // check if the patient already exists
-            var existingPatient = await _unitOfWork.PatientInfo.GetByCondition(m 
-                => m.PatientName == command.PatientName).FirstOrDefaultAsync(cancellationToken);
+            var existingPatient = await _unitOfWork.PatientInfo.GetByCondition(m => m.PatientName == command.PatientName)
+                .FirstOrDefaultAsync(cancellationToken);
+
             if (existingPatient != null) {
                 return Result.Failure<PatientCreatedResponse>(PatientError.PatientNameExist); // return alert with exists patient in DB
             }

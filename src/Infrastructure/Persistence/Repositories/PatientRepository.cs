@@ -2,6 +2,7 @@
 using ClinicalBackend.Domain.Repositories;
 using ClinicalBackend.Persistence.Context;
 using Domain.Common;
+using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -35,6 +36,12 @@ namespace ClinicalBackend.Persistence.Repositories
             return await dbSet
                 .Where(m => m.PatientName.Contains(name)) // Use Contains for partial matches
                 .ToListAsync();
+        }
+
+        // Find with Phone number 
+        public async Task<List<PatientsInfo>> FindWithPhoneNumberAsync(string phoneNumber)
+        {
+            return await dbSet.Where(m => m.PhoneNumber.Contains(phoneNumber)).ToListAsync();
         }
     }
 }

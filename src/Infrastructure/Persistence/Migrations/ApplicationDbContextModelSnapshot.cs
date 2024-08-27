@@ -49,7 +49,7 @@ namespace ClinicalBackend.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Medicines");
+                    b.ToTable("Medicines", (string)null);
                 });
 
             modelBuilder.Entity("ClinicalBackend.Domain.Entities.PatientsInfo", b =>
@@ -75,7 +75,7 @@ namespace ClinicalBackend.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PatientsInfo");
+                    b.ToTable("PatientsInfo", (string)null);
                 });
 
             modelBuilder.Entity("ClinicalBackend.Domain.Entities.Role", b =>
@@ -92,7 +92,7 @@ namespace ClinicalBackend.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
                 });
 
             modelBuilder.Entity("ClinicalBackend.Domain.Entities.User", b =>
@@ -116,7 +116,7 @@ namespace ClinicalBackend.Persistence.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("ClinicalBackend.Domain.Entities.User", b =>

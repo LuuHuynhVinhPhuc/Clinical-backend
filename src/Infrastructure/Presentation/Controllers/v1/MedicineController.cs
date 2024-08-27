@@ -35,9 +35,10 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         }
 
         [HttpPut("{Id}")]
-        public async Task<IActionResult> EditMedicine(Guid id)
+        public async Task<IActionResult> EditMedicine(Guid Id, [FromBody] EditMedicineCommand command)
         {
-            var result = await _mediator.Send(new EditMedicineCommand{ Id = id });
+            command.Id = Id; // Set the Id from the route parameter
+            var result = await _mediator.Send(command);
             return Ok(result);
         }
         [HttpDelete("{Id}")]

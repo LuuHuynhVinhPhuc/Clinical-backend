@@ -42,7 +42,7 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         }
 
         // Find patient with Phone number and show it 
-        [HttpGet("{Phone_number}/FindPatientWithPhoneNumber")]
+        [HttpGet("{Phone_number}/")]
         public async Task<IActionResult> GetPatientbyPhoneNumber(string phoneNumber)
         {
             var res = await _mediator.Send(new FindWithPhoneNumberCommands { Phonenumber = phoneNumber });
@@ -59,7 +59,7 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         }
 
         // Delete patient
-        [HttpDelete("Delete_Patient")]
+        [HttpDelete]
         public async Task<IActionResult> DeletePatient(string phone)
         {
             var res = await _mediator.Send(new DeletePatientWithPhoneNumberCommands { PhoneNumber = phone});

@@ -22,10 +22,7 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         public async Task<IActionResult> CreatePatient(CreatePatientCommand command)
         {
             var result = await _mediator.Send(command);
-            return result.Match(
-                    onSuccess: () => Result.Ok(result.Value),
-                    onFailure: error => BadRequest(error)
-                );
+            return Ok(result);
         }
 
         // Find all Patients and show it with JSON list
@@ -37,27 +34,37 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         }
 
         // Find Patient with Name and show it with JSON list 
-        [HttpGet("{Name}")]
+        [HttpGet("{Name}/FindPatientWithName")]
         public async Task<IActionResult> GetPatientwithName(string Name)
         {
-            var res = await _mediator.Send(new GetPatientByNameAsync { Name = Name} );
+            var res = await _mediator.Send(new GetPatientByNameAsync { Name = Name });
             return Ok(res);
         }
 
-        // Edit Patient and re-update it 
+        // Find patient with Phone number and show it 
+        [HttpGet("{Phone_number}/FindPatientWithPhoneNumber")]
+        public async Task<IActionResult> GetPatientbyPhoneNumber(string phoneNumber)
+        {
+            var res = await _mediator.Send(new FindWithPhoneNumberCommands { Phonenumber = phoneNumber });
+            return Ok(res);
+        }
+
+        // Update patient infomation 
         [HttpPut("{ID}")]
-        public async Task<IActionResult> UpdatePatient( string Patient )
+        public async Task<IActionResult> UpdatePatientDetails(Guid ID, [FromBody] UpdatePatientCommands command)
         {
-            var res = await _mediator.Send(new UpdatePatientCommands { PatientName = Patient });
+            command.Id = ID;
+            var res = await _mediator.Send(command);
             return Ok(res);
         }
 
-        // Delete Patient and re-update it 
-        [HttpDelete("{Name}")]
-        public async Task<IActionResult> DeletePatient(string name)
+        // Delete patient
+        [HttpDelete("Delete_Patient")]
+        public async Task<IActionResult> DeletePatient(string phone)
         {
-            var res = await _mediator.Send(new DeletePatientCommands { Name = name });
+            var res = await _mediator.Send(new DeletePatientWithPhoneNumberCommands { PhoneNumber = phone});
             return Ok(res);
         }
+    
     }
 }

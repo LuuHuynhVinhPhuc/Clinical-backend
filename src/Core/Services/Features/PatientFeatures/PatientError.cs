@@ -13,5 +13,13 @@ namespace ClinicalBackend.Services.Features.PatientFeatures
         // Patient name is not exist
         public static Error NotFound(string Name) => new Error(
         "Patient.NotFound", $"Patient with the name '{Name}' was not found");
+
+        // Patient phone number is not exist
+        public static Error NotFoundPhone(string phone) => new Error(
+        "Patient.NotFound", $"Patient with the phone number '{phone}' was not found");
+
+        // Patient ID is not exist
+        public static Error NotFoundID(Guid ID) => new Error(
+        "Patient.NotFound", $"Patient with the phone number '{ID}' was not found");
     }
 }

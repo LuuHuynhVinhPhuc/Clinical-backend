@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ClinicalBackend.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240812162157_inititalMigration")]
-    partial class inititalMigration
+    [Migration("20240827075229_InitialPatients")]
+    partial class InitialPatients
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,29 +25,41 @@ namespace ClinicalBackend.Persistence.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("ClinicalBackend.Domain.Entities.Patient", b =>
+            modelBuilder.Entity("ClinicalBackend.Domain.Entities.Medicine", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("uuid");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<string>("Company")
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Type")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Patients");
+                    b.ToTable("Medicines");
                 });
 
             modelBuilder.Entity("ClinicalBackend.Domain.Entities.PatientsInfo", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Address")
                         .HasColumnType("text");
@@ -60,6 +72,7 @@ namespace ClinicalBackend.Persistence.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");

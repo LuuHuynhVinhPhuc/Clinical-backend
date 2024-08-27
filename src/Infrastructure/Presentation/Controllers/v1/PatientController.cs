@@ -18,18 +18,15 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         }
 
         // Create with Entity elements
-        [HttpPost("Create_Patient")]
+        [HttpPost]
         public async Task<IActionResult> CreatePatient(CreatePatientCommand command)
         {
             var result = await _mediator.Send(command);
-            return result.Match(
-                    onSuccess: () => Result.Ok(result.Value),
-                    onFailure: error => BadRequest(error)
-                );
+            return Ok(result);
         }
 
         // Find all Patients and show it with JSON list
-        [HttpGet("Get_all_patients")]
+        [HttpGet]
         public async Task<IActionResult> GetAllPatient() 
         {
             var result = await _mediator.Send(new GetAllPatientAsync());
@@ -53,10 +50,11 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         }
 
         // Update patient infomation 
-        [HttpPut("{Phone}/UpdatePatientDetails")]
-        public async Task<IActionResult> UpdatePatientDetails(string name)
+        [HttpPut("{ID}")]
+        public async Task<IActionResult> UpdatePatientDetails(Guid ID, [FromBody] UpdatePatientCommands command)
         {
-            var res = await _mediator.Send(new UpdatePatientCommands { PatientName = name});
+            command.Id = ID;
+            var res = await _mediator.Send(command);
             return Ok(res);
         }
 

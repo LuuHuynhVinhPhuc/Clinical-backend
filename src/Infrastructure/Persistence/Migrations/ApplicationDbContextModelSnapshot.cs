@@ -54,11 +54,9 @@ namespace ClinicalBackend.Persistence.Migrations
 
             modelBuilder.Entity("ClinicalBackend.Domain.Entities.PatientsInfo", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Address")
                         .HasColumnType("text");
@@ -71,6 +69,7 @@ namespace ClinicalBackend.Persistence.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");

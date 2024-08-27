@@ -10,7 +10,7 @@ namespace ClinicalBackend.Domain.Repositories
 {
     public interface IPatientInfoRepository : IBaseRepository<PatientsInfo>
     {
-        Task<PatientsInfo> GetByIdAsync(int id);
+        Task<PatientsInfo> GetByIdAsync(Guid id);
         Task<IEnumerable<PatientsInfo>> GetAllAsync();
 
         // search with Name 

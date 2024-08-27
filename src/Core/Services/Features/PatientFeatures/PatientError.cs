@@ -17,5 +17,9 @@ namespace ClinicalBackend.Services.Features.PatientFeatures
         // Patient phone number is not exist
         public static Error NotFoundPhone(string phone) => new Error(
         "Patient.NotFound", $"Patient with the phone number '{phone}' was not found");
+
+        // Patient ID is not exist
+        public static Error NotFoundID(Guid ID) => new Error(
+        "Patient.NotFound", $"Patient with the phone number '{ID}' was not found");
     }
 }

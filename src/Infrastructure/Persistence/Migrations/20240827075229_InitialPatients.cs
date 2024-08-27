@@ -7,34 +7,37 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ClinicalBackend.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreation : Migration
+    public partial class InitialPatients : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Patients",
+                name: "Medicines",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Company = table.Column<string>(type: "text", nullable: true),
+                    Quantity = table.Column<int>(type: "integer", nullable: false),
+                    Price = table.Column<float>(type: "real", nullable: false),
+                    Status = table.Column<string>(type: "text", nullable: true),
+                    Type = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Patients", x => x.Id);
+                    table.PrimaryKey("PK_Medicines", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "PatientsInfo",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     PatientName = table.Column<string>(type: "text", nullable: false),
                     Age = table.Column<int>(type: "integer", nullable: false),
                     Address = table.Column<string>(type: "text", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "text", nullable: true)
+                    PhoneNumber = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -84,7 +87,7 @@ namespace ClinicalBackend.Persistence.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Patients");
+                name: "Medicines");
 
             migrationBuilder.DropTable(
                 name: "PatientsInfo");

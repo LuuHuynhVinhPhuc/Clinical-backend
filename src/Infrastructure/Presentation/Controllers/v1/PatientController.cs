@@ -34,7 +34,7 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         }
 
         // Find Patient with Name and show it with JSON list 
-        [HttpGet("{Name}/FindPatientWithName")]
+        [HttpGet("Name/{Name}")]
         public async Task<IActionResult> GetPatientwithName(string Name)
         {
             var res = await _mediator.Send(new GetPatientByNameAsync { Name = Name });
@@ -42,7 +42,7 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         }
 
         // Find patient with Phone number and show it 
-        [HttpGet("{Phone_number}/")]
+        [HttpGet("Phone/{Phone_number}")]
         public async Task<IActionResult> GetPatientbyPhoneNumber(string phoneNumber)
         {
             var res = await _mediator.Send(new FindWithPhoneNumberCommands { Phonenumber = phoneNumber });

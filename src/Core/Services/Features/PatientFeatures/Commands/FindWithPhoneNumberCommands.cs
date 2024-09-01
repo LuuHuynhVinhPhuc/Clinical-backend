@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 {
-    public class FindWithPhoneNumberCommands  : IRequest<List<PatientsInfo>>
+    public class FindWithPhoneNumberCommands  : IRequest<List<Patient>>
     {
         public string Phonenumber { get; set; }
     }
 
     // Task
-    public class FindWithPhoneNumberHandler : IRequestHandler<FindWithPhoneNumberCommands, List<PatientsInfo>>
+    public class FindWithPhoneNumberHandler : IRequestHandler<FindWithPhoneNumberCommands, List<Patient>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -24,11 +24,11 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<List<PatientsInfo>> Handle(FindWithPhoneNumberCommands request, CancellationToken cancellationToken)
+        public async Task<List<Patient>> Handle(FindWithPhoneNumberCommands request, CancellationToken cancellationToken)
         {
-            var patient = await _unitOfWork.PatientInfo.FindWithPhoneNumberAsync(request.Phonenumber);
+            var patient = await _unitOfWork.Patient.FindWithPhoneNumberAsync(request.Phonenumber);
             // return value to list
-            return patient ?? new List<PatientsInfo>();
+            return patient ?? new List<Patient>();
         }
     }
 }

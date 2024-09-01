@@ -22,7 +22,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IMedicineRepository, MedicineRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IPatientInfoRepository, PatientRepository>();
+            services.AddScoped<IPatientRepository, PatientRepository>();
 
             return services;
         }

@@ -13,33 +13,33 @@ using System.Threading.Tasks;
 
 namespace ClinicalBackend.Persistence.Repositories
 {
-    public class PatientRepository : BaseRepository<PatientsInfo>, IPatientInfoRepository
+    public class PatientRepository : BaseRepository<Patient>, IPatientRepository
     {
         public PatientRepository(ApplicationDbContext context) : base(context)
         {
         }
 
-        public async Task<PatientsInfo> GetByIdAsync(Guid id)
+        public async Task<Patient> GetByIdAsync(Guid id)
         {
             return await dbSet.FindAsync(id);
         }
 
         // find all           
-        public async Task<IEnumerable<PatientsInfo>> GetAllAsync()
+        public async Task<IEnumerable<Patient>> GetAllAsync()
         {
             return await dbSet.ToListAsync();
         }
 
         // Find with Name 
-        public async Task<List<PatientsInfo>> FindWithNameAsync(string name)
+        public async Task<List<Patient>> FindWithNameAsync(string name)
         {
             return await dbSet
-                .Where(m => m.PatientName.Contains(name)) // Use Contains for partial matches
+                .Where(m => m.Name.Contains(name)) // Use Contains for partial matches
                 .ToListAsync();
         }
 
         // Find with Phone number 
-        public async Task<List<PatientsInfo>> FindWithPhoneNumberAsync(string phoneNumber)
+        public async Task<List<Patient>> FindWithPhoneNumberAsync(string phoneNumber)
         {
             return await dbSet.Where(m => m.PhoneNumber.Contains(phoneNumber)).ToListAsync();
         }

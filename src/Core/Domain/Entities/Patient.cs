@@ -8,11 +8,15 @@ using System.Threading.Tasks;
 
 namespace ClinicalBackend.Domain.Entities
 {
-    public class PatientsInfo : BaseEntitty<Guid>
+    public class Patient : BaseEntitty<Guid>
     {
-        public string? PatientName { get; set; }
+        public string? Name { get; set; }
         public int Age { get; set; }
+
         public string? Address { get; set; }
         public string? PhoneNumber { get; set; }
+
+        // Get DateTime for signin 
+        public DateTime PatientDateTimeSign { get; set; }
     }
 }

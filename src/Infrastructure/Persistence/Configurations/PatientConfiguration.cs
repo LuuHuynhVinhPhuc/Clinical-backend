@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace ClinicalBackend.Persistence.Configurations
 {
-    internal class PatientConfiguration : IEntityTypeConfiguration<PatientsInfo>
+    internal class PatientConfiguration : IEntityTypeConfiguration<Patient>
     {
-        public void Configure(EntityTypeBuilder<PatientsInfo> builder)
+        public void Configure(EntityTypeBuilder<Patient> builder)
         {
             builder.HasKey(patient => patient.Id);
             builder.Property(patient => patient.Id).ValueGeneratedOnAdd();
-            builder.Property(patient => patient.PatientName).IsRequired();
+            builder.Property(patient => patient.Name).IsRequired();
             builder.Property(patient => patient.PhoneNumber).IsRequired();
         }
     }

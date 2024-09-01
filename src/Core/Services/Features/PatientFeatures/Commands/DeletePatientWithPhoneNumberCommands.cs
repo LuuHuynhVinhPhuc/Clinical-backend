@@ -33,7 +33,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
         public async Task<Result<DeletePatientResponse>> Handle(DeletePatientWithPhoneNumberCommands request, CancellationToken cancellationToken)
         {
             // find all patient details with Phone number 
-            var patient = await _unitOfWork.PatientInfo.FindWithPhoneNumberAsync(request.PhoneNumber);
+            var patient = await _unitOfWork.Patient.FindWithPhoneNumberAsync(request.PhoneNumber);
             // check exits
             if (patient == null)
             {
@@ -43,7 +43,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
             // remove patient 
             foreach (var items in patient.ToList())
             {
-                _unitOfWork.PatientInfo.Remove(items);
+                _unitOfWork.Patient.Remove(items);
             };
             // save changes
             await _unitOfWork.SaveChangesAsync(cancellationToken);

@@ -12,7 +12,7 @@ namespace ClinicalBackend.Persistence.Context
         {}
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
-        public DbSet<PatientsInfo> PatientsInfo { get; set; }
+        public DbSet<Patient> PatientsInfo { get; set; }
         public DbSet<Medicine> Medicines { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

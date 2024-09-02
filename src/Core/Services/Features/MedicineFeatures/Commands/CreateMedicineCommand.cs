@@ -1,7 +1,5 @@
 using ClinicalBackend.Domain.Entities;
 using ClinicalBackend.Services.Common;
-using ClinicalBackend.Services.Constants;
-using ClinicalBackend.Services.Interfaces;
 using Domain.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,9 +14,12 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
         public float Price { get; set; }
         public string Status { get; set; }
         public string Type { get; set; }
+        public DateTime dateCreated {get; set; }
+        public DateTime dateModified {get; set; }
     }
 
-    public class MedicineCreatedResponse {
+    public class MedicineCreatedResponse
+    {
         public string Response { get; set; }
     }
 
@@ -41,13 +42,15 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
             }
 
             // Create a new Medicine entity
-            var medicine = new Medicine 
+            var medicine = new Medicine
             {
                 Name = command.Name,
                 Company = command.Company,
                 Quantity = command.Quantity,
                 Price = command.Price,
-                Status = command.Status
+                Status = command.Status,
+                dateCreated = DateTime.UtcNow,
+                dateModified = DateTime.UtcNow
             };
 
             var response = new MedicineCreatedResponse() { Response = "Medicine created successfully" };

@@ -23,6 +23,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IMedicineRepository, MedicineRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IPatientInfoRepository, PatientRepository>();
+            services.AddScoped<IFollowUpRepository, FollowUpRepository>();
 
             return services;
         }

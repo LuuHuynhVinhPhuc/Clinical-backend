@@ -1,4 +1,3 @@
-using ClinicalBackend.Domain.Entities;
 using ClinicalBackend.Services.Common;
 using ClinicalBackend.Services.Features.ReExaminations;
 using Domain.Interfaces;
@@ -8,12 +7,10 @@ namespace ClinicalBackend.Services.Features.ReExaminationFeatures.Commands
 {
     public class EditFollowUpCommand : IRequest<Result<FollowUpEditedResponse>>
     {
-        public Guid Id { get; set; } // Added Id to identify the ReExamination to edit
-        public PatientsInfo Patient { get; set; }
+        public Guid Id;
         public string? CheckUp { get; set; }
         public string? History { get; set; }
         public string? Diagnosis { get; set; }
-        public DateTime dateModified { get; set; }
     }
 
     public class FollowUpEditedResponse
@@ -40,7 +37,6 @@ namespace ClinicalBackend.Services.Features.ReExaminationFeatures.Commands
             }
 
             // Update the existing ReExamination entity
-            existingFollowUp.Patient = command.Patient;
             existingFollowUp.CheckUp = command.CheckUp;
             existingFollowUp.History = command.History;
             existingFollowUp.Diagnosis = command.Diagnosis;

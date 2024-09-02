@@ -26,14 +26,14 @@ namespace ClinicalBackend.Services.Features.ReExaminationFeatures.Commands
 
         public async Task<Result<FollowUpDeletedResponse>> Handle(DeleteFollowUpCommand command, CancellationToken cancellationToken)
         {
-            // Check if the ReExamination exists
+            // Check if the FollowUp exists
             var existingFollowUp = await _unitOfWork.FollowUp.GetByIdAsync(command.Id);
             if (existingFollowUp == null)
             {
                 return Result.Failure<FollowUpDeletedResponse>(FollowUpErrors.NotFound(command.Id.ToString()));
             }
 
-            // Remove the existing ReExamination entity
+            // Remove the existing FollowUp entity
             _unitOfWork.FollowUp.Remove(existingFollowUp);
             // Save changes to the repository
             await _unitOfWork.SaveChangesAsync(cancellationToken);

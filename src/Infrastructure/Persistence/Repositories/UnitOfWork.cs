@@ -10,16 +10,17 @@ namespace ClinicalBackend.Persistence.Repositories
         public IUserRepository Users { get; }
         public IRoleRepository Roles { get; }
         public IMedicineRepository Medicines { get; }
-        public IPatientInfoRepository PatientInfo { get; }
+        public IPatientRepository Patient { get; }
         public IFollowUpRepository FollowUp { get; }
 
-        public UnitOfWork(ApplicationDbContext context, IUserRepository users, IRoleRepository roles, IMedicineRepository medicines, IPatientInfoRepository patientInfo)
+        public UnitOfWork(ApplicationDbContext context, IUserRepository users, IRoleRepository roles, IMedicineRepository medicines, IPatientRepository patientInfo, IFollowUpRepository followUp)
         {
             _context = context;
             Users = users;
             Roles = roles;
             Medicines = medicines;
-            PatientInfo = patientInfo;
+            Patient = patientInfo;
+            FollowUp = followUp;
         }
 
         public void Dispose()

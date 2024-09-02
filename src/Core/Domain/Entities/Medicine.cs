@@ -2,9 +2,8 @@ using Domain.Entities;
 
 namespace ClinicalBackend.Domain.Entities
 {
-    public class Medicine : BaseEntitty<string>
+    public class Medicine : BaseEntitty<Guid>
     {
-        public Guid Id { get; set; }
         public string? Name { get; set; }
         public string? Company { get; set; }
         public int Quantity { get; set; }

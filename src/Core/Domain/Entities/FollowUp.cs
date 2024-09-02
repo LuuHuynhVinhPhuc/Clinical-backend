@@ -2,11 +2,9 @@ using Domain.Entities;
 
 namespace ClinicalBackend.Domain.Entities
 {
-    public class FollowUp : BaseEntitty<string>
+    public class FollowUp : BaseEntitty<Guid>
     {
-        public Guid Id { get; set; }
         public Guid PatientId { get; set; }
-        public PatientsInfo Patient {get; set;}
         //Tổng quát
         public string? CheckUp { get; set; }
         //Tiền căn

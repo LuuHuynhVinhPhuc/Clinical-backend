@@ -1,10 +1,6 @@
-using ClinicalBackend.Domain.Entities;
 using ClinicalBackend.Services.Common;
-using ClinicalBackend.Services.Constants;
-using ClinicalBackend.Services.Interfaces;
 using Domain.Interfaces;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
 {
@@ -19,7 +15,8 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
         public string Type { get; set; }
     }
 
-    public class MedicineEditedResponse {
+    public class MedicineEditedResponse
+    {
         public string Response { get; set; }
     }
 
@@ -48,6 +45,8 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
             existingMedicine.Price = command.Price;
             existingMedicine.Status = command.Status;
             existingMedicine.Type = command.Type;
+            existingMedicine.dateModified = DateTime.UtcNow;
+
 
             var response = new MedicineEditedResponse() { Response = "Medicine edited successfully" };
 

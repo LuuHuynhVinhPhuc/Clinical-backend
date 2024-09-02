@@ -11,12 +11,12 @@ using Domain.Interfaces;
 
 namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 {
-    public class GetAllPatientAsync : IRequest<IEnumerable<PatientsInfo>>
+    public class GetAllPatientAsync : IRequest<IEnumerable<Patient>>
     {
     }
 
     // Task
-    public class GetAllPatientHandler : IRequestHandler<GetAllPatientAsync, IEnumerable<PatientsInfo>>
+    public class GetAllPatientHandler : IRequestHandler<GetAllPatientAsync, IEnumerable<Patient>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -25,9 +25,9 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<PatientsInfo>> Handle(GetAllPatientAsync request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Patient>> Handle(GetAllPatientAsync request, CancellationToken cancellationToken)
         {
-            var PatientList = await _unitOfWork.PatientInfo.GetAllAsync();
+            var PatientList = await _unitOfWork.Patient.GetAllAsync();
             return PatientList.ToList();
         }
     }

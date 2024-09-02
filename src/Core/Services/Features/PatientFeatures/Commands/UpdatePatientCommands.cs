@@ -40,13 +40,13 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
         public async Task<Result<UpdatePatientResponse>> Handle(UpdatePatientCommands request, CancellationToken cancellationToken)
         {
             // find with ID 
-            var patient = await _unitOfWork.PatientInfo.GetByIdAsync(request.Id);
+            var patient = await _unitOfWork.Patient.GetByIdAsync(request.Id);
 
             if (patient == null)
                 return Result.Failure<UpdatePatientResponse>(PatientError.NotFoundID(request.Id));
 
             // save data in Client 
-            patient.PatientName = request.PatientName;
+            patient.Name = request.PatientName;
             patient.Age = request.Age;
             patient.Address = request.Address;
             patient.PhoneNumber = request.PhoneNumber;
@@ -55,7 +55,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
             var response = new UpdatePatientResponse() { Response = "Patient updated successfully" };
 
             // save changes 
-            _unitOfWork.PatientInfo.Update(patient);
+            _unitOfWork.Patient.Update(patient);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
             
             return Result.Success(response);

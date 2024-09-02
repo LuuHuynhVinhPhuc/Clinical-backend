@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ClinicalBackend.Persistence.Repositories
 {
-    internal class FollowUpRepository : BaseRepository<FollowUp>, IFollowUpRepository
+    public class FollowUpRepository : BaseRepository<FollowUp>, IFollowUpRepository
     {
-        internal FollowUpRepository(ApplicationDbContext context) : base(context)
+        public FollowUpRepository(ApplicationDbContext context) : base(context)
         {
         }
 
@@ -21,11 +21,5 @@ namespace ClinicalBackend.Persistence.Repositories
         {
             return await dbSet.FindAsync();
         }
-
-        public async Task<List<FollowUp>> SearchByNameAsync(string Name)
-        {
-            return await dbSet
-                .Where(m => m.Name.Contains(name)) // Use Contains for partial matches
-                .ToListAsync();        }
     }
 }

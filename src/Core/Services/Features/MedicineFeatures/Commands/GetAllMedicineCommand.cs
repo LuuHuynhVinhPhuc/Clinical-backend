@@ -1,5 +1,4 @@
 using ClinicalBackend.Domain.Entities;
-using ClinicalBackend.Services.Common;
 using Domain.Interfaces;
 using MediatR;
 

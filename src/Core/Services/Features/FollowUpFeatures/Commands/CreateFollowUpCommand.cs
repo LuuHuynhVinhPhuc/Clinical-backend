@@ -8,7 +8,7 @@ namespace ClinicalBackend.Services.Features.ReExaminations.Commands
 {
     public class CreateFollowUpCommand : IRequest<Result<FollowUpCreatedResponse>>
     {
-        public PatientsInfo Patient { get; set; }
+        public Guid PatientId { get; set; }
 
         //Tổng quát
         public string? CheckUp { get; set; }
@@ -18,11 +18,6 @@ namespace ClinicalBackend.Services.Features.ReExaminations.Commands
 
         //Chuẩn đoán
         public string? Diagnosis { get; set; }
-
-        public DateTime dateCreated { get; set; }
-
-        public DateTime dateModified { get; set; }
-
     }
 
     public class FollowUpCreatedResponse
@@ -42,16 +37,16 @@ namespace ClinicalBackend.Services.Features.ReExaminations.Commands
         public async Task<Result<FollowUpCreatedResponse>> Handle(CreateFollowUpCommand command, CancellationToken cancellationToken)
         {
             // Check if the medicine already exists
-            var existingFollowUp = await _unitOfWork.FollowUp.GetByCondition(m => m.Patient == command.Patient).FirstOrDefaultAsync(cancellationToken);
+            var existingFollowUp = await _unitOfWork.FollowUp.GetByCondition(m => m.PatientId == command.PatientId).FirstOrDefaultAsync(cancellationToken);
             if (existingFollowUp != null)
             {
                 return Result.Failure<FollowUpCreatedResponse>(FollowUpErrors.FollowUpExists);
             }
 
-            // Create a new Medicine entity
+            // Create a new FollowUp entity
             var FollowUp = new FollowUp
             {
-                Patient = command.Patient,
+                PatientId = command.PatientId,
                 CheckUp = command.CheckUp,
                 History = command.History,
                 Diagnosis = command.Diagnosis,

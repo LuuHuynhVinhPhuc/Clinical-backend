@@ -14,8 +14,6 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
         public float Price { get; set; }
         public string Status { get; set; }
         public string Type { get; set; }
-        public DateTime dateCreated {get; set; }
-        public DateTime dateModified {get; set; }
     }
 
     public class MedicineCreatedResponse

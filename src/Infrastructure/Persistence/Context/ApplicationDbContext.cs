@@ -9,17 +9,18 @@ namespace ClinicalBackend.Persistence.Context
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
-        {}
+        { }
+
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
-        public DbSet<PatientsInfo> PatientsInfo { get; set; }
+        public DbSet<Patient> Patients { get; set; }
         public DbSet<Medicine> Medicines { get; set; }
+        public DbSet<FollowUp> FollowUps { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             base.OnModelCreating(modelBuilder);
         }
-
     }
 }

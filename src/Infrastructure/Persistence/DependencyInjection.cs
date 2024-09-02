@@ -1,10 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
-using Services.Interfaces;
+﻿using ClinicalBackend.Domain.Repositories;
 using ClinicalBackend.Persistence.Context;
-using Microsoft.EntityFrameworkCore;
-using Domain.Interfaces;
 using ClinicalBackend.Persistence.Repositories;
-using ClinicalBackend.Domain.Repositories;
+using Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Services.Interfaces;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -18,11 +18,11 @@ namespace Microsoft.Extensions.DependencyInjection
                     b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IMedicineRepository, MedicineRepository>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IPatientInfoRepository, PatientRepository>();
+            services.AddScoped<IPatientRepository, PatientRepository>();
             services.AddScoped<IFollowUpRepository, FollowUpRepository>();
 
             return services;

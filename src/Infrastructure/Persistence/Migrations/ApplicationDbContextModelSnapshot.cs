@@ -64,12 +64,16 @@ namespace ClinicalBackend.Persistence.Migrations
                     b.Property<int>("Age")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Name")
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DOB")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("PatientDateTimeSign")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()

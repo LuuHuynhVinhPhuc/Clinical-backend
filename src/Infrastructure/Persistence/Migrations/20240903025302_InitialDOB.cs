@@ -5,24 +5,25 @@
 namespace ClinicalBackend.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialEditPatientProp : Migration
+    public partial class InitialDOB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "PatientName",
+            migrationBuilder.AddColumn<string>(
+                name: "DOB",
                 table: "PatientsInfo",
-                newName: "Name");
+                type: "text",
+                nullable: false,
+                defaultValue: "");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "Name",
-                table: "PatientsInfo",
-                newName: "PatientName");
+            migrationBuilder.DropColumn(
+                name: "DOB",
+                table: "PatientsInfo");
         }
     }
 }

@@ -13,10 +13,12 @@ namespace ClinicalBackend.Domain.Entities
         public string? Name { get; set; }
         public int Age { get; set; }
 
+        // day of birth
+        public string DOB { get; set; }
         public string? Address { get; set; }
         public string? PhoneNumber { get; set; }
 
         // Get DateTime for signin 
-        public DateTime PatientDateTimeSign { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }

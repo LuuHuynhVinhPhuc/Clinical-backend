@@ -21,5 +21,8 @@ namespace ClinicalBackend.Services.Features.PatientFeatures
         // Patient ID is not exist
         public static Error NotFoundID(Guid ID) => new Error(
         "Patient.NotFound", $"Patient with the phone number '{ID}' was not found");
+
+        // Invalid date of birth format
+        public static Error InvalidDOBFormat = new Error("Patient.InvalidDOB", "Invalid date of birth format");
     }
 }

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ClinicalBackend.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240827075229_InitialPatients")]
-    partial class InitialPatients
+    [Migration("20240902171228_InitialEditPatientProp")]
+    partial class InitialEditPatientProp
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -55,7 +55,7 @@ namespace ClinicalBackend.Persistence.Migrations
                     b.ToTable("Medicines");
                 });
 
-            modelBuilder.Entity("ClinicalBackend.Domain.Entities.PatientsInfo", b =>
+            modelBuilder.Entity("ClinicalBackend.Domain.Entities.Patient", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -67,7 +67,10 @@ namespace ClinicalBackend.Persistence.Migrations
                     b.Property<int>("Age")
                         .HasColumnType("integer");
 
-                    b.Property<string>("PatientName")
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 

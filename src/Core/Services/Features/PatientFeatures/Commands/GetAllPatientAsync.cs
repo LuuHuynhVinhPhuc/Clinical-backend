@@ -28,7 +28,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
         public async Task<IEnumerable<Patient>> Handle(GetAllPatientAsync request, CancellationToken cancellationToken)
         {
             var PatientList = await _unitOfWork.Patient.GetAllAsync();
-            return PatientList.ToList();
+            return PatientList.OrderByDescending(p => p.CreatedAt).ToList(); // sort with newest patient depend on createAt
         }
     }
 }

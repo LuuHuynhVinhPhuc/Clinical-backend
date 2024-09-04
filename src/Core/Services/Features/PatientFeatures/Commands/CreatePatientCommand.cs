@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,12 +17,13 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
     public class CreatePatientCommand : IRequest<Result<PatientCreatedResponse>>
     {
         public string Name { get; set; }
+        public string DOB { get; set; }
+        public string Name { get; set; }
         public int Age { get; set; }
         public string Address { get; set; }
         public string PhoneNumber { get; set; }
-        public DateTime DateTimeSign { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
-
     // Response : for return a string value to alert 
     public class PatientCreatedResponse
     {
@@ -43,24 +45,40 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
             // check if the patient already exists
             var existingPatient = await _unitOfWork.Patient.GetByCondition(m => m.Name == command.Name)
                 .FirstOrDefaultAsync(cancellationToken);
+            // Check if the patient already exists
+            var existingPatient = await _unitOfWork.Patient.GetByCondition(m => m.Name == command.Name)
+                                                          .FirstOrDefaultAsync(cancellationToken);
 
-            if (existingPatient != null) {
+            if (existingPatient != null)
+            {
                 return Result.Failure<PatientCreatedResponse>(PatientError.PatientNameExist); // return alert with exists patient in DB
             }
+
+            // Validate DOB format
+            DateTime dob;
+            if (!DateTime.TryParse(command.DOB, out dob))
+            {
+                return Result.Failure<PatientCreatedResponse>(PatientError.InvalidDOBFormat);
+            }
+
+            // Calculate age from DOB (for internal use only)
+            int age = DateTime.Today.Year - dob.Year;
+            if (dob > DateTime.Today.AddYears(-age)) age--;
 
             command.DateTimeSign = DateTime.UtcNow;
             // Create a new Patients Entity
             var patient = new Patient
             {
                 Name = command.Name,
-                Age = command.Age,
+                DOB = command.DOB,
                 Address = command.Address,
                 PhoneNumber = command.PhoneNumber,
-                PatientDateTimeSign = command.DateTimeSign,
+                CreatedAt = command.CreatedAt,
+                Age = age, // Age is stored but not exposed in the command
             };
             var response = new PatientCreatedResponse() { Response = "Patient created successfully" };
 
-            // Add to respon
+            // Add to repository
             _unitOfWork.Patient.Add(patient);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 

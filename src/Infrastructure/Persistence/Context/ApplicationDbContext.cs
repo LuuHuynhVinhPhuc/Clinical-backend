@@ -13,7 +13,7 @@ namespace ClinicalBackend.Persistence.Context
 
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
-        public DbSet<Patient> Patients { get; set; }
+        public DbSet<Patient> PatientsInfo { get; set; }
         public DbSet<Medicine> Medicines { get; set; }
         public DbSet<FollowUp> FollowUps { get; set; }
 

@@ -36,12 +36,20 @@ namespace ClinicalBackend.Services.Features.ReExaminations.Commands
 
         public async Task<Result<FollowUpCreatedResponse>> Handle(CreateFollowUpCommand command, CancellationToken cancellationToken)
         {
-            // Check if the medicine already exists
+            // Check if the FollowUp already exists
+            var existingPatient = await _unitOfWork.Patient.GetByIdAsync(command.PatientId);
+            if (existingPatient == null)
+            {
+                return Result.Failure<FollowUpCreatedResponse>(FollowUpErrors.NotFound(command.PatientId.ToString()));
+            }
+
             var existingFollowUp = await _unitOfWork.FollowUp.GetByCondition(m => m.PatientId == command.PatientId).FirstOrDefaultAsync(cancellationToken);
             if (existingFollowUp != null)
             {
                 return Result.Failure<FollowUpCreatedResponse>(FollowUpErrors.FollowUpExists);
             }
+
+
 
             // Create a new FollowUp entity
             var FollowUp = new FollowUp

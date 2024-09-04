@@ -11,6 +11,7 @@ namespace ClinicalBackend.Persistence.Repositories
         public IRoleRepository Roles { get; }
         public IMedicineRepository Medicines { get; }
         public IPatientRepository Patient { get; }
+        public IFollowUpRepository FollowUp { get; }
 
         public UnitOfWork(ApplicationDbContext context, IUserRepository users, IRoleRepository roles, IMedicineRepository medicines, IPatientRepository patientInfo)
         {

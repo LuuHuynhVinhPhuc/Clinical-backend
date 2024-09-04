@@ -18,8 +18,6 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
     {
         public string Name { get; set; }
         public string DOB { get; set; }
-        public string Name { get; set; }
-        public int Age { get; set; }
         public string Address { get; set; }
         public string PhoneNumber { get; set; }
         public DateTime CreatedAt { get; set; }
@@ -42,9 +40,6 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
         // Async task
         public async Task<Result<PatientCreatedResponse>> Handle(CreatePatientCommand command, CancellationToken cancellationToken)
         {
-            // check if the patient already exists
-            var existingPatient = await _unitOfWork.Patient.GetByCondition(m => m.Name == command.Name)
-                .FirstOrDefaultAsync(cancellationToken);
             // Check if the patient already exists
             var existingPatient = await _unitOfWork.Patient.GetByCondition(m => m.Name == command.Name)
                                                           .FirstOrDefaultAsync(cancellationToken);
@@ -65,7 +60,6 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
             int age = DateTime.Today.Year - dob.Year;
             if (dob > DateTime.Today.AddYears(-age)) age--;
 
-            command.DateTimeSign = DateTime.UtcNow;
             // Create a new Patients Entity
             var patient = new Patient
             {

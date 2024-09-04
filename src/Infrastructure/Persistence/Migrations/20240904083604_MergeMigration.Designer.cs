@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ClinicalBackend.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240831101000_InitialDateTime")]
-    partial class InitialDateTime
+    [Migration("20240904083604_MergeMigration")]
+    partial class MergeMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,35 @@ namespace ClinicalBackend.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("ClinicalBackend.Domain.Entities.FollowUp", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("CheckUp")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Diagnosis")
+                        .HasColumnType("text");
+
+                    b.Property<string>("History")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("PatientId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("dateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("dateModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FollowUps");
+                });
 
             modelBuilder.Entity("ClinicalBackend.Domain.Entities.Medicine", b =>
                 {
@@ -50,12 +79,18 @@ namespace ClinicalBackend.Persistence.Migrations
                     b.Property<string>("Type")
                         .HasColumnType("text");
 
+                    b.Property<DateTime>("dateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("dateModified")
+                        .HasColumnType("timestamp with time zone");
+
                     b.HasKey("Id");
 
                     b.ToTable("Medicines");
                 });
 
-            modelBuilder.Entity("ClinicalBackend.Domain.Entities.PatientsInfo", b =>
+            modelBuilder.Entity("ClinicalBackend.Domain.Entities.Patient", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -67,16 +102,26 @@ namespace ClinicalBackend.Persistence.Migrations
                     b.Property<int>("Age")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("PatientDateTimeSign")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("PatientName")
+                    b.Property<string>("DOB")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("dateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("dateModified")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -94,6 +139,12 @@ namespace ClinicalBackend.Persistence.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("dateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("dateModified")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -116,6 +167,12 @@ namespace ClinicalBackend.Persistence.Migrations
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("dateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("dateModified")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 

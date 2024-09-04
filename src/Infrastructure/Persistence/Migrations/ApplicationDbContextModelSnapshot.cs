@@ -110,9 +110,6 @@ namespace ClinicalBackend.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("PatientDateTimeSign")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("text");
@@ -125,7 +122,7 @@ namespace ClinicalBackend.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Patients");
+                    b.ToTable("PatientsInfo");
                 });
 
             modelBuilder.Entity("ClinicalBackend.Domain.Entities.Role", b =>

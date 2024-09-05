@@ -21,8 +21,8 @@ namespace ClinicalBackend.Persistence.Migrations
                     CheckUp = table.Column<string>(type: "text", nullable: true),
                     History = table.Column<string>(type: "text", nullable: true),
                     Diagnosis = table.Column<string>(type: "text", nullable: true),
-                    dateCreated = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    dateModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -39,9 +39,7 @@ namespace ClinicalBackend.Persistence.Migrations
                     Quantity = table.Column<int>(type: "integer", nullable: false),
                     Price = table.Column<float>(type: "real", nullable: false),
                     Status = table.Column<string>(type: "text", nullable: true),
-                    Type = table.Column<string>(type: "text", nullable: true),
-                    dateCreated = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    dateModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    Type = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -58,9 +56,7 @@ namespace ClinicalBackend.Persistence.Migrations
                     DOB = table.Column<string>(type: "text", nullable: false),
                     Address = table.Column<string>(type: "text", nullable: true),
                     PhoneNumber = table.Column<string>(type: "text", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    dateCreated = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    dateModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -73,9 +69,7 @@ namespace ClinicalBackend.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    dateCreated = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    dateModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    Name = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -89,9 +83,7 @@ namespace ClinicalBackend.Persistence.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     UserName = table.Column<string>(type: "text", nullable: false),
                     HashPassword = table.Column<string>(type: "text", nullable: false),
-                    RoleId = table.Column<int>(type: "integer", nullable: false),
-                    dateCreated = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    dateModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    RoleId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {

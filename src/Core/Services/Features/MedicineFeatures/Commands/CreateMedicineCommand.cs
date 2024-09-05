@@ -47,8 +47,6 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
                 Quantity = command.Quantity,
                 Price = command.Price,
                 Status = command.Status,
-                dateCreated = DateTime.UtcNow,
-                dateModified = DateTime.UtcNow
             };
 
             var response = new MedicineCreatedResponse() { Response = "Medicine created successfully" };

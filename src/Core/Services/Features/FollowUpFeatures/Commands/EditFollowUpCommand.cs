@@ -40,7 +40,7 @@ namespace ClinicalBackend.Services.Features.ReExaminationFeatures.Commands
             existingFollowUp.CheckUp = command.CheckUp;
             existingFollowUp.History = command.History;
             existingFollowUp.Diagnosis = command.Diagnosis;
-            existingFollowUp.dateModified = DateTime.UtcNow;
+            existingFollowUp.ModifiedAt = DateTime.UtcNow;
 
             var response = new FollowUpEditedResponse() { Response = "Follow-up edited successfully" };
 

@@ -31,20 +31,20 @@ namespace ClinicalBackend.Persistence.Migrations
                     b.Property<string>("CheckUp")
                         .HasColumnType("text");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Diagnosis")
                         .HasColumnType("text");
 
                     b.Property<string>("History")
                         .HasColumnType("text");
 
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<Guid>("PatientId")
                         .HasColumnType("uuid");
-
-                    b.Property<DateTime>("dateCreated")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("dateModified")
-                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -75,12 +75,6 @@ namespace ClinicalBackend.Persistence.Migrations
 
                     b.Property<string>("Type")
                         .HasColumnType("text");
-
-                    b.Property<DateTime>("dateCreated")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("dateModified")
-                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -114,12 +108,6 @@ namespace ClinicalBackend.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("dateCreated")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("dateModified")
-                        .HasColumnType("timestamp with time zone");
-
                     b.HasKey("Id");
 
                     b.ToTable("PatientsInfo");
@@ -136,12 +124,6 @@ namespace ClinicalBackend.Persistence.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<DateTime>("dateCreated")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("dateModified")
-                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -164,12 +146,6 @@ namespace ClinicalBackend.Persistence.Migrations
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<DateTime>("dateCreated")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("dateModified")
-                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 

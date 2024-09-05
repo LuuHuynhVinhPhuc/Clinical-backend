@@ -58,8 +58,8 @@ namespace ClinicalBackend.Services.Features.ReExaminations.Commands
                 CheckUp = command.CheckUp,
                 History = command.History,
                 Diagnosis = command.Diagnosis,
-                dateCreated = DateTime.UtcNow,
-                dateModified = DateTime.UtcNow
+                CreatedAt = DateTime.UtcNow,
+                ModifiedAt = DateTime.UtcNow
             };
 
             var response = new FollowUpCreatedResponse() { Response = "Follow Up created successfully" };

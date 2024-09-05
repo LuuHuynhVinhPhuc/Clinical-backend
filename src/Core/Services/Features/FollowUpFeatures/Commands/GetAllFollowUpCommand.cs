@@ -26,7 +26,7 @@ namespace ClinicalBackend.Services.Features.ReExaminationFeatures.Commands
             }
 
             // Sort re-examinations by date in descending order to get the most recent ones first
-            var sortedFollowUps = FollowUps.OrderByDescending(f => f.dateCreated).ToList();
+            var sortedFollowUps = FollowUps.OrderByDescending(f => f.CreatedAt).ToList();
 
             return sortedFollowUps;
         }

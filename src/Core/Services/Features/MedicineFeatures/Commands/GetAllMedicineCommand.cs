@@ -6,7 +6,6 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
 {
     public class GetAllMedicineCommand : IRequest<List<Medicine>>
     {
-
     }
 
     public class GetAllMedicineCommandHandler : IRequestHandler<GetAllMedicineCommand, List<Medicine>>

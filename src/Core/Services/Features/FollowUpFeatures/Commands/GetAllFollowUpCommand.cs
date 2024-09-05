@@ -2,7 +2,7 @@ using ClinicalBackend.Domain.Entities;
 using Domain.Interfaces;
 using MediatR;
 
-namespace ClinicalBackend.Services.Features.ReExaminationFeatures.Commands
+namespace ClinicalBackend.Services.Features.FollowUpsFeatures.Commands
 {
     public class GetAllFollowUpCommand : IRequest<List<FollowUp>>
     {
@@ -19,16 +19,19 @@ namespace ClinicalBackend.Services.Features.ReExaminationFeatures.Commands
 
         public async Task<List<FollowUp>> Handle(GetAllFollowUpCommand request, CancellationToken cancellationToken)
         {
-            var FollowUps = await _unitOfWork.FollowUp.GetAllAsync();
-            if (FollowUps == null || !FollowUps.Any())
+            try
             {
-                return new List<FollowUp>(); // Return an empty list if no re-examinations found
+                var FollowUps = await _unitOfWork.FollowUp.GetAllAsync();
+
+                // Sort re-examinations by date in descending order to get the most recent ones first
+                var sortedFollowUps = FollowUps.OrderByDescending(f => f.CreatedAt).ToList();
+
+                return sortedFollowUps;
             }
-
-            // Sort re-examinations by date in descending order to get the most recent ones first
-            var sortedFollowUps = FollowUps.OrderByDescending(f => f.CreatedAt).ToList();
-
-            return sortedFollowUps;
+            catch (System.NullReferenceException ex)
+            {
+                return new List<FollowUp>();
+            }
         }
     }
 }

@@ -1,5 +1,4 @@
-using ClinicalBackend.Services.Features.ReExaminationFeatures.Commands;
-using ClinicalBackend.Services.Features.ReExaminations.Commands;
+using ClinicalBackend.Services.Features.FollowUpsFeatures.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

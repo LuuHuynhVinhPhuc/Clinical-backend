@@ -1,9 +1,9 @@
 using ClinicalBackend.Services.Common;
-using ClinicalBackend.Services.Features.ReExaminations;
+using ClinicalBackend.Services.Features.FollowUps;
 using Domain.Interfaces;
 using MediatR;
 
-namespace ClinicalBackend.Services.Features.ReExaminationFeatures.Commands
+namespace ClinicalBackend.Services.Features.FollowUpsFeatures.Commands
 {
     public class DeleteFollowUpCommand : IRequest<Result<FollowUpDeletedResponse>>
     {

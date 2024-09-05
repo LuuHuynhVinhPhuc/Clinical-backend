@@ -1,10 +1,11 @@
 using ClinicalBackend.Domain.Entities;
 using ClinicalBackend.Services.Common;
+using ClinicalBackend.Services.Features.FollowUps;
 using Domain.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace ClinicalBackend.Services.Features.ReExaminations.Commands
+namespace ClinicalBackend.Services.Features.FollowUpsFeatures.Commands
 {
     public class CreateFollowUpCommand : IRequest<Result<FollowUpCreatedResponse>>
     {
@@ -48,8 +49,6 @@ namespace ClinicalBackend.Services.Features.ReExaminations.Commands
             {
                 return Result.Failure<FollowUpCreatedResponse>(FollowUpErrors.FollowUpExists);
             }
-
-
 
             // Create a new FollowUp entity
             var FollowUp = new FollowUp

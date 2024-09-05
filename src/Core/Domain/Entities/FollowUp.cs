@@ -5,7 +5,7 @@ namespace ClinicalBackend.Domain.Entities
 {
     public class FollowUp : BaseEntitty<Guid>, IAuditable
     {
-        public Guid PatientId { get; set; }
+        public Guid? PatientId { get; set; }
         //Tổng quát
         public string? CheckUp { get; set; }
         //Tiền căn

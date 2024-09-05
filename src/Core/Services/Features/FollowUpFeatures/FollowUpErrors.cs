@@ -1,6 +1,6 @@
 using ClinicalBackend.Services.Common;
 
-namespace ClinicalBackend.Services.Features.ReExaminations
+namespace ClinicalBackend.Services.Features.FollowUps
 {
     public static class FollowUpErrors
     {

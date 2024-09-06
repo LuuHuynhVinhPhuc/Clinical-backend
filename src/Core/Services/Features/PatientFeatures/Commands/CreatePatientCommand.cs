@@ -1,4 +1,4 @@
-﻿using ClinicalBackend.Domain.Entities;
+using ClinicalBackend.Domain.Entities;
 using ClinicalBackend.Services.Common;
 using Domain.Interfaces;
 using MediatR;
@@ -10,6 +10,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 {
@@ -17,22 +18,25 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
     public class CreatePatientCommand : IRequest<Result<PatientCreatedResponse>>
     {
         public string Name { get; set; }
-        public string DOB { get; set; }
+
+        public DateOnly DOB { get; set; }
+
         public string Address { get; set; }
+
         public string PhoneNumber { get; set; }
-        public DateTime CreatedAt { get; set; }
     }
-    // Response : for return a string value to alert 
+
+    // Response : for return a string value to alert
     public class PatientCreatedResponse
     {
         public required string Response { get; set; }
     }
 
     // Task
-    public class CreatePatientCommandHander : IRequestHandler<CreatePatientCommand, Result<PatientCreatedResponse>>
+    public class CreatePatientCommandHandler : IRequestHandler<CreatePatientCommand, Result<PatientCreatedResponse>>
     {
         private readonly IUnitOfWork _unitOfWork;
-        public CreatePatientCommandHander(IUnitOfWork unitOfWork)
+        public CreatePatientCommandHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
@@ -40,6 +44,11 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
         // Async task
         public async Task<Result<PatientCreatedResponse>> Handle(CreatePatientCommand command, CancellationToken cancellationToken)
         {
+            if (command == null)
+            {
+                return Result.Failure<PatientCreatedResponse>(PatientError.PatientNameExist);
+            }
+
             // Check if the patient already exists
             var existingPatient = await _unitOfWork.Patient.GetByCondition(m => m.Name == command.Name)
                                                           .FirstOrDefaultAsync(cancellationToken);
@@ -49,16 +58,8 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
                 return Result.Failure<PatientCreatedResponse>(PatientError.PatientNameExist); // return alert with exists patient in DB
             }
 
-            // Validate DOB format
-            DateTime dob;
-            if (!DateTime.TryParse(command.DOB, out dob))
-            {
-                return Result.Failure<PatientCreatedResponse>(PatientError.InvalidDOBFormat);
-            }
-
-            // Calculate age from DOB (for internal use only)
-            int age = DateTime.Today.Year - dob.Year;
-            if (dob > DateTime.Today.AddYears(-age)) age--;
+            // Calculate age based on DOB
+            int age = CalculateAge(command.DOB);
 
             // Create a new Patients Entity
             var patient = new Patient
@@ -67,8 +68,8 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
                 DOB = command.DOB,
                 Address = command.Address,
                 PhoneNumber = command.PhoneNumber,
-                CreatedAt = command.CreatedAt,
-                Age = age, // Age is stored but not exposed in the command
+                CreatedAt = DateOnly.FromDateTime(DateTime.UtcNow),
+                Age = age,
             };
             var response = new PatientCreatedResponse() { Response = "Patient created successfully" };
 
@@ -77,6 +78,14 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return Result.Success(response);
+        }
+
+        private int CalculateAge(DateOnly dateOfBirth)
+        {
+            var today = DateOnly.FromDateTime(DateTime.Today);
+            int age = today.Year - dateOfBirth.Year;
+            if (today < dateOfBirth.AddYears(age)) age--;
+            return age;
         }
     }
 }

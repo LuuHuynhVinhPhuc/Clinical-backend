@@ -1,0 +1,33 @@
+{
+  "tasks": [
+    {
+      "name": "Dotnet-format code style",
+      "group": "pre-commit",
+      "command": "dotnet",
+      "args": [
+        "format",
+        "Clinical-get-back.sln",
+        "--no-restore",
+        "--include",
+        "${staged}",
+        "--verbosity diagnostic"
+      ],
+      "include": ["**/*.cs"]
+    },
+    {
+      "name": "Dotnet-format analyzers",
+      "group": "pre-commit",
+      "command": "dotnet",
+      "args": [
+        "format",
+        "analyzers",
+        "Clinical-get-back.sln",
+        "--verify-no-changes",
+        "--include",
+        "${staged}",
+        "--verbosity diagnostic"
+      ],
+      "include": ["**/*.cs"]
+    }
+  ]
+}

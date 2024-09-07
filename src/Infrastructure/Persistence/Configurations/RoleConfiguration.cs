@@ -8,7 +8,7 @@ namespace ClinicalBackend.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Role> builder)
         {
-
+            // Method intentionally left empty.
         }
     }
 }

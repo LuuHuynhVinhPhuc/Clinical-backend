@@ -1,12 +1,6 @@
-﻿using ClinicalBackend.Services.Common;
-using ClinicalBackend.Services.Features.PatientFeatures.Commands;
+﻿using ClinicalBackend.Services.Features.PatientFeatures.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ClinicalBackend.Presentation.Controllers.v1
 {
@@ -21,15 +15,15 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         [HttpPost]
         public async Task<IActionResult> CreatePatient(CreatePatientCommand command)
         {
-            var result = await _mediator.Send(command);
+            var result = await _mediator.Send(command).ConfigureAwait(false);
             return Ok(result);
         }
 
         // Find all Patients and show it with JSON list
         [HttpGet]
-        public async Task<IActionResult> GetAllPatient() 
+        public async Task<IActionResult> GetAllPatient()
         {
-            var result = await _mediator.Send(new GetAllPatientAsync());
+            var result = await _mediator.Send(new GetAllPatientAsync()).ConfigureAwait(false);
             return Ok(result);
         }
 
@@ -37,7 +31,7 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         [HttpGet("Name/{Name}")]
         public async Task<IActionResult> GetPatientwithName(string Name)
         {
-            var res = await _mediator.Send(new GetPatientByNameAsync { Name = Name });
+            var res = await _mediator.Send(new GetPatientByNameAsync { Name = Name }).ConfigureAwait(false);
             return Ok(res);
         }
 
@@ -45,7 +39,7 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         [HttpGet("Phone/{Phone_number}")]
         public async Task<IActionResult> GetPatientbyPhoneNumber(string phoneNumber)
         {
-            var res = await _mediator.Send(new FindWithPhoneNumberCommands { Phonenumber = phoneNumber });
+            var res = await _mediator.Send(new FindWithPhoneNumberCommands { Phonenumber = phoneNumber }).ConfigureAwait(false);
             return Ok(res);
         }
 
@@ -54,7 +48,7 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         public async Task<IActionResult> UpdatePatientDetails(Guid ID, [FromBody] UpdatePatientCommands command)
         {
             command.Id = ID;
-            var res = await _mediator.Send(command);
+            var res = await _mediator.Send(command).ConfigureAwait(false);
             return Ok(res);
         }
 
@@ -62,9 +56,9 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         [HttpDelete]
         public async Task<IActionResult> DeletePatient(string phone)
         {
-            var res = await _mediator.Send(new DeletePatientWithPhoneNumberCommands { PhoneNumber = phone});
+            var res = await _mediator.Send(new DeletePatientWithPhoneNumberCommands { PhoneNumber = phone }).ConfigureAwait(false);
             return Ok(res);
         }
-    
+
     }
 }

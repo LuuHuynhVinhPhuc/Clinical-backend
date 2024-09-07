@@ -1,7 +1,5 @@
 using ClinicalBackend.Domain.Entities;
 using ClinicalBackend.Services.Common;
-using ClinicalBackend.Services.Constants;
-using ClinicalBackend.Services.Interfaces;
 using Domain.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +16,8 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
         public string Type { get; set; }
     }
 
-    public class MedicineCreatedResponse {
+    public class MedicineCreatedResponse
+    {
         public string Response { get; set; }
     }
 
@@ -34,14 +33,14 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
         public async Task<Result<MedicineCreatedResponse>> Handle(CreateMedicineCommand command, CancellationToken cancellationToken)
         {
             // Check if the medicine already exists
-            var existingMedicine = await _unitOfWork.Medicines.GetByCondition(m => m.Name == command.Name).FirstOrDefaultAsync(cancellationToken);
+            var existingMedicine = await _unitOfWork.Medicines.GetByCondition(m => m.Name == command.Name).FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
             if (existingMedicine != null)
             {
                 return Result.Failure<MedicineCreatedResponse>(MedicineErrors.MedicineNameExist);
             }
 
             // Create a new Medicine entity
-            var medicine = new Medicine 
+            var medicine = new Medicine
             {
                 Name = command.Name,
                 Company = command.Company,
@@ -54,7 +53,7 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
 
             // Add the medicine to the repository
             _unitOfWork.Medicines.Add(medicine);
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
             return Result.Success(response);
         }

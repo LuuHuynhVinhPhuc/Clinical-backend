@@ -1,15 +1,10 @@
 ﻿using ClinicalBackend.Domain.Entities;
 using Domain.Interfaces;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 {
-    public class FindWithPhoneNumberCommands  : IRequest<List<Patient>>
+    public class FindWithPhoneNumberCommands : IRequest<List<Patient>>
     {
         public string Phonenumber { get; set; }
     }
@@ -26,7 +21,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 
         public async Task<List<Patient>> Handle(FindWithPhoneNumberCommands request, CancellationToken cancellationToken)
         {
-            var patient = await _unitOfWork.Patient.FindWithPhoneNumberAsync(request.Phonenumber);
+            var patient = await _unitOfWork.Patient.FindWithPhoneNumberAsync(request.Phonenumber).ConfigureAwait(false);
             // return value to list
             return patient ?? new List<Patient>();
         }

@@ -33,7 +33,7 @@ namespace ClinicalBackend.Services.Features.UserFeatures.Commands
 
         public async Task<Result<UserCreatedResponse>> Handle(CreateUserCommand command, CancellationToken cancellationToken)
         {
-            User? existingUser = await _unitOfWork.Users.GetByCondition(u => u.UserName == command.Name).FirstAsync();
+            User? existingUser = await _unitOfWork.Users.GetByCondition(u => u.UserName == command.Name).FirstAsync().ConfigureAwait(false);
 
             if (!(existingUser is null))
             {
@@ -48,7 +48,7 @@ namespace ClinicalBackend.Services.Features.UserFeatures.Commands
             };
 
             _unitOfWork.Users.Add(user);
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync().ConfigureAwait(false);
 
             string token = _jwtProvider.Generate(user);
 

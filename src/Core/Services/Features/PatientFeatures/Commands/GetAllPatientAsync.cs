@@ -1,13 +1,6 @@
 ﻿using ClinicalBackend.Domain.Entities;
-using MediatR;
-using ClinicalBackend.Services.Common;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Domain.Interfaces;
+using MediatR;
 
 namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 {
@@ -27,7 +20,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 
         public async Task<IEnumerable<Patient>> Handle(GetAllPatientAsync request, CancellationToken cancellationToken)
         {
-            var PatientList = await _unitOfWork.Patient.GetAllAsync();
+            var PatientList = await _unitOfWork.Patient.GetAllAsync().ConfigureAwait(false);
             return PatientList.OrderByDescending(p => p.CreatedAt).ToList(); // sort with newest patient depend on createAt
         }
     }

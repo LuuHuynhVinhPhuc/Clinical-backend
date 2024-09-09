@@ -1,5 +1,4 @@
 using ClinicalBackend.Domain.Entities;
-using ClinicalBackend.Services.Common;
 using Domain.Interfaces;
 using MediatR;
 
@@ -21,7 +20,7 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
 
         public async Task<List<Medicine>> Handle(GetMedicineCommand request, CancellationToken cancellationToken)
         {
-            var medicines = await _unitOfWork.Medicines.SearchByNameAsync(request.Name);
+            var medicines = await _unitOfWork.Medicines.SearchByNameAsync(request.Name).ConfigureAwait(false);
 
             return medicines ?? new List<Medicine>(); // Return an empty list if no medicines found
         }

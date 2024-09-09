@@ -1,5 +1,4 @@
-﻿using ClinicalBackend.Domain.Repositories;
-using ClinicalBackend.Services.Authentication;
+﻿using ClinicalBackend.Services.Authentication;
 using ClinicalBackend.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Reflection;
@@ -20,7 +19,7 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
             });
-            
+
             return services;
         }
     }

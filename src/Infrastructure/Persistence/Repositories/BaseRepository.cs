@@ -23,7 +23,7 @@ namespace Domain.Common
 
         public async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            return await GetAll().ToListAsync(cancellationToken);
+            return await GetAll().ToListAsync(cancellationToken).ConfigureAwait(false);
         }
 
         public IQueryable<TEntity> GetByCondition(Expression<Func<TEntity, bool>> expression)

@@ -1,12 +1,6 @@
-﻿using ClinicalBackend.Domain.Entities;
-using ClinicalBackend.Services.Common;
+﻿using ClinicalBackend.Services.Common;
 using Domain.Interfaces;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 {
@@ -19,7 +13,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
     {
         public string Response { get; set; }
     }
-    
+
     // task
     public class DeletePatientWithPhoneNumberHandler : IRequestHandler<DeletePatientWithPhoneNumberCommands, Result<DeletePatientResponse>>
     {
@@ -33,7 +27,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
         public async Task<Result<DeletePatientResponse>> Handle(DeletePatientWithPhoneNumberCommands request, CancellationToken cancellationToken)
         {
             // find all patient details with Phone number 
-            var patient = await _unitOfWork.Patient.FindWithPhoneNumberAsync(request.PhoneNumber);
+            var patient = await _unitOfWork.Patient.FindWithPhoneNumberAsync(request.PhoneNumber).ConfigureAwait(false);
             // check exits
             if (patient == null)
             {
@@ -44,9 +38,9 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
             foreach (var items in patient.ToList())
             {
                 _unitOfWork.Patient.Remove(items);
-            };
+            }
             // save changes
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
             // return value 
             return Result.Success(new DeletePatientResponse { Response = "Patient deleted successfully" });
         }

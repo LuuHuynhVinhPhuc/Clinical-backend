@@ -1,10 +1,6 @@
-using ClinicalBackend.Domain.Entities;
 using ClinicalBackend.Services.Common;
-using ClinicalBackend.Services.Constants;
-using ClinicalBackend.Services.Interfaces;
 using Domain.Interfaces;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
 {
@@ -19,7 +15,8 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
         public string Type { get; set; }
     }
 
-    public class MedicineEditedResponse {
+    public class MedicineEditedResponse
+    {
         public string Response { get; set; }
     }
 
@@ -35,7 +32,7 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
         public async Task<Result<MedicineEditedResponse>> Handle(EditMedicineCommand command, CancellationToken cancellationToken)
         {
             // Check if the medicine exists
-            var existingMedicine = await _unitOfWork.Medicines.GetByIdAsync(command.Id);
+            var existingMedicine = await _unitOfWork.Medicines.GetByIdAsync(command.Id).ConfigureAwait(false);
             if (existingMedicine == null)
             {
                 return Result.Failure<MedicineEditedResponse>(MedicineErrors.NotFound(command.Name));
@@ -52,7 +49,7 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
             var response = new MedicineEditedResponse() { Response = "Medicine edited successfully" };
 
             // Save changes to the repository
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
             return Result.Success(response);
         }

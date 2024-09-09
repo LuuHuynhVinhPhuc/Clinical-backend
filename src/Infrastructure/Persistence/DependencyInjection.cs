@@ -1,10 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
-using Services.Interfaces;
+﻿using ClinicalBackend.Domain.Repositories;
 using ClinicalBackend.Persistence.Context;
-using Microsoft.EntityFrameworkCore;
-using Domain.Interfaces;
 using ClinicalBackend.Persistence.Repositories;
-using ClinicalBackend.Domain.Repositories;
+using Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Services.Interfaces;
 
 namespace Microsoft.Extensions.DependencyInjection
 {

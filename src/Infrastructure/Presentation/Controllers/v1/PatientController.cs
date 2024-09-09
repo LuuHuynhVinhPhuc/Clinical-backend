@@ -1,4 +1,4 @@
-﻿using ClinicalBackend.Services.Common;
+using ClinicalBackend.Services.Common;
 using ClinicalBackend.Services.Features.PatientFeatures.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -65,6 +65,13 @@ namespace ClinicalBackend.Presentation.Controllers.v1
             var res = await _mediator.Send(new DeletePatientWithPhoneNumberCommands { PhoneNumber = phone});
             return Ok(res);
         }
-    
+
+        // Delete patient with ID
+        [HttpDelete("ID")]
+        public async Task<IActionResult> DeletePatientID(Guid id)
+        {
+            var res = await _mediator.Send(new DeletewithIDCommand { ID = id});
+            return Ok(res);
+        }
     }
 }

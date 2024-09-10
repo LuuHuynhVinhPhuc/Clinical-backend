@@ -4,11 +4,13 @@ using MediatR;
 
 namespace ClinicalBackend.Services.Features.FollowUpsFeatures.Commands
 {
-    public class GetAllFollowUpCommand : IRequest<List<FollowUp>>
+    public class GetAllFollowUpCommand : IRequest<(List<FollowUp>, int)>
     {
+        public int PageNumber { get; set; } = 1;
+        public int PageSize { get; set; } = 10;
     }
 
-    public class GetAllFollowUpCommandHandler : IRequestHandler<GetAllFollowUpCommand, List<FollowUp>>
+    public class GetAllFollowUpCommandHandler : IRequestHandler<GetAllFollowUpCommand, (List<FollowUp>, int)>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -17,21 +19,18 @@ namespace ClinicalBackend.Services.Features.FollowUpsFeatures.Commands
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<List<FollowUp>> Handle(GetAllFollowUpCommand request, CancellationToken cancellationToken)
+        public async Task<(List<FollowUp>, int)> Handle(GetAllFollowUpCommand request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var FollowUps = await _unitOfWork.FollowUp.GetAllAsync();
+            var followUps = await _unitOfWork.FollowUp.GetAllAsync();
+            var totalFollowUps = followUps.Count();
 
-                // Sort re-examinations by date in descending order to get the most recent ones first
-                var sortedFollowUps = FollowUps.OrderByDescending(f => f.CreatedAt).ToList();
+            var paginatedFollowUps = followUps
+                .OrderByDescending(f => f.CreatedAt)
+                .Skip((request.PageNumber - 1) * request.PageSize)
+                .Take(request.PageSize)
+                .ToList();
 
-                return sortedFollowUps;
-            }
-            catch (System.NullReferenceException ex)
-            {
-                return new List<FollowUp>();
-            }
+            return (paginatedFollowUps, totalFollowUps);
         }
     }
 }

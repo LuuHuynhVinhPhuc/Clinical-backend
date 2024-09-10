@@ -4,12 +4,14 @@ using MediatR;
 
 namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
 {
-    public class GetMedicineCommand : IRequest<List<Medicine>>
+    public class GetMedicineCommand : IRequest<(List<Medicine>, int)>
     {
         public string Name { get; set; }
+        public int PageNumber { get; set; } = 1;
+        public int PageSize { get; set; } = 10;
     }
 
-    public class GetMedicineCommandHandler : IRequestHandler<GetMedicineCommand, List<Medicine>>
+    public class GetMedicineCommandHandler : IRequestHandler<GetMedicineCommand, (List<Medicine>, int)>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -18,11 +20,18 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<List<Medicine>> Handle(GetMedicineCommand request, CancellationToken cancellationToken)
+        public async Task<(List<Medicine>, int)> Handle(GetMedicineCommand request, CancellationToken cancellationToken)
         {
             var medicines = await _unitOfWork.Medicines.SearchByNameAsync(request.Name);
+            var totalMedicines = medicines.Count();
 
-            return medicines ?? new List<Medicine>(); // Return an empty list if no medicines found
+            var paginatedMedicines = medicines
+                .OrderByDescending(m => m.CreatedAt) // Sort by CreatedAt descending
+                .Skip((request.PageNumber - 1) * request.PageSize)
+                .Take(request.PageSize)
+                .ToList();
+
+            return (paginatedMedicines, totalMedicines);
         }
     }
 }

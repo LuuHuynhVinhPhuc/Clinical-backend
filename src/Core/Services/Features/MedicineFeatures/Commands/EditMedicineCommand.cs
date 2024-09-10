@@ -45,6 +45,7 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
             existingMedicine.Price = command.Price;
             existingMedicine.Status = command.Status;
             existingMedicine.Type = command.Type;
+            existingMedicine.ModifiedAt = DateTime.UtcNow;
 
 
             var response = new MedicineEditedResponse() { Response = "Medicine edited successfully" };

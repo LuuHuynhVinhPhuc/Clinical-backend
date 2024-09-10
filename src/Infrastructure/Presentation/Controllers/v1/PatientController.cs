@@ -27,9 +27,9 @@ namespace ClinicalBackend.Presentation.Controllers.v1
 
         // Find all Patients and show it with JSON list
         [HttpGet]
-        public async Task<IActionResult> GetAllPatient() 
+        public async Task<IActionResult> GetAllPatient(int Number, int Size) 
         {
-            var result = await _mediator.Send(new GetAllPatientAsync());
+            var result = await _mediator.Send(new GetAllPatientAsync { PageNumber = Number , PageSize = Size}); 
             return Ok(result);
         }
 
@@ -65,6 +65,13 @@ namespace ClinicalBackend.Presentation.Controllers.v1
             var res = await _mediator.Send(new DeletePatientWithPhoneNumberCommands { PhoneNumber = phone});
             return Ok(res);
         }
-    
+
+        // Delete patient with ID
+        [HttpDelete("ID")]
+        public async Task<IActionResult> DeletePatientID(Guid id)
+        {
+            var res = await _mediator.Send(new DeletePatientWithIDCommand { ID = id});
+            return Ok(res);
+        }
     }
 }

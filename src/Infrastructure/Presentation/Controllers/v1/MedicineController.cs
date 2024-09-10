@@ -28,9 +28,9 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllMedicines()
+        public async Task<IActionResult> GetAllMedicines([FromQuery] int pageNumber = 1,[FromQuery] int pageSize = 10)
         {
-            var result = await _mediator.Send(new GetAllMedicineCommand());
+            var result = await _mediator.Send(new GetAllMedicineCommand { PageNumber = pageNumber, PageSize = pageSize });
             return Ok(result);
         }
 
@@ -45,6 +45,13 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         public async Task<IActionResult> DeleteMedicine(Guid id)
         {
             var result = await _mediator.Send(new DeleteMedicineCommand{ Id = id });
+            return Ok(result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetMedicineByName([FromQuery] string name, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        {
+            var result = await _mediator.Send(new GetMedicineCommand { Name = name, PageNumber = pageNumber, PageSize = pageSize });
             return Ok(result);
         }
     }

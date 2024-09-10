@@ -1,8 +1,9 @@
 using Domain.Entities;
+using Domain.Interfaces;
 
 namespace ClinicalBackend.Domain.Entities
 {
-    public class Medicine : BaseEntitty<Guid>
+    public class Medicine : BaseEntitty<Guid>, IAuditable
     {
         public string? Name { get; set; }
         public string? Company { get; set; }
@@ -10,6 +11,8 @@ namespace ClinicalBackend.Domain.Entities
         public float Price { get; set; }
         public string? Status { get; set; }
         public string? Type { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime ModifiedAt { get; set; }
 
         // public string? Dosage { get; set; }
         // public string? Instructions { get; set; }

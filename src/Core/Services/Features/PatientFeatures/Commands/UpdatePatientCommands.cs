@@ -41,6 +41,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
             patient.Age = request.Age;
             patient.Address = request.Address;
             patient.PhoneNumber = request.PhoneNumber;
+            patient.ModifiedAt = DateTime.UtcNow;
 
             // reponse result
             var response = new UpdatePatientResponse() { Response = "Patient updated successfully" };

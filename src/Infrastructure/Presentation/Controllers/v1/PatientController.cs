@@ -18,7 +18,7 @@ namespace ClinicalBackend.Presentation.Controllers.v1
 
         // Create with Entity elements
         [HttpPost]
-        public async Task<IActionResult> CreatePatient(CreatePatientCommand command)
+        public async Task<IActionResult> CreatePatientAsync(CreatePatientCommand command)
         {
             var result = await _mediator.Send(command).ConfigureAwait(false);
             return Ok(result);
@@ -26,15 +26,15 @@ namespace ClinicalBackend.Presentation.Controllers.v1
 
         // Find all Patients and show it with JSON list
         [HttpGet]
-        public async Task<IActionResult> GetAllPatient()
+        public async Task<IActionResult> GetAllPatientAsync(int Number, int Size) 
         {
-            var result = await _mediator.Send(new GetAllPatientAsync()).ConfigureAwait(false);
+            var result = await _mediator.Send(new GetAllPatientAsync { Page = Number , Limit = Size}); 
             return Ok(result);
         }
 
         // Find Patient with Name and show it with JSON list 
         [HttpGet("Name/{Name}")]
-        public async Task<IActionResult> GetPatientwithName(string Name)
+        public async Task<IActionResult> GetPatientwithNameAsync(string Name)
         {
             var res = await _mediator.Send(new GetPatientByNameAsync { Name = Name }).ConfigureAwait(false);
             return Ok(res);
@@ -42,7 +42,7 @@ namespace ClinicalBackend.Presentation.Controllers.v1
 
         // Find patient with Phone number and show it 
         [HttpGet("Phone/{Phone_number}")]
-        public async Task<IActionResult> GetPatientbyPhoneNumber(string phoneNumber)
+        public async Task<IActionResult> GetPatientbyPhoneNumberAsync(string phoneNumber)
         {
             var res = await _mediator.Send(new FindWithPhoneNumberCommands { Phonenumber = phoneNumber }).ConfigureAwait(false);
             return Ok(res);
@@ -50,7 +50,7 @@ namespace ClinicalBackend.Presentation.Controllers.v1
 
         // Update patient infomation 
         [HttpPut("{ID}")]
-        public async Task<IActionResult> UpdatePatientDetails(Guid ID, [FromBody] UpdatePatientCommands command)
+        public async Task<IActionResult> UpdatePatientDetailsAsync(Guid ID, [FromBody] UpdatePatientCommands command)
         {
             command.Id = ID;
             var res = await _mediator.Send(command).ConfigureAwait(false);
@@ -59,7 +59,7 @@ namespace ClinicalBackend.Presentation.Controllers.v1
 
         // Delete patient
         [HttpDelete]
-        public async Task<IActionResult> DeletePatient(string phone)
+        public async Task<IActionResult> DeletePatientAsync(string phone)
         {
             var res = await _mediator.Send(new DeletePatientWithPhoneNumberCommands { PhoneNumber = phone }).ConfigureAwait(false);
             return Ok(res);
@@ -68,7 +68,7 @@ namespace ClinicalBackend.Presentation.Controllers.v1
 
         // Delete patient with ID
         [HttpDelete("ID")]
-        public async Task<IActionResult> DeletePatientID(Guid id)
+        public async Task<IActionResult> DeletePatientIDAsync(Guid id)
         {
             var res = await _mediator.Send(new DeletewithIDCommand { ID = id});
             return Ok(res);

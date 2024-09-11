@@ -1,4 +1,4 @@
-﻿using Domain.Entities;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -17,7 +17,7 @@ namespace ClinicalBackend.Domain.Entities
         public string? Address { get; set; }
         public string? PhoneNumber { get; set; }
 
-        // Get DateTime for signin 
+        // Get DateTime for signin
         public DateOnly CreatedAt { get; set; }
     }
 }

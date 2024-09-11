@@ -1,4 +1,4 @@
-﻿using ClinicalBackend.Domain.Entities;
+using ClinicalBackend.Domain.Entities;
 using ClinicalBackend.Services.Common;
 using Domain.Interfaces;
 using MediatR;
@@ -10,6 +10,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 {
@@ -17,22 +18,25 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
     public class CreatePatientCommand : IRequest<Result<PatientCreatedResponse>>
     {
         public string Name { get; set; }
+
         public DateOnly DOB { get; set; }
+
         public string Address { get; set; }
+
         public string PhoneNumber { get; set; }
-        public DateOnly CreatedAt { get; set; }
     }
-    // Response : for return a string value to alert 
+
+    // Response : for return a string value to alert
     public class PatientCreatedResponse
     {
         public required string Response { get; set; }
     }
 
     // Task
-    public class CreatePatientCommandHander : IRequestHandler<CreatePatientCommand, Result<PatientCreatedResponse>>
+    public class CreatePatientCommandHandler : IRequestHandler<CreatePatientCommand, Result<PatientCreatedResponse>>
     {
         private readonly IUnitOfWork _unitOfWork;
-        public CreatePatientCommandHander(IUnitOfWork unitOfWork)
+        public CreatePatientCommandHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
@@ -40,6 +44,11 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
         // Async task
         public async Task<Result<PatientCreatedResponse>> Handle(CreatePatientCommand command, CancellationToken cancellationToken)
         {
+            if (command == null)
+            {
+                return Result.Failure<PatientCreatedResponse>(PatientError.PatientNameExist);
+            }
+
             // Check if the patient already exists
             var existingPatient = await _unitOfWork.Patient.GetByCondition(m => m.Name == command.Name)
                                                           .FirstOrDefaultAsync(cancellationToken);
@@ -60,7 +69,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
                 Address = command.Address,
                 PhoneNumber = command.PhoneNumber,
                 CreatedAt = DateOnly.FromDateTime(DateTime.UtcNow),
-                Age = age, // Age is stored but not exposed in the command
+                Age = age,
             };
             var response = new PatientCreatedResponse() { Response = "Patient created successfully" };
 

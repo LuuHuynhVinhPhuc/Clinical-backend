@@ -20,7 +20,6 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
         public DateOnly DOB { get; set; }
         public string Address { get; set; }
         public string PhoneNumber { get; set; }
-        public DateOnly CreatedAt { get; set; }
     }
     // Response : for return a string value to alert 
     public class PatientCreatedResponse
@@ -59,8 +58,10 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
                 DOB = command.DOB,
                 Address = command.Address,
                 PhoneNumber = command.PhoneNumber,
-                CreatedAt = DateOnly.FromDateTime(DateTime.UtcNow),
+                CreatedAt = DateTime.UtcNow,
                 Age = age, // Age is stored but not exposed in the command
+
+                ModifiedAt = DateTime.UtcNow, // this element will change when update it
             };
             var response = new PatientCreatedResponse() { Response = "Patient created successfully" };
 

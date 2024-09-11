@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ClinicalBackend.Domain.Entities
 {
-    public class Patient : BaseEntitty<Guid>
+    public class Patient : BaseEntitty<Guid>, IAuditable
     {
         public string? Name { get; set; }
         public int Age { get; set; }
@@ -18,6 +19,7 @@ namespace ClinicalBackend.Domain.Entities
         public string? PhoneNumber { get; set; }
 
         // Get DateTime for signin 
-        public DateOnly CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } // Ngày tạo 
+        public DateTime ModifiedAt { get; set; }  // Thời gian sửa
     }
 }

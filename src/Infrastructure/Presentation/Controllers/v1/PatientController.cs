@@ -29,7 +29,7 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         [HttpGet]
         public async Task<IActionResult> GetAllPatient(int Number, int Size) 
         {
-            var result = await _mediator.Send(new GetAllPatientAsync { PageNumber = Number , PageSize = Size}); 
+            var result = await _mediator.Send(new GetAllPatientAsync { Page = Number , Limit = Size}); 
             return Ok(result);
         }
 

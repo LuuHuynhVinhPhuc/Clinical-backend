@@ -1,4 +1,4 @@
-﻿using ClinicalBackend.Services.Common;
+using ClinicalBackend.Services.Common;
 using ClinicalBackend.Services.Features.PatientFeatures.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -27,13 +27,13 @@ namespace ClinicalBackend.Presentation.Controllers.v1
 
         // Find all Patients and show it with JSON list
         [HttpGet]
-        public async Task<IActionResult> GetAllPatient(int Number, int Size) 
+        public async Task<IActionResult> GetAllPatient(int Number, int Size)
         {
-            var result = await _mediator.Send(new GetAllPatientAsync { PageNumber = Number , PageSize = Size}); 
+            var result = await _mediator.Send(new GetAllPatientAsync { PageNumber = Number , PageSize = Size});
             return Ok(result);
         }
 
-        // Find Patient with Name and show it with JSON list 
+        // Find Patient with Name and show it with JSON list
         [HttpGet("Name/{Name}")]
         public async Task<IActionResult> GetPatientwithName(string Name)
         {
@@ -41,7 +41,7 @@ namespace ClinicalBackend.Presentation.Controllers.v1
             return Ok(res);
         }
 
-        // Find patient with Phone number and show it 
+        // Find patient with Phone number and show it
         [HttpGet("Phone/{Phone_number}")]
         public async Task<IActionResult> GetPatientbyPhoneNumber(string phoneNumber)
         {
@@ -49,7 +49,7 @@ namespace ClinicalBackend.Presentation.Controllers.v1
             return Ok(res);
         }
 
-        // Update patient infomation 
+        // Update patient infomation
         [HttpPut("{ID}")]
         public async Task<IActionResult> UpdatePatientDetails(Guid ID, [FromBody] UpdatePatientCommands command)
         {
@@ -70,7 +70,7 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         [HttpDelete("ID")]
         public async Task<IActionResult> DeletePatientID(Guid id)
         {
-            var res = await _mediator.Send(new DeletePatientWithIDCommand { ID = id});
+            var res = await _mediator.Send(new DeletewithIDCommand { ID = id});
             return Ok(res);
         }
     }

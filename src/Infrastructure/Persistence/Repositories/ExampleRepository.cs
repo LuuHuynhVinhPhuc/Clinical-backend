@@ -13,7 +13,7 @@ namespace ClinicalBackend.Persistence.Repositories
 
         public async Task<Example> GetByIdAsync(int id)
         {
-            return await dbSet.FindAsync(id);
+            return await dbSet.FindAsync(id).ConfigureAwait(false);
         }
     }
 }

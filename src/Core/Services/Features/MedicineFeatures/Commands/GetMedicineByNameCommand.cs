@@ -22,7 +22,7 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
 
         public async Task<(List<Medicine>, int)> Handle(GetMedicineByNameCommand request, CancellationToken cancellationToken)
         {
-            var medicines = await _unitOfWork.Medicines.SearchByNameAsync(request.Name);
+            var medicines = await _unitOfWork.Medicines.SearchByNameAsync(request.Name).ConfigureAwait(false);
             var totalMedicines = medicines.Count();
 
             var paginatedMedicines = medicines

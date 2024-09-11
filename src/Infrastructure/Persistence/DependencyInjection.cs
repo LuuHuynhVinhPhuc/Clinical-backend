@@ -5,7 +5,6 @@ using ClinicalBackend.Persistence.Repositories;
 using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Services.Interfaces;
 
 namespace Microsoft.Extensions.DependencyInjection

@@ -14,19 +14,19 @@ namespace ClinicalBackend.Persistence.Repositories
 
         public async Task<IEnumerable<Medicine>> GetAllAsync()
         {
-            return await dbSet.ToListAsync();
+            return await dbSet.ToListAsync().ConfigureAwait(false);
         }
 
         public async Task<Medicine> GetByIdAsync(Guid Id)
         {
-            return await dbSet.FindAsync(Id);
+            return await dbSet.FindAsync(Id).ConfigureAwait(false);
         }
 
         public async Task<List<Medicine>> SearchByNameAsync(string name)
         {
             return await dbSet
                 .Where(m => m.Name.Contains(name)) // Use Contains for partial matches
-                .ToListAsync();
+                .ToListAsync().ConfigureAwait(false);
         }
     }
 }

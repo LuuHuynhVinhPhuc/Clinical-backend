@@ -14,13 +14,13 @@ namespace ClinicalBackend.Persistence.Repositories
 
         public async Task<Patient> GetByIdAsync(Guid id)
         {
-            return await dbSet.FindAsync(id);
+            return await dbSet.FindAsync(id).ConfigureAwait(false);
         }
 
         // find all           
         public async Task<IEnumerable<Patient>> GetAllAsync()
         {
-            return await dbSet.ToListAsync();
+            return await dbSet.ToListAsync().ConfigureAwait(false);
         }
 
         // Find with Name 
@@ -28,13 +28,13 @@ namespace ClinicalBackend.Persistence.Repositories
         {
             return await dbSet
                 .Where(m => m.Name.Contains(name)) // Use Contains for partial matches
-                .ToListAsync();
+                .ToListAsync().ConfigureAwait(false);
         }
 
         // Find with Phone number 
         public async Task<List<Patient>> FindWithPhoneNumberAsync(string phoneNumber)
         {
-            return await dbSet.Where(m => m.PhoneNumber.Contains(phoneNumber)).ToListAsync();
+            return await dbSet.Where(m => m.PhoneNumber.Contains(phoneNumber)).ToListAsync().ConfigureAwait(false);
         }
     }
 }

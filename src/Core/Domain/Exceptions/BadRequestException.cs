@@ -7,5 +7,13 @@ namespace ClinicalBackend.Domain.Exceptions
             : base(message)
         {
         }
+
+        protected BadRequestException()
+        {
+        }
+
+        protected BadRequestException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
     }
 }

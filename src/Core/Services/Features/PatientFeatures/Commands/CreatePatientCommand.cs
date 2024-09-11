@@ -2,15 +2,7 @@ using ClinicalBackend.Domain.Entities;
 using ClinicalBackend.Services.Common;
 using Domain.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
 
 namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 {
@@ -51,7 +43,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 
             // Check if the patient already exists
             var existingPatient = await _unitOfWork.Patient.GetByCondition(m => m.Name == command.Name)
-                                                          .FirstOrDefaultAsync(cancellationToken);
+                                                          .FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
 
             if (existingPatient != null)
             {
@@ -75,7 +67,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 
             // Add to repository
             _unitOfWork.Patient.Add(patient);
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
             return Result.Success(response);
         }

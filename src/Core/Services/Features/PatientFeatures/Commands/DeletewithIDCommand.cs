@@ -1,15 +1,10 @@
 using ClinicalBackend.Services.Common;
 using Domain.Interfaces;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 {
-    public class DeletewithIDCommand :  IRequest<Result<DeletewithIDResponse>>
+    public class DeletewithIDCommand : IRequest<Result<DeletewithIDResponse>>
     {
         public Guid ID { get; set; }
     }
@@ -22,8 +17,6 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
     // task
     public class DeletewithIDHandler : IRequestHandler<DeletewithIDCommand, Result<DeletewithIDResponse>>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
         public DeletewithIDHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
@@ -40,7 +33,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
             // Save changes to the repository
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            var res = new DeletewithIDResponse() { response = "Patient deleted successfully"};
+            var res = new DeletewithIDResponse() { response = "Patient deleted successfully" };
 
             return Result.Success(res);
         }

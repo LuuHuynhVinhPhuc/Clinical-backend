@@ -21,7 +21,7 @@ namespace ClinicalBackend.Services.Features.FollowUpsFeatures.Commands
 
         public async Task<(List<FollowUp>, int)> Handle(GetAllFollowUpCommand request, CancellationToken cancellationToken)
         {
-            var followUps = await _unitOfWork.FollowUp.GetAllAsync();
+            var followUps = await _unitOfWork.FollowUp.GetAllAsync().ConfigureAwait(false);
             var totalFollowUps = followUps.Count();
 
             var paginatedFollowUps = followUps

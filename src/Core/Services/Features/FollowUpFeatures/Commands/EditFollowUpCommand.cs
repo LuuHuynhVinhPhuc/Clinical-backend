@@ -30,7 +30,7 @@ namespace ClinicalBackend.Services.Features.FollowUpsFeatures.Commands
         public async Task<Result<FollowUpEditedResponse>> Handle(EditFollowUpCommand command, CancellationToken cancellationToken)
         {
             // Check if the ReExamination exists
-            var existingFollowUp = await _unitOfWork.FollowUp.GetByIdAsync(command.Id);
+            var existingFollowUp = await _unitOfWork.FollowUp.GetByIdAsync(command.Id).ConfigureAwait(false);
             if (existingFollowUp == null)
             {
                 return Result.Failure<FollowUpEditedResponse>(FollowUpErrors.NotFound(command.Id.ToString()));
@@ -44,7 +44,7 @@ namespace ClinicalBackend.Services.Features.FollowUpsFeatures.Commands
             var response = new FollowUpEditedResponse() { Response = "Follow-up edited successfully" };
 
             // Save changes to the repository
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
             return Result.Success(response);
         }

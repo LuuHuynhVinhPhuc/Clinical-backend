@@ -1,11 +1,6 @@
 ﻿using ClinicalBackend.Services.Common;
 using Domain.Interfaces;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 {
@@ -21,8 +16,6 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
     // task 
     public class DeletewithIDHandler : IRequestHandler<DeletePatientWithIDCommand, Result<DeletePatientWithIDResponse>>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
         public DeletewithIDHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
@@ -32,7 +25,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
         {
             // find all patient 
             var patient = await _unitOfWork.Patient.GetByIdAsync(request.ID);
-            if (patient == null) 
+            if (patient == null)
                 return Result.Failure<DeletePatientWithIDResponse>(PatientError.NotFoundID(request.ID));
 
             // remove patient when it exits

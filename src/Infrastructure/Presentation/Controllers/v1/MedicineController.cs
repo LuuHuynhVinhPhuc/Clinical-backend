@@ -20,10 +20,10 @@ namespace ClinicalBackend.Presentation.Controllers.v1
             return Ok(result);
         }
 
-        [HttpGet("{Name}")]
-        public async Task<IActionResult> GetMedicineById(string Name)
+        [HttpGet("{Id}")]
+        public async Task<IActionResult> GetMedicineById(Guid id)
         {
-            var result = await _mediator.Send(new GetMedicineCommand { Name = Name });
+            var result = await _mediator.Send(new GetMedicineByIdCommand { Id = id });
             return Ok(result);
         }
 
@@ -48,10 +48,10 @@ namespace ClinicalBackend.Presentation.Controllers.v1
             return Ok(result);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetMedicineByName([FromQuery] string name, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        [HttpGet("Name/{Name}")]
+        public async Task<IActionResult> GetMedicineByName([FromQuery] string name, [FromQuery] int page = 1, [FromQuery] int limit = 10)
         {
-            var result = await _mediator.Send(new GetMedicineCommand { Name = name, PageNumber = pageNumber, PageSize = pageSize });
+            var result = await _mediator.Send(new GetMedicineByNameCommand { Name = name, PageNumber = page, PageSize = limit });
             return Ok(result);
         }
     }

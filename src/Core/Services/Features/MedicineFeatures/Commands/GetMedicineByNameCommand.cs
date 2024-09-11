@@ -4,23 +4,23 @@ using MediatR;
 
 namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
 {
-    public class GetMedicineCommand : IRequest<(List<Medicine>, int)>
+    public class GetMedicineByNameCommand : IRequest<(List<Medicine>, int)>
     {
         public string Name { get; set; }
         public int PageNumber { get; set; } = 1;
         public int PageSize { get; set; } = 10;
     }
 
-    public class GetMedicineCommandHandler : IRequestHandler<GetMedicineCommand, (List<Medicine>, int)>
+    public class GetMedicineByNameCommandHandler : IRequestHandler<GetMedicineByNameCommand, (List<Medicine>, int)>
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public GetMedicineCommandHandler(IUnitOfWork unitOfWork)
+        public GetMedicineByNameCommandHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<(List<Medicine>, int)> Handle(GetMedicineCommand request, CancellationToken cancellationToken)
+        public async Task<(List<Medicine>, int)> Handle(GetMedicineByNameCommand request, CancellationToken cancellationToken)
         {
             var medicines = await _unitOfWork.Medicines.SearchByNameAsync(request.Name);
             var totalMedicines = medicines.Count();

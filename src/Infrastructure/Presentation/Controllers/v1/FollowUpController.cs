@@ -19,9 +19,9 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllFollowUp([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> GetAllFollowUp([FromQuery] int page = 1, [FromQuery] int limit = 10)
         {
-            var result = await _mediator.Send(new GetAllFollowUpCommand { PageNumber = pageNumber, PageSize = pageSize });
+            var result = await _mediator.Send(new GetAllFollowUpCommand { PageNumber = page, PageSize = limit });
             return Ok(result);
         }
 

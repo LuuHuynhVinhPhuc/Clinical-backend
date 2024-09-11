@@ -4,13 +4,13 @@ using MediatR;
 
 namespace ClinicalBackend.Services.Features.FollowUpsFeatures.Commands
 {
-    public class GetAllFollowUpCommand : IRequest<(List<FollowUp>, int)>
+    public class GetAllFollowUpCommand : IRequest<List<FollowUp>>
     {
         public int PageNumber { get; set; } = 1;
         public int PageSize { get; set; } = 10;
     }
 
-    public class GetAllFollowUpCommandHandler : IRequestHandler<GetAllFollowUpCommand, (List<FollowUp>, int)>
+    public class GetAllFollowUpCommandHandler : IRequestHandler<GetAllFollowUpCommand, List<FollowUp>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -19,10 +19,9 @@ namespace ClinicalBackend.Services.Features.FollowUpsFeatures.Commands
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<(List<FollowUp>, int)> Handle(GetAllFollowUpCommand request, CancellationToken cancellationToken)
+        public async Task<List<FollowUp>> Handle(GetAllFollowUpCommand request, CancellationToken cancellationToken)
         {
             var followUps = await _unitOfWork.FollowUp.GetAllAsync();
-            var totalFollowUps = followUps.Count();
 
             var paginatedFollowUps = followUps
                 .OrderByDescending(f => f.CreatedAt)
@@ -30,7 +29,7 @@ namespace ClinicalBackend.Services.Features.FollowUpsFeatures.Commands
                 .Take(request.PageSize)
                 .ToList();
 
-            return (paginatedFollowUps, totalFollowUps);
+            return paginatedFollowUps;
         }
     }
 }

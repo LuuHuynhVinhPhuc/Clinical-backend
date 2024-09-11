@@ -43,7 +43,7 @@ namespace ClinicalBackend.Persistence.Migrations
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("PatientId")
+                    b.Property<Guid?>("PatientId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
@@ -59,6 +59,12 @@ namespace ClinicalBackend.Persistence.Migrations
 
                     b.Property<string>("Company")
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -93,12 +99,11 @@ namespace ClinicalBackend.Persistence.Migrations
                     b.Property<int>("Age")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("CreatedAt")
+                        .HasColumnType("date");
 
-                    b.Property<string>("DOB")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<DateOnly>("DOB")
+                        .HasColumnType("date");
 
                     b.Property<string>("Name")
                         .IsRequired()

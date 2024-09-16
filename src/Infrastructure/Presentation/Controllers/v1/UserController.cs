@@ -12,7 +12,7 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginUserCommand command)
+        public async Task<IActionResult> LoginAsync(LoginUserCommand command)
         {
             var result = await _mediator.Send(command).ConfigureAwait(false);
             return result.Match(

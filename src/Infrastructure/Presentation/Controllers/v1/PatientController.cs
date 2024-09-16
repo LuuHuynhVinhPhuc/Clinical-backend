@@ -64,7 +64,7 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         [HttpDelete("ID")]
         public async Task<IActionResult> DeletePatientIDAsync(Guid id)
         {
-            var res = await _mediator.Send(new DeletewithIDCommand { ID = id }).ConfigureAwait(false);
+            var res = await _mediator.Send(new DeletePatientWithIDCommand { ID = id }).ConfigureAwait(false);
             return Ok(res);
         }
     }

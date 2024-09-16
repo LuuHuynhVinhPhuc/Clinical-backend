@@ -16,6 +16,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
     // task 
     public class DeletewithIDHandler : IRequestHandler<DeletePatientWithIDCommand, Result<DeletePatientWithIDResponse>>
     {
+        private readonly IUnitOfWork _unitOfWork;
         public DeletewithIDHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
@@ -24,14 +25,14 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
         public async Task<Result<DeletePatientWithIDResponse>> Handle(DeletePatientWithIDCommand request, CancellationToken cancellationToken)
         {
             // find all patient 
-            var patient = await _unitOfWork.Patient.GetByIdAsync(request.ID);
+            var patient = await _unitOfWork.Patient.GetByIdAsync(request.ID).ConfigureAwait(false);
             if (patient == null)
                 return Result.Failure<DeletePatientWithIDResponse>(PatientError.NotFoundID(request.ID));
 
             // remove patient when it exits
             _unitOfWork.Patient.Remove(patient);
             // save change 
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
             var res = new DeletePatientWithIDResponse() { response = "Patient deleted successfully" };
 

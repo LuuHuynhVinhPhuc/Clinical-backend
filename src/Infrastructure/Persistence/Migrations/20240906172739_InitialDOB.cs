@@ -1,15 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace ClinicalBackend.Persistence.Migrations
 {
     /// <inheritdoc />
-<<<<<<<< HEAD:src/Infrastructure/Persistence/Migrations/20240911101719_NewMigration.cs
-    public partial class NewMigration : Migration
-========
     public partial class InitialDOB : Migration
->>>>>>>> 7ce6cae (refactor: Change type for DOB):src/Infrastructure/Persistence/Migrations/20240906172739_InitialDOB.cs
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

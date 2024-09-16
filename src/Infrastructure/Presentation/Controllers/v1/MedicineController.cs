@@ -1,0 +1,57 @@
+using ClinicalBackend.Services.Features.MedicineFeatures.Commands;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+
+namespace ClinicalBackend.Presentation.Controllers.v1
+{
+    public class MedicineController : BaseApiController
+    {
+        public MedicineController(IMediator mediator) : base(mediator)
+        {
+            _mediator = mediator;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateMedicineAsync(CreateMedicineCommand command)
+        {
+            var result = await _mediator.Send(command).ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        [HttpGet("{Id}")]
+        public async Task<IActionResult> GetMedicineByIdAsync(Guid id)
+        {
+            var result = await _mediator.Send(new GetMedicineCommand { Name = Name }).ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllMedicinesAsync([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        {
+            var result = await _mediator.Send(new GetAllMedicineCommand { PageNumber = pageNumber, PageSize = pageSize }).ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        [HttpPut("{Id}")]
+        public async Task<IActionResult> EditMedicineAsync(Guid Id, [FromBody] EditMedicineCommand command)
+        {
+            command.Id = Id; // Set the Id from the route parameter
+            var result = await _mediator.Send(command).ConfigureAwait(false);
+            return Ok(result);
+        }
+        [HttpDelete("{Id}")]
+        public async Task<IActionResult> DeleteMedicineAsync(Guid id)
+        {
+            var result = await _mediator.Send(new DeleteMedicineCommand { Id = id }).ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        [HttpGet("Name/{Name}")]
+        public async Task<IActionResult> GetMedicineByNameAsync([FromQuery] string name, [FromQuery] int page = 1, [FromQuery] int limit = 10)
+        {
+            var result = await _mediator.Send(new GetMedicineByNameCommand { Name = name, PageNumber = page, PageSize = limit }).ConfigureAwait(false);
+
+            return Ok(result);
+        }
+    }
+}

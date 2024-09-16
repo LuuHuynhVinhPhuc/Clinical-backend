@@ -20,7 +20,7 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
 
         public async Task<Medicine> Handle(GetMedicineByIdCommand request, CancellationToken cancellationToken)
         {
-            var medicines = await _unitOfWork.Medicines.GetByIdAsync(request.Id);
+            var medicines = await _unitOfWork.Medicines.GetByIdAsync(request.Id).ConfigureAwait(false);
 
             return medicines;
         }

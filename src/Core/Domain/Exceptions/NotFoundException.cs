@@ -8,5 +8,13 @@ namespace ClinicalBackend.Domain.Exceptions
             : base(message)
         {
         }
+
+        protected NotFoundException()
+        {
+        }
+
+        protected NotFoundException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
     }
 }

@@ -1,15 +1,6 @@
 ﻿using ClinicalBackend.Services.Common;
 using Domain.Interfaces;
 using MediatR;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 {
@@ -40,7 +31,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
         public async Task<Result<UpdatePatientResponse>> Handle(UpdatePatientCommands request, CancellationToken cancellationToken)
         {
             // find with ID 
-            var patient = await _unitOfWork.Patient.GetByIdAsync(request.Id);
+            var patient = await _unitOfWork.Patient.GetByIdAsync(request.Id).ConfigureAwait(false);
 
             if (patient == null)
                 return Result.Failure<UpdatePatientResponse>(PatientError.NotFoundID(request.Id));
@@ -57,8 +48,8 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 
             // save changes 
             _unitOfWork.Patient.Update(patient);
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
-            
+            await _unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+
             return Result.Success(response);
         }
     }

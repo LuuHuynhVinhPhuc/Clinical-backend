@@ -1,16 +1,23 @@
 using ClinicalBackend.Domain.Entities;
+using ClinicalBackend.Services.Common;
 using Domain.Interfaces;
 using MediatR;
 
 namespace ClinicalBackend.Services.Features.FollowUpsFeatures.Commands
 {
-    public class GetAllFollowUpCommand : IRequest<(List<FollowUp>, int)>
+    public class GetAllFollowUpCommand : IRequest<Result<QueryFollowUpsResponse>>
     {
         public int PageNumber { get; set; } = 1;
         public int PageSize { get; set; } = 10;
     }
 
-    public class GetAllFollowUpCommandHandler : IRequestHandler<GetAllFollowUpCommand, (List<FollowUp>, int)>
+    public class QueryFollowUpsResponse
+    {
+        public List<FollowUp> FollowUps { get; set; }
+        public int PageNumber { get; set; }
+    }
+
+    public class GetAllFollowUpCommandHandler : IRequestHandler<GetAllFollowUpCommand, Result<QueryFollowUpsResponse>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -19,9 +26,9 @@ namespace ClinicalBackend.Services.Features.FollowUpsFeatures.Commands
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<(List<FollowUp>, int)> Handle(GetAllFollowUpCommand request, CancellationToken cancellationToken)
+        public async Task<Result<QueryFollowUpsResponse>> Handle(GetAllFollowUpCommand request, CancellationToken cancellationToken)
         {
-            var followUps = await _unitOfWork.FollowUp.GetAllAsync();
+            var followUps = await _unitOfWork.FollowUp.GetAllAsync().ConfigureAwait(false);
             var totalFollowUps = followUps.Count();
 
             var paginatedFollowUps = followUps
@@ -30,7 +37,13 @@ namespace ClinicalBackend.Services.Features.FollowUpsFeatures.Commands
                 .Take(request.PageSize)
                 .ToList();
 
-            return (paginatedFollowUps, totalFollowUps);
+            var response = new QueryFollowUpsResponse()
+            {
+                FollowUps = paginatedFollowUps,
+                PageNumber = request.PageNumber,
+            };
+
+            return Result.Success(response);
         }
     }
 }

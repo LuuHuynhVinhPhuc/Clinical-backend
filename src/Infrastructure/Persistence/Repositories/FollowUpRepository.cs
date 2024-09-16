@@ -14,12 +14,12 @@ namespace ClinicalBackend.Persistence.Repositories
 
         public async Task<IEnumerable<FollowUp>> GetAllAsync()
         {
-            return await dbSet.ToListAsync();
+            return await dbSet.ToListAsync().ConfigureAwait(false);
         }
 
         public async Task<FollowUp> GetByIdAsync(Guid Id)
         {
-            return await dbSet.FindAsync();
+            return await dbSet.FindAsync().ConfigureAwait(false);
         }
     }
 }

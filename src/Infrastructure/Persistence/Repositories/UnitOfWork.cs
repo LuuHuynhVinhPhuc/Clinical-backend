@@ -31,7 +31,7 @@ namespace ClinicalBackend.Persistence.Repositories
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            return await _context.SaveChangesAsync();
+            return await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
         protected virtual void Dispose(bool disposing)

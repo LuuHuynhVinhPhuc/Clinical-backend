@@ -1,13 +1,6 @@
 ﻿using ClinicalBackend.Domain.Entities;
-using MediatR;
-using ClinicalBackend.Services.Common;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Domain.Interfaces;
+using MediatR;
 
 namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 {
@@ -30,7 +23,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 
         public async Task<IEnumerable<Patient>> Handle(GetAllPatientAsync request, CancellationToken cancellationToken)
         {
-            var PatientList = await _unitOfWork.Patient.GetAllAsync();
+            var PatientList = await _unitOfWork.Patient.GetAllAsync().ConfigureAwait(false);
 
             // pagnigation
             var pagedPatient = PatientList.Skip((request.Page - 1) * request.Limit) // bỏ qua các phần tử trước đó

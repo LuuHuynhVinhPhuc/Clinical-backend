@@ -39,7 +39,7 @@ namespace ClinicalBackend.Services.Features.UserFeatures.Commands
                         .Users
                         .GetByCondition(u => u.UserName == command.Name)
                         .Include(u => u.Role)
-                        .FirstAsync(cancellationToken);
+                        .FirstAsync(cancellationToken).ConfigureAwait(false);
             }
             catch (Exception ex)
             {

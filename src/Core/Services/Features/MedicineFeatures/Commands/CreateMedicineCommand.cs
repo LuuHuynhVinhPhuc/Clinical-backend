@@ -33,7 +33,7 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
         public async Task<Result<MedicineCreatedResponse>> Handle(CreateMedicineCommand command, CancellationToken cancellationToken)
         {
             // Check if the medicine already exists
-            var existingMedicine = await _unitOfWork.Medicines.GetByCondition(m => m.Name == command.Name).FirstOrDefaultAsync(cancellationToken);
+            var existingMedicine = await _unitOfWork.Medicines.GetByCondition(m => m.Name == command.Name).FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
             if (existingMedicine != null)
             {
                 return Result.Failure<MedicineCreatedResponse>(MedicineErrors.MedicineNameExist);
@@ -55,7 +55,7 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
 
             // Add the medicine to the repository
             _unitOfWork.Medicines.Add(medicine);
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
             return Result.Success(response);
         }

@@ -1,3 +1,4 @@
+using ClinicalBackend.Services.Common;
 using ClinicalBackend.Services.Features.FollowUpsFeatures.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -12,31 +13,35 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateFollowUp(CreateFollowUpCommand command)
+        public async Task<IActionResult> CreateFollowUpAsync(CreateFollowUpCommand command)
         {
-            var result = await _mediator.Send(command);
-            return Ok(result);
+            var result = await _mediator.Send(command).ConfigureAwait(false);
+            return result.Match(
+                onSuccess: () => Result.Ok(result.Value()),
+                onFailure: error => Result.BadRequest(error));
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllFollowUp([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> GetAllFollowUpAsync([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
-            var result = await _mediator.Send(new GetAllFollowUpCommand { PageNumber = pageNumber, PageSize = pageSize });
-            return Ok(result);
+            var result = await _mediator.Send(new GetAllFollowUpCommand { PageNumber = pageNumber, PageSize = pageSize }).ConfigureAwait(false);
+            return result.Match(
+                onSuccess: () => Result.Ok(result.Value()),
+                onFailure: error => Result.BadRequest(error));
         }
 
         [HttpPut("{Id}")]
-        public async Task<IActionResult> EditFollowUp(Guid Id, [FromBody] EditFollowUpCommand command)
+        public async Task<IActionResult> EditFollowUpAsync(Guid Id, [FromBody] EditFollowUpCommand command)
         {
             command.Id = Id; // Set the Id from the route parameter
-            var result = await _mediator.Send(command);
+            var result = await _mediator.Send(command).ConfigureAwait(false);
             return Ok(result);
         }
 
         [HttpDelete("{Id}")]
-        public async Task<IActionResult> DeleteFollowUp(Guid id)
+        public async Task<IActionResult> DeleteFollowUpAsync(Guid id)
         {
-            var result = await _mediator.Send(new DeleteFollowUpCommand { Id = id });
+            var result = await _mediator.Send(new DeleteFollowUpCommand { Id = id }).ConfigureAwait(false);
             return Ok(result);
         }
     }

@@ -1,3 +1,4 @@
+using ClinicalBackend.Services.Common;
 using ClinicalBackend.Services.Features.PatientFeatures.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

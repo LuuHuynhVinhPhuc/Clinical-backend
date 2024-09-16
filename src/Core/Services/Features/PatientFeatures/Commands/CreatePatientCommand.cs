@@ -60,7 +60,6 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
                 DOB = command.DOB,
                 Address = command.Address,
                 PhoneNumber = command.PhoneNumber,
-                CreatedAt = DateOnly.FromDateTime(DateTime.UtcNow),
                 Age = age,
             };
             var response = new PatientCreatedResponse() { Response = "Patient created successfully" };
@@ -71,6 +70,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 
             return Result.Success(response);
         }
+
         private int CalculateAge(DateOnly dateOfBirth)
         {
             var today = DateOnly.FromDateTime(DateTime.Today);

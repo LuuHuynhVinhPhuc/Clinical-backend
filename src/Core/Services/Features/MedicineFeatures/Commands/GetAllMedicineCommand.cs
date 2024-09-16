@@ -27,6 +27,7 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
                 .Skip((request.PageNumber - 1) * request.PageSize)
                 .Take(request.PageSize)
                 .ToList();
+
             if (medicines == null || !medicines.Any())
             {
                 return (new List<Medicine>(), 0); // Return an empty list and 0 as the total count if no medicines found

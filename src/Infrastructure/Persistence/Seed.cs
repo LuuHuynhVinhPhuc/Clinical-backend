@@ -14,7 +14,6 @@ namespace ClinicalBackend.Persistence
 
             if (context.Database.GetPendingMigrations().Any())
             {
-                Console.WriteLine("Migrating database...{0}", context.Database.GetPendingMigrations().First());
                 context.Database.Migrate();
             }
 

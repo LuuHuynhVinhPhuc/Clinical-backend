@@ -21,7 +21,7 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         [HttpGet("{Id}")]
         public async Task<IActionResult> GetMedicineByIdAsync(Guid id)
         {
-            var result = await _mediator.Send(new GetMedicineByIdCommand { Id = id }).ConfigureAwait(false);
+            var result = await _mediator.Send(new GetMedicineCommand { Name = Name }).ConfigureAwait(false);
             return Ok(result);
         }
 
@@ -50,6 +50,7 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         public async Task<IActionResult> GetMedicineByNameAsync([FromQuery] string name, [FromQuery] int page = 1, [FromQuery] int limit = 10)
         {
             var result = await _mediator.Send(new GetMedicineByNameCommand { Name = name, PageNumber = page, PageSize = limit }).ConfigureAwait(false);
+
             return Ok(result);
         }
     }

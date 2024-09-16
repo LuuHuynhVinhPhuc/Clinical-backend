@@ -7,8 +7,8 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
     public class GetAllPatientAsync : IRequest<IEnumerable<Patient>>
     {
         // default pagnigation params
-        public int PageNumber { get; set; } = 1;
-        public int PageSize { get; set; } = 5;
+        public int Page { get; set; } = 1; 
+        public int Limit { get; set; } = 5;  
     }
 
     // Task
@@ -25,9 +25,9 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
         {
             var PatientList = await _unitOfWork.Patient.GetAllAsync().ConfigureAwait(false);
 
-            // pagnigation
-            var pagedPatient = PatientList.Skip((request.PageNumber - 1) * request.PageSize) // bỏ qua các phần tử trước đó
-                .Take(request.PageSize).ToList(); // lấy các phần tử của trang hiện tại
+            var pagedPatient = PatientList.Skip((request.Page - 1) * request.Limit) // bỏ qua các phần tử trước đó
+                .Take(request.Limit).ToList(); // lấy các phần tử của trang hiện tại
+                
             return pagedPatient.OrderByDescending(p => p.CreatedAt).ToList(); // sort with newest patient depend on createAt
         }
     }

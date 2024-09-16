@@ -47,6 +47,7 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
                 Quantity = command.Quantity,
                 Price = command.Price,
                 Status = command.Status,
+                Type = command.Type,
                 CreatedAt = DateTime.UtcNow,
                 ModifiedAt = DateTime.UtcNow
             };

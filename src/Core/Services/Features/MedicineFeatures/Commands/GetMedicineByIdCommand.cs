@@ -1,15 +1,17 @@
 using ClinicalBackend.Domain.Entities;
 using Domain.Interfaces;
 using MediatR;
+using ClinicalBackend.Services.Features.MedicineFeatures.Response;
+using ClinicalBackend.Services.Common;
 
 namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
 {
-    public class GetMedicineByIdCommand : IRequest<Medicine>
+    public class GetMedicineByIdCommand : IRequest<Result<QueryMedicinesResponse>>
     {
         public Guid Id { get; set; }
     }
 
-    public class GetMedicineByIdCommandHandler : IRequestHandler<GetMedicineByIdCommand, Medicine>
+    public class GetMedicineByIdCommandHandler : IRequestHandler<GetMedicineByIdCommand, Result<QueryMedicinesResponse>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -18,11 +20,17 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Medicine> Handle(GetMedicineByIdCommand request, CancellationToken cancellationToken)
+        public async Task<Result<QueryMedicinesResponse>> Handle(GetMedicineByIdCommand request, CancellationToken cancellationToken)
         {
-            var medicines = await _unitOfWork.Medicines.GetByIdAsync(request.Id).ConfigureAwait(false);
+            var medicine = await _unitOfWork.Medicines.GetByIdAsync(request.Id).ConfigureAwait(false);
 
-            return medicines;
+            if (medicine == null)
+            {
+                return Result.Failure<QueryMedicinesResponse>(MedicineErrors.NotFound(request.Id.ToString()));
+            }
+
+            var response = new QueryMedicinesResponse { Medicines = new List<Medicine> { medicine } };
+            return Result.Success(response);
         }
     }
 }

@@ -1,16 +1,17 @@
-using ClinicalBackend.Domain.Entities;
+using ClinicalBackend.Services.Common;
+using ClinicalBackend.Services.Features.MedicineFeatures.Response;
 using Domain.Interfaces;
 using MediatR;
 
 namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
 {
-    public class GetAllMedicineCommand : IRequest<(List<Medicine>, int)>
+    public class GetAllMedicineCommand : IRequest<Result<QueryMedicinesResponse>>
     {
         public int PageNumber { get; set; } = 1;
         public int PageSize { get; set; } = 10;
     }
 
-    public class GetAllMedicineCommandHandler : IRequestHandler<GetAllMedicineCommand, (List<Medicine>, int)>
+    public class GetAllMedicineCommandHandler : IRequestHandler<GetAllMedicineCommand, Result<QueryMedicinesResponse>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -19,7 +20,7 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<(List<Medicine>, int)> Handle(GetAllMedicineCommand request, CancellationToken cancellationToken)
+        public async Task<Result<QueryMedicinesResponse>> Handle(GetAllMedicineCommand request, CancellationToken cancellationToken)
         {
             var totalMedicines = await _unitOfWork.Medicines.GetAllAsync().ConfigureAwait(false);
             var medicines = totalMedicines
@@ -30,10 +31,11 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
 
             if (medicines == null || !medicines.Any())
             {
-                return (new List<Medicine>(), 0); // Return an empty list and 0 as the total count if no medicines found
+                return Result.Failure<QueryMedicinesResponse>(new Error("Medicines.NotFound", "No medicines found")); // Return an error if no medicines found
             }
 
-            return (medicines, totalMedicines.Count());
+            var response = new QueryMedicinesResponse { Medicines = medicines };
+            return Result.Success(response);
         }
     }
 }

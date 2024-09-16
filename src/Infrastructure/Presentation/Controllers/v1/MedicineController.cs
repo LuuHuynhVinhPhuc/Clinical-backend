@@ -1,3 +1,4 @@
+using ClinicalBackend.Services.Common;
 using ClinicalBackend.Services.Features.MedicineFeatures.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -15,21 +16,27 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         public async Task<IActionResult> CreateMedicineAsync(CreateMedicineCommand command)
         {
             var result = await _mediator.Send(command).ConfigureAwait(false);
-            return Ok(result);
+            return result.Match(
+                onSuccess: () => Result.Ok(result.Value()),
+                onFailure: error => Result.BadRequest(error));
         }
 
         [HttpGet("{Id}")]
         public async Task<IActionResult> GetMedicineByIdAsync(Guid id)
         {
             var result = await _mediator.Send(new GetMedicineByIdCommand { Id = id }).ConfigureAwait(false);
-            return Ok(result);
+            return result.Match(
+                onSuccess: () => Result.Ok(result.Value()),
+                onFailure: error => Result.BadRequest(error));
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllMedicinesAsync([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
             var result = await _mediator.Send(new GetAllMedicineCommand { PageNumber = pageNumber, PageSize = pageSize }).ConfigureAwait(false);
-            return Ok(result);
+            return result.Match(
+                onSuccess: () => Result.Ok(result.Value()),
+                onFailure: error => Result.BadRequest(error));
         }
 
         [HttpPut("{Id}")]
@@ -37,13 +44,17 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         {
             command.Id = Id; // Set the Id from the route parameter
             var result = await _mediator.Send(command).ConfigureAwait(false);
-            return Ok(result);
+            return result.Match(
+                onSuccess: () => Result.Ok(result.Value()),
+                onFailure: error => Result.BadRequest(error));
         }
         [HttpDelete("{Id}")]
         public async Task<IActionResult> DeleteMedicineAsync(Guid id)
         {
             var result = await _mediator.Send(new DeleteMedicineCommand { Id = id }).ConfigureAwait(false);
-            return Ok(result);
+            return result.Match(
+                onSuccess: () => Result.Ok(result.Value()),
+                onFailure: error => Result.BadRequest(error));
         }
 
         [HttpGet("Name/{Name}")]
@@ -51,7 +62,9 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         {
             var result = await _mediator.Send(new GetMedicineByNameCommand { Name = name, PageNumber = page, PageSize = limit }).ConfigureAwait(false);
 
-            return Ok(result);
+            return result.Match(
+                onSuccess: () => Result.Ok(result.Value()),
+                onFailure: error => Result.BadRequest(error));
         }
     }
 }

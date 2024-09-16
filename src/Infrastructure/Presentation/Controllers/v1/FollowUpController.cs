@@ -35,14 +35,18 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         {
             command.Id = Id; // Set the Id from the route parameter
             var result = await _mediator.Send(command).ConfigureAwait(false);
-            return Ok(result);
+            return result.Match(
+                onSuccess: () => Result.Ok(result.Value()),
+                onFailure: error => Result.BadRequest(error));
         }
 
         [HttpDelete("{Id}")]
-        public async Task<IActionResult> DeleteFollowUpAsync(Guid id)
+        public async Task<IActionResult> DeleteFollowUpAsync(Guid Id)
         {
-            var result = await _mediator.Send(new DeleteFollowUpCommand { Id = id }).ConfigureAwait(false);
-            return Ok(result);
+            var result = await _mediator.Send(new DeleteFollowUpCommand { Id = Id }).ConfigureAwait(false);
+            return result.Match(
+                onSuccess: () => Result.Ok(result.Value()),
+                onFailure: error => Result.BadRequest(error));
         }
     }
 }

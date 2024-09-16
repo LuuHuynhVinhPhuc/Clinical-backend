@@ -5,7 +5,7 @@ namespace ClinicalBackend.Domain.Repositories
 {
     public interface IFollowUpRepository : IBaseRepository<FollowUp>
     {
-        Task<IEnumerable<FollowUp>> GetAllAsync();
+        Task<IEnumerable<FollowUp>> GetAllAsync(int pageNumber, int pageSize);
 
         Task<FollowUp> GetByIdAsync(Guid Id);
     }

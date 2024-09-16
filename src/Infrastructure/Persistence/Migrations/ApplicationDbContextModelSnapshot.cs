@@ -107,6 +107,7 @@ namespace ClinicalBackend.Persistence.Migrations
 
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");

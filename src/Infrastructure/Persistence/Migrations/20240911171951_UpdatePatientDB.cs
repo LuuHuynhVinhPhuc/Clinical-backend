@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ClinicalBackend.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialPatientDB : Migration
+    public partial class UpdatePatientDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

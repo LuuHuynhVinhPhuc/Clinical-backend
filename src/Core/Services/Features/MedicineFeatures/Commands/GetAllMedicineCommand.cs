@@ -22,19 +22,10 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
 
         public async Task<Result<QueryMedicinesResponse>> Handle(GetAllMedicineCommand request, CancellationToken cancellationToken)
         {
-            var totalMedicines = await _unitOfWork.Medicines.GetAllAsync().ConfigureAwait(false);
-            var medicines = totalMedicines
-                .OrderByDescending(m => m.CreatedAt) // Sort by CreatedAt descending
-                .Skip((request.PageNumber - 1) * request.PageSize)
-                .Take(request.PageSize)
-                .ToList();
+            var medicines = await _unitOfWork.Medicines.GetAllAsync(request.PageNumber, request.PageSize).ConfigureAwait(false);
 
-            if (medicines == null || !medicines.Any())
-            {
-                return Result.Failure<QueryMedicinesResponse>(new Error("Medicines.NotFound", "No medicines found")); // Return an error if no medicines found
-            }
+            var response = new QueryMedicinesResponse { Medicines = medicines.ToList()};
 
-            var response = new QueryMedicinesResponse { Medicines = medicines };
             return Result.Success(response);
         }
     }

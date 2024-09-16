@@ -8,6 +8,7 @@ namespace Domain.Interfaces
         IRoleRepository Roles { get; }
         IMedicineRepository Medicines { get; }
         IPatientRepository Patient { get; }
+        IFollowUpRepository FollowUp { get; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 }

@@ -1,9 +1,5 @@
-
 using ClinicalBackend.Services.Common;
 using ClinicalBackend.Services.Features.PatientFeatures.Commands;
-
-﻿using ClinicalBackend.Services.Features.PatientFeatures.Commands;
-
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,13 +22,13 @@ namespace ClinicalBackend.Presentation.Controllers.v1
 
         // Find all Patients and show it with JSON list
         [HttpGet]
-        public async Task<IActionResult> GetAllPatientAsync(int Number, int Size) 
+        public async Task<IActionResult> GetAllPatientAsync(int Number, int Size)
         {
-            var result = await _mediator.Send(new GetAllPatientAsync { Page = Number , Limit = Size}); 
+            var result = await _mediator.Send(new GetAllPatientAsync { PageNumber = Number, PageSize = Size }).ConfigureAwait(false);
             return Ok(result);
         }
 
-        // Find Patient with Name and show it with JSON list 
+        // Find Patient with Name and show it with JSON list
         [HttpGet("Name/{Name}")]
         public async Task<IActionResult> GetPatientwithNameAsync(string Name)
         {
@@ -40,7 +36,7 @@ namespace ClinicalBackend.Presentation.Controllers.v1
             return Ok(res);
         }
 
-        // Find patient with Phone number and show it 
+        // Find patient with Phone number and show it
         [HttpGet("Phone/{Phone_number}")]
         public async Task<IActionResult> GetPatientbyPhoneNumberAsync(string phoneNumber)
         {
@@ -48,7 +44,7 @@ namespace ClinicalBackend.Presentation.Controllers.v1
             return Ok(res);
         }
 
-        // Update patient infomation 
+        // Update patient infomation
         [HttpPut("{ID}")]
         public async Task<IActionResult> UpdatePatientDetailsAsync(Guid ID, [FromBody] UpdatePatientCommands command)
         {
@@ -65,12 +61,11 @@ namespace ClinicalBackend.Presentation.Controllers.v1
             return Ok(res);
         }
 
-
         // Delete patient with ID
         [HttpDelete("ID")]
         public async Task<IActionResult> DeletePatientIDAsync(Guid id)
         {
-            var res = await _mediator.Send(new DeletewithIDCommand { ID = id});
+            var res = await _mediator.Send(new DeletePatientWithIDCommand { ID = id }).ConfigureAwait(false);
             return Ok(res);
         }
     }

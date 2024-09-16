@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ClinicalBackend.Domain.Interfaces
+namespace Domain.Interfaces
 {
     public interface IAuditable
     {

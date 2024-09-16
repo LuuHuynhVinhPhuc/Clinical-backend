@@ -5,9 +5,17 @@ using Serilog;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddApplication();
+
+// Add CORS services
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins",
+        builder => builder.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader());
+});
 
 builder.Services.AddControllers().AddApplicationPart(typeof(BaseApiController).Assembly);
 builder.Services.AddEndpointsApiExplorer();
@@ -30,6 +38,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// Use CORS
+app.UseCors("AllowAllOrigins");
 
 app.UseHttpsRedirection();
 

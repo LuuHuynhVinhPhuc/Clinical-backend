@@ -60,10 +60,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
                 DOB = command.DOB,
                 Address = command.Address,
                 PhoneNumber = command.PhoneNumber,
-                CreatedAt = DateTime.UtcNow,
-                Age = age, // Age is stored but not exposed in the command
-
-                ModifiedAt = DateTime.UtcNow, // this element will change when update it
+                Age = age,
             };
             var response = new PatientCreatedResponse() { Response = "Patient created successfully" };
 

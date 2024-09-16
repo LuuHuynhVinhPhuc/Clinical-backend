@@ -24,7 +24,7 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         [HttpGet]
         public async Task<IActionResult> GetAllPatientAsync(int Number, int Size)
         {
-            var result = await _mediator.Send(new GetAllPatientAsync { PageNumber = Number, PageSize = Size }).ConfigureAwait(false);
+            var result = await _mediator.Send(new GetAllPatientAsync { Page = Number , Limit = Size}).ConfigureAwait(false); 
             return Ok(result);
         }
 

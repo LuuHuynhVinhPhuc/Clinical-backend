@@ -12,9 +12,14 @@ namespace ClinicalBackend.Persistence.Repositories
         {
         }
 
-        public async Task<IEnumerable<FollowUp>> GetAllAsync()
+        public async Task<IEnumerable<FollowUp>> GetAllAsync(int pageNumber, int pageSize)
         {
-            return await dbSet.ToListAsync().ConfigureAwait(false);
+            return await dbSet
+                .OrderByDescending(f => f.CreatedAt)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync()
+                .ConfigureAwait(false);
         }
 
         public async Task<FollowUp> GetByIdAsync(Guid Id)

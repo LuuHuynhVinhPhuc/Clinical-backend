@@ -1,4 +1,4 @@
-using ClinicalBackend.Domain.Entities;
+﻿using ClinicalBackend.Domain.Entities;
 using ClinicalBackend.Services.Common;
 using Domain.Interfaces;
 using MediatR;
@@ -11,7 +11,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
     {
         public string Name { get; set; }
 
-        public DateOnly DOB { get; set; }
+        public string DOB { get; set; }
 
         public string Address { get; set; }
 
@@ -47,17 +47,26 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 
             if (existingPatient != null)
             {
-                return Result.Failure<PatientCreatedResponse>(PatientError.PatientNameExist); // return alert with exists patient in DB
+                return Result.Failure<PatientCreatedResponse>(PatientError.PatientNameExist);
             }
 
-            // Calculate age based on DOB
-            int age = CalculateAge(command.DOB);
+            if (!DateOnly.TryParseExact(command.DOB, "dd-MM-yyyy", out DateOnly dob))
+            {
+                return Result.Failure<PatientCreatedResponse>(PatientError.InputDateInvalidFormat);
+            }
+
+            int age = CalculateAge(dob);
+
+            if (age < 0)
+            {
+                return Result.Failure<PatientCreatedResponse>(PatientError.InvalidDOBFormat);
+            }
 
             // Create a new Patients Entity
             var patient = new Patient
             {
                 Name = command.Name,
-                DOB = command.DOB,
+                DOB = dob, // Convert to DateOnly,
                 Address = command.Address,
                 PhoneNumber = command.PhoneNumber,
                 Age = age,

@@ -15,7 +15,6 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
     public class GetAllPatientResponse()
     {
         public List<Patient> Patient { get; set; }
-        public int PageNumber { get; set; }
     }
 
     // Task
@@ -28,20 +27,14 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Result<GetAllPatientResponse>>Handle(GetAllPatientAsync request, CancellationToken cancellationToken)
+        public async Task<Result<GetAllPatientResponse>> Handle(GetAllPatientAsync request, CancellationToken cancellationToken)
         {
             // get all patient
-            var PatientList = await _unitOfWork.Patient.GetAllAsync().ConfigureAwait(false);
-
-            // pagnigation
-            //var patientTotal = PatientList.Count();
-
-            var pagnigation = PatientList.OrderByDescending(c => c.CreatedAt).Skip((request.Page - 1) * request.Limit).Take(request.Limit).ToList();
+            var patients = await _unitOfWork.Patient.GetAllAsync(request.Page, request.Limit).ConfigureAwait(false);
 
             var res = new GetAllPatientResponse()
             {
-                Patient = pagnigation,
-                PageNumber = request.Page,
+                Patient = patients.ToList()
             };
 
             return Result.Success(res);

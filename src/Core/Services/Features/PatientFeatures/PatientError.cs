@@ -4,13 +4,8 @@ namespace ClinicalBackend.Services.Features.PatientFeatures
 {
     public static class PatientError
     {
-        // If patient is exist
-        public static readonly Error PatientNameExist = new Error("Patients.Patient", "Patient name is already exist");
-
-        // If patient is exist
-        public static readonly Error PatientListNotFound = new Error("Patients.Patient", "Patient list is not found in DB");
-
-        // Patient name is not exist
+        public static readonly Error PatientNameExist = new Error("Patients.Patient", "Patient name already exist");
+        
         public static Error NotFound(string Name) => new Error(
         "Patient.NotFound", $"Patient with the name '{Name}' was not found");
 
@@ -20,9 +15,12 @@ namespace ClinicalBackend.Services.Features.PatientFeatures
 
         // Patient ID is not exist
         public static Error NotFoundID(Guid ID) => new Error(
-        "Patient.NotFound", $"Patient with the phone number '{ID}' was not found");
+        "Patient.NotFound", $"Patient with the ID '{ID}' was not found");
 
         // Invalid date of birth format
-        public static Error InvalidDOBFormat = new Error("Patient.InvalidDOB", "Invalid date of birth format");
+        public static readonly Error InvalidDOBFormat = new Error("Patient.InvalidDOB", "Date of birth should not exceeds current date!");
+
+        // Input date is not in the right format
+        public static readonly Error InputDateInvalidFormat = new Error("Patient.InputDateInvalid", "Input date is not in the right format");
     }
 }

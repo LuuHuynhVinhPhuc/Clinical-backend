@@ -9,7 +9,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 {
     public class FindWithPhoneNumberCommands : IRequest<Result<FindWithPhoneReponse>>
     {
-        public string Phonenumber { get; set; }
+        public string PhoneNumber { get; set; }
     }
 
     public class FindWithPhoneReponse
@@ -28,11 +28,11 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 
         public async Task<Result<FindWithPhoneReponse>> Handle(FindWithPhoneNumberCommands request, CancellationToken cancellationToken)
         {
-            var patient = await _unitOfWork.Patient.FindWithPhoneNumberAsync(request.Phonenumber).ConfigureAwait(false);
+            var patient = await _unitOfWork.Patient.FindWithPhoneNumberAsync(request.PhoneNumber).ConfigureAwait(false);
 
             // check exist
             if (patient == null)
-                return Result.Failure<FindWithPhoneReponse>(MedicineErrors.NotFound(request.Phonenumber.ToString()));
+                return Result.Failure<FindWithPhoneReponse>(PatientError.NotFoundPhone(request.PhoneNumber.ToString()));
 
             var res = new FindWithPhoneReponse { Patients = new List<Patient> { patient } };
             return Result.Success(res);

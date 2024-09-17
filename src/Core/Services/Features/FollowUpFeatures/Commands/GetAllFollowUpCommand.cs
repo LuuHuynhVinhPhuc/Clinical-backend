@@ -14,7 +14,6 @@ namespace ClinicalBackend.Services.Features.FollowUpsFeatures.Commands
     public class QueryFollowUpsResponse
     {
         public List<FollowUp> FollowUps { get; set; }
-        public int PageNumber { get; set; }
     }
 
     public class GetAllFollowUpCommandHandler : IRequestHandler<GetAllFollowUpCommand, Result<QueryFollowUpsResponse>>

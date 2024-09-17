@@ -37,7 +37,7 @@ namespace ClinicalBackend.Services.Features.FollowUpsFeatures.Commands
             _unitOfWork.FollowUp.Remove(existingFollowUp);
             // Save changes to the repository
             await _unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-            var response = new FollowUpDeletedResponse() { Response = "Re-Examination deleted successfully" };
+            var response = new FollowUpDeletedResponse() { Response = $"Follow-up ID {command.Id} deleted successfully" };
             return Result.Success(response);
         }
     }

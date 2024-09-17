@@ -32,9 +32,9 @@ namespace ClinicalBackend.Persistence.Repositories
         }
 
         // Find with Phone number 
-        public async Task<List<Patient>> FindWithPhoneNumberAsync(string phoneNumber)
+        public async Task<Patient> FindWithPhoneNumberAsync(string phoneNumber)
         {
-            return await dbSet.Where(m => m.PhoneNumber.Contains(phoneNumber)).ToListAsync().ConfigureAwait(false);
+            return await dbSet.FirstOrDefaultAsync(p => p.PhoneNumber == phoneNumber);
         }
     }
 }

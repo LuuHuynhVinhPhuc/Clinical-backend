@@ -12,7 +12,7 @@ namespace ClinicalBackend.Domain.Repositories
         Task<List<Patient>> FindWithNameAsync(string name);
 
         // search with phone number 
-        Task<List<Patient>> FindWithPhoneNumberAsync(string phoneNumber);
+        Task<Patient> FindWithPhoneNumberAsync(string phoneNumber);
 
     }
 }

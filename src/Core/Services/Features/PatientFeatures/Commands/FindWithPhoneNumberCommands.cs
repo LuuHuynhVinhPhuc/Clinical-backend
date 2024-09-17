@@ -1,16 +1,23 @@
 ﻿using ClinicalBackend.Domain.Entities;
+using ClinicalBackend.Services.Common;
+using ClinicalBackend.Services.Features.MedicineFeatures.Response;
+using ClinicalBackend.Services.Features.MedicineFeatures;
 using Domain.Interfaces;
 using MediatR;
 
 namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 {
-    public class FindWithPhoneNumberCommands : IRequest<List<Patient>>
+    public class FindWithPhoneNumberCommands : IRequest<Result<FindWithPhoneReponse>>
     {
         public string Phonenumber { get; set; }
     }
 
+    public class FindWithPhoneReponse
+    {
+        public List<Patient> Patients { get; set; }
+    }
     // Task
-    public class FindWithPhoneNumberHandler : IRequestHandler<FindWithPhoneNumberCommands, List<Patient>>
+    public class FindWithPhoneNumberHandler : IRequestHandler<FindWithPhoneNumberCommands, Result<FindWithPhoneReponse>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -19,11 +26,16 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<List<Patient>> Handle(FindWithPhoneNumberCommands request, CancellationToken cancellationToken)
+        public async Task<Result<FindWithPhoneReponse>> Handle(FindWithPhoneNumberCommands request, CancellationToken cancellationToken)
         {
             var patient = await _unitOfWork.Patient.FindWithPhoneNumberAsync(request.Phonenumber).ConfigureAwait(false);
-            // return value to list
-            return patient ?? new List<Patient>();
+
+            // check exist
+            if (patient == null)
+                return Result.Failure<FindWithPhoneReponse>(MedicineErrors.NotFound(request.Phonenumber.ToString()));
+
+            var res = new FindWithPhoneReponse { Patients = new List<Patient> { patient } };
+            return Result.Success(res);
         }
     }
 }

@@ -15,7 +15,7 @@ namespace ClinicalBackend.Persistence.Repositories
         public async Task<IEnumerable<Medicine>> GetAllAsync(int pageNumber, int pageSize)
         {
             return await dbSet
-                .OrderByDescending(m => m.CreatedAt) // Sort by CreatedAt descending
+                .OrderByDescending(m => m.CreatedAt)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync()
@@ -31,9 +31,9 @@ namespace ClinicalBackend.Persistence.Repositories
         {
             return await dbSet
                 .Where(m => m.Name.Contains(name))
-                .OrderByDescending(m => m.CreatedAt) // Sort by CreatedAt descending
+                .OrderByDescending(m => m.CreatedAt)
                 .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize) // Use Contains for partial matches
+                .Take(pageSize)
                 .ToListAsync()
                 .ConfigureAwait(false);
         }

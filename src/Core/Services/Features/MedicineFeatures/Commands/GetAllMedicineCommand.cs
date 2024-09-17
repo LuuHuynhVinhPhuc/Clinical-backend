@@ -24,7 +24,7 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
         {
             var medicines = await _unitOfWork.Medicines.GetAllAsync(request.PageNumber, request.PageSize).ConfigureAwait(false);
 
-            var response = new QueryMedicinesResponse { Medicines = medicines.ToList()};
+            var response = new QueryMedicinesResponse { Medicines = medicines.ToList() };
 
             return Result.Success(response);
         }

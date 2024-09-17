@@ -31,9 +31,9 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllMedicinesAsync([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> GetAllMedicinesAsync([FromQuery] int page = 1, [FromQuery] int limit = 10)
         {
-            var result = await _mediator.Send(new GetAllMedicineCommand { PageNumber = pageNumber, PageSize = pageSize }).ConfigureAwait(false);
+            var result = await _mediator.Send(new GetAllMedicineCommand { PageNumber = page, PageSize = limit }).ConfigureAwait(false);
             return result.Match(
                 onSuccess: () => Result.Ok(result.Value()),
                 onFailure: error => Result.BadRequest(error));

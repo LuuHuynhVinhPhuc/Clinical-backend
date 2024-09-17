@@ -27,6 +27,7 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
             var medicines = await _unitOfWork.Medicines.SearchByNameAsync(request.Name, request.PageNumber, request.PageSize);
 
             var response = new QueryMedicinesResponse { Medicines = medicines };
+            
             return Result.Success(response);
         }
     }

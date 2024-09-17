@@ -26,7 +26,7 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
 
             if (medicine == null)
             {
-                return Result.Failure<QueryMedicinesResponse>(MedicineErrors.NotFound(request.Id.ToString()));
+                return Result.Failure<QueryMedicinesResponse>(MedicineErrors.IdNotFound(request.Id));
             }
 
             var response = new QueryMedicinesResponse { Medicines = new List<Medicine> { medicine } };

@@ -54,14 +54,14 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
             patient.Age = age;
             patient.Address = command.Address;
             patient.PhoneNumber = command.PhoneNumber;
-            patient.ModifiedAt = DateTime.UtcNow;
 
             // reponse result
-            var response = new UpdatePatientResponse() { Response = "Patient updated successfully" };
 
             // save changes 
             _unitOfWork.Patient.Update(patient);
             await _unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+
+            var response = new UpdatePatientResponse() { Response = "Patient updated successfully" };
 
             return Result.Success(response);
         }

@@ -51,13 +51,12 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
             existingMedicine.Price = command.Price;
             existingMedicine.Status = command.Status;
             existingMedicine.Type = command.Type;
-            existingMedicine.ModifiedAt = DateTime.UtcNow;
 
 
-            var response = new MedicineEditedResponse() { Response = "Medicine edited successfully" };
 
             // Save changes to the repository
             await _unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+            var response = new MedicineEditedResponse() { Response = "Medicine edited successfully" };
 
             return Result.Success(response);
         }

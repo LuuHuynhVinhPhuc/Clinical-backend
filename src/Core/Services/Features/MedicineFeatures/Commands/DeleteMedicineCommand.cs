@@ -36,10 +36,12 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
             // Remove the existing Medicine entity
             _unitOfWork.Medicines.Remove(existingMedicine);
 
-            var response = new MedicineDeletedResponse() { Response = "Medicine deleted successfully" };
 
             // Save changes to the repository
             await _unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+
+            var response = new MedicineDeletedResponse() { Response = "Medicine deleted successfully" };
+
             return Result.Success(response);
         }
     }

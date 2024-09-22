@@ -57,15 +57,13 @@ namespace ClinicalBackend.Services.Features.FollowUpsFeatures.Commands
                 CheckUp = command.CheckUp,
                 History = command.History,
                 Diagnosis = command.Diagnosis,
-                CreatedAt = DateTime.UtcNow,
-                ModifiedAt = DateTime.UtcNow
             };
 
-            var response = new FollowUpCreatedResponse() { Response = "Follow-up created successfully" };
 
             // Add the medicine to the repository
             _unitOfWork.FollowUp.Add(FollowUp);
             await _unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+            var response = new FollowUpCreatedResponse() { Response = "Follow-up created successfully" };
 
             return Result.Success(response);
         }

@@ -40,12 +40,11 @@ namespace ClinicalBackend.Services.Features.FollowUpsFeatures.Commands
             existingFollowUp.CheckUp = command.CheckUp;
             existingFollowUp.History = command.History;
             existingFollowUp.Diagnosis = command.Diagnosis;
-            existingFollowUp.ModifiedAt = DateTime.UtcNow;
-
-            var response = new FollowUpEditedResponse() { Response = "Follow-up edited successfully" };
 
             // Save changes to the repository
             await _unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+
+            var response = new FollowUpEditedResponse() { Response = "Follow-up edited successfully" };
 
             return Result.Success(response);
         }

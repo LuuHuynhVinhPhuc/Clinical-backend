@@ -75,11 +75,12 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
                 PhoneNumber = command.PhoneNumber,
                 Age = age,
             };
-            var response = new PatientCreatedResponse() { Response = "Patient created successfully" };
 
             // Add to repository
             _unitOfWork.Patient.Add(patient);
             await _unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+
+            var response = new PatientCreatedResponse() { Response = "Patient created successfully" };
 
             return Result.Success(response);
         }

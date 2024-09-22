@@ -57,11 +57,12 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
             patient.ModifiedAt = DateTime.UtcNow;
 
             // reponse result
-            var response = new UpdatePatientResponse() { Response = "Patient updated successfully" };
 
             // save changes 
             _unitOfWork.Patient.Update(patient);
             await _unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+
+            var response = new UpdatePatientResponse() { Response = "Patient updated successfully" };
 
             return Result.Success(response);
         }

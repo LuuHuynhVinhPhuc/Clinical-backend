@@ -36,25 +36,29 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
         // Async task
         public async Task<Result<PatientCreatedResponse>> Handle(CreatePatientCommand command, CancellationToken cancellationToken)
         {
-            if (command == null)
-            {
-                return Result.Failure<PatientCreatedResponse>(PatientError.PatientNameExist);
-            }
 
             // Check if the patient already exists
             var existingPatient = await _unitOfWork.Patient.GetByCondition(m => m.Name == command.Name)
                                                           .FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
 
-            if (existingPatient != null)
+            // Check phone number
+            var phone = await _unitOfWork.Patient.FindWithPhoneNumberAsync(command.PhoneNumber).ConfigureAwait(false);
+
+            if (existingPatient != null)  // check existing name 
             {
                 return Result.Failure<PatientCreatedResponse>(PatientError.PatientNameExist);
             }
 
-            if (!DateOnly.TryParseExact(command.DOB, "dd-MM-yyyy", out DateOnly dob))
+            if (phone.PhoneNumber == command.PhoneNumber) // check existing number
+            {
+                return Result.Failure<PatientCreatedResponse>(PatientError.AlreadyExistPhone(command.PhoneNumber));
+            }
+
+            if (!DateOnly.TryParseExact(command.DOB, "dd-MM-yyyy", out DateOnly dob)) // check date time format
             {
                 return Result.Failure<PatientCreatedResponse>(PatientError.InputDateInvalidFormat);
             }
-
+             
             int age = CalculateAge(dob);
 
             if (age < 0)

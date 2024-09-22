@@ -24,9 +24,9 @@ namespace ClinicalBackend.Presentation.Controllers.v1
 
         // Find all Patients and show it with JSON list
         [HttpGet]
-        public async Task<IActionResult> GetAllPatientAsync([FromQuery] int Number = 1, [FromQuery] int Size = 5)
+        public async Task<IActionResult> GetAllPatientAsync([FromQuery] int page = 1, [FromQuery] int limit = 5)
         {
-            var result = await _mediator.Send(new GetAllPatientAsync { Page = Number, Limit = Size }).ConfigureAwait(false);
+            var result = await _mediator.Send(new GetAllPatientAsync { Page = page, Limit = limit }).ConfigureAwait(false);
             return result.Match(
                 onSuccess: () => Result.Ok(result.Value()),
                 onFailure: error => Result.BadRequest(error));

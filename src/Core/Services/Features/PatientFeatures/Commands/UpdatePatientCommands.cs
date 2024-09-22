@@ -7,10 +7,10 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
     public class UpdatePatientCommands : IRequest<Result<UpdatePatientResponse>>
     {
         public Guid Id { get; set; }
-        public string? PatientName { get; set; }
-        public string DOB { get; set; }
-        public string Address { get; set; }
-        public string? PhoneNumber { get; set; }
+        public string? name { get; set; }
+        public string dob { get; set; }
+        public string address { get; set; }
+        public string? phoneNumber { get; set; }
     }
 
     public class UpdatePatientResponse
@@ -36,7 +36,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
             if (patient == null)
                 return Result.Failure<UpdatePatientResponse>(PatientError.NotFoundID(command.Id));
 
-            if (!DateOnly.TryParseExact(command.DOB, "dd-MM-yyyy", out DateOnly dob))
+            if (!DateOnly.TryParseExact(command.dob, "dd-MM-yyyy", out DateOnly dob))
             {
                 return Result.Failure<UpdatePatientResponse>(PatientError.InputDateInvalidFormat);
             }
@@ -49,11 +49,11 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
             }
 
             // save data in Client 
-            patient.Name = command.PatientName;
+            patient.Name = command.name;
             patient.DOB = dob;
             patient.Age = age;
-            patient.Address = command.Address;
-            patient.PhoneNumber = command.PhoneNumber;
+            patient.Address = command.address;
+            patient.PhoneNumber = command.phoneNumber;
             patient.ModifiedAt = DateTime.UtcNow;
 
             // reponse result

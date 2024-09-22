@@ -22,9 +22,9 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllFollowUpAsync([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> GetAllFollowUpAsync([FromQuery] int page = 1, [FromQuery] int limit = 10)
         {
-            var result = await _mediator.Send(new GetAllFollowUpCommand { PageNumber = pageNumber, PageSize = pageSize }).ConfigureAwait(false);
+            var result = await _mediator.Send(new GetAllFollowUpCommand { PageNumber = page, PageSize = limit }).ConfigureAwait(false);
             return result.Match(
                 onSuccess: () => Result.Ok(result.Value()),
                 onFailure: error => Result.BadRequest(error));
@@ -35,14 +35,18 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         {
             command.Id = Id; // Set the Id from the route parameter
             var result = await _mediator.Send(command).ConfigureAwait(false);
-            return Ok(result);
+            return result.Match(
+                onSuccess: () => Result.Ok(result.Value()),
+                onFailure: error => Result.BadRequest(error));
         }
 
         [HttpDelete("{Id}")]
-        public async Task<IActionResult> DeleteFollowUpAsync(Guid id)
+        public async Task<IActionResult> DeleteFollowUpAsync(Guid Id)
         {
-            var result = await _mediator.Send(new DeleteFollowUpCommand { Id = id }).ConfigureAwait(false);
-            return Ok(result);
+            var result = await _mediator.Send(new DeleteFollowUpCommand { Id = Id }).ConfigureAwait(false);
+            return result.Match(
+                onSuccess: () => Result.Ok(result.Value()),
+                onFailure: error => Result.BadRequest(error));
         }
     }
 }

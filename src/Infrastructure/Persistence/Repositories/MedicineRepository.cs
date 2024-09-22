@@ -12,9 +12,14 @@ namespace ClinicalBackend.Persistence.Repositories
         {
         }
 
-        public async Task<IEnumerable<Medicine>> GetAllAsync()
+        public async Task<IEnumerable<Medicine>> GetAllAsync(int pageNumber, int pageSize)
         {
-            return await dbSet.ToListAsync().ConfigureAwait(false);
+            return await dbSet
+                .OrderByDescending(m => m.CreatedAt)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync()
+                .ConfigureAwait(false);
         }
 
         public async Task<Medicine> GetByIdAsync(Guid Id)
@@ -22,11 +27,15 @@ namespace ClinicalBackend.Persistence.Repositories
             return await dbSet.FindAsync(Id).ConfigureAwait(false);
         }
 
-        public async Task<List<Medicine>> SearchByNameAsync(string name)
+        public async Task<List<Medicine>> SearchByNameAsync(string name, int pageNumber, int pageSize)
         {
             return await dbSet
-                .Where(m => m.Name.Contains(name)) // Use Contains for partial matches
-                .ToListAsync().ConfigureAwait(false);
+                .Where(m => m.Name.Contains(name))
+                .OrderByDescending(m => m.CreatedAt)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync()
+                .ConfigureAwait(false);
         }
     }
 }

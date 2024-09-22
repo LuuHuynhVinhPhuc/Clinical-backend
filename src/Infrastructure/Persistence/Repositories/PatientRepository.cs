@@ -18,23 +18,32 @@ namespace ClinicalBackend.Persistence.Repositories
         }
 
         // find all           
-        public async Task<IEnumerable<Patient>> GetAllAsync()
+        public async Task<IEnumerable<Patient>> GetAllAsync(int pageNumber, int pageSize)
         {
-            return await dbSet.ToListAsync().ConfigureAwait(false);
+            return await dbSet
+                .OrderByDescending(m => m.CreatedAt)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync()
+                .ConfigureAwait(false);
         }
 
         // Find with Name 
-        public async Task<List<Patient>> FindWithNameAsync(string name)
+        public async Task<IEnumerable<Patient>> FindWithNameAsync(string name, int pageNumber, int pageSize)
         {
             return await dbSet
-                .Where(m => m.Name.Contains(name)) // Use Contains for partial matches
-                .ToListAsync().ConfigureAwait(false);
+                .Where(m => m.Name.Contains(name))
+                .OrderByDescending(m => m.CreatedAt)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync()
+                .ConfigureAwait(false);
         }
 
         // Find with Phone number 
-        public async Task<List<Patient>> FindWithPhoneNumberAsync(string phoneNumber)
+        public async Task<Patient> FindWithPhoneNumberAsync(string phoneNumber)
         {
-            return await dbSet.Where(m => m.PhoneNumber.Contains(phoneNumber)).ToListAsync().ConfigureAwait(false);
+            return await dbSet.FirstOrDefaultAsync(p => p.PhoneNumber == phoneNumber);
         }
     }
 }

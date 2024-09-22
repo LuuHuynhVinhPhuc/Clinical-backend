@@ -1,6 +1,7 @@
 using ClinicalBackend.Services.Common;
 using Domain.Interfaces;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
 {
@@ -35,9 +36,14 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
             var existingMedicine = await _unitOfWork.Medicines.GetByIdAsync(command.Id).ConfigureAwait(false);
             if (existingMedicine == null)
             {
-                return Result.Failure<MedicineEditedResponse>(MedicineErrors.NotFound(command.Name));
+                return Result.Failure<MedicineEditedResponse>(MedicineErrors.IdNotFound(command.Id));
             }
-
+            
+            var duplicate = await _unitOfWork.Medicines.GetByCondition(m => m.Name == command.Name).FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
+            if (duplicate != null)
+            {
+                return Result.Failure<MedicineEditedResponse>(MedicineErrors.MedicineNameExist);
+            }
             // Update the existing Medicine entity
             existingMedicine.Name = command.Name;
             existingMedicine.Company = command.Company;
@@ -45,13 +51,12 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
             existingMedicine.Price = command.Price;
             existingMedicine.Status = command.Status;
             existingMedicine.Type = command.Type;
-            existingMedicine.ModifiedAt = DateTime.UtcNow;
 
 
-            var response = new MedicineEditedResponse() { Response = "Medicine edited successfully" };
 
             // Save changes to the repository
             await _unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+            var response = new MedicineEditedResponse() { Response = "Medicine edited successfully" };
 
             return Result.Success(response);
         }

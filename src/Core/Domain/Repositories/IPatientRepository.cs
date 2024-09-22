@@ -6,13 +6,13 @@ namespace ClinicalBackend.Domain.Repositories
     public interface IPatientRepository : IBaseRepository<Patient>
     {
         Task<Patient> GetByIdAsync(Guid id);
-        Task<IEnumerable<Patient>> GetAllAsync();
+        Task<IEnumerable<Patient>> GetAllAsync(int pageNumber, int pageSize);
 
         // search with Name 
-        Task<List<Patient>> FindWithNameAsync(string name);
+        Task<IEnumerable<Patient>> FindWithNameAsync(string name, int pageNumber, int pageSize);
 
         // search with phone number 
-        Task<List<Patient>> FindWithPhoneNumberAsync(string phoneNumber);
+        Task<Patient> FindWithPhoneNumberAsync(string phoneNumber);
 
     }
 }

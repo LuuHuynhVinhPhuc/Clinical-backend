@@ -30,16 +30,18 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
             var existingMedicine = await _unitOfWork.Medicines.GetByIdAsync(command.Id).ConfigureAwait(false);
             if (existingMedicine == null)
             {
-                return Result.Failure<MedicineDeletedResponse>(MedicineErrors.NotFound(command.Id.ToString()));
+                return Result.Failure<MedicineDeletedResponse>(MedicineErrors.NameNotFound(command.Id.ToString()));
             }
 
             // Remove the existing Medicine entity
             _unitOfWork.Medicines.Remove(existingMedicine);
 
-            var response = new MedicineDeletedResponse() { Response = "Medicine deleted successfully" };
 
             // Save changes to the repository
             await _unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+
+            var response = new MedicineDeletedResponse() { Response = "Medicine deleted successfully" };
+
             return Result.Success(response);
         }
     }

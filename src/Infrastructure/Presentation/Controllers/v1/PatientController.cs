@@ -1,4 +1,4 @@
-using ClinicalBackend.Services.Common;
+﻿using ClinicalBackend.Services.Common;
 using ClinicalBackend.Services.Features.PatientFeatures.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -17,31 +17,29 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         public async Task<IActionResult> CreatePatientAsync(CreatePatientCommand command)
         {
             var result = await _mediator.Send(command).ConfigureAwait(false);
-            return Ok(result);
+            return result.Match(
+                onSuccess: () => Result.Ok(result.Value()),
+                onFailure: error => Result.BadRequest(error)); 
         }
 
         // Find all Patients and show it with JSON list
         [HttpGet]
-        public async Task<IActionResult> GetAllPatientAsync(int Number, int Size)
+        public async Task<IActionResult> GetAllPatientAsync([FromQuery] int page = 1, [FromQuery] int limit = 5)
         {
-            var result = await _mediator.Send(new GetAllPatientAsync { Page = Number , Limit = Size}).ConfigureAwait(false); 
-            return Ok(result);
-        }
-
-        // Find Patient with Name and show it with JSON list
-        [HttpGet("Name/{Name}")]
-        public async Task<IActionResult> GetPatientwithNameAsync(string Name)
-        {
-            var res = await _mediator.Send(new GetPatientByNameAsync { Name = Name }).ConfigureAwait(false);
-            return Ok(res);
+            var result = await _mediator.Send(new GetAllPatientAsync { Page = page, Limit = limit }).ConfigureAwait(false);
+            return result.Match(
+                onSuccess: () => Result.Ok(result.Value()),
+                onFailure: error => Result.BadRequest(error));
         }
 
         // Find patient with Phone number and show it
-        [HttpGet("Phone/{Phone_number}")]
-        public async Task<IActionResult> GetPatientbyPhoneNumberAsync(string phoneNumber)
+        [HttpGet("Phone/{Phone}")]
+        public async Task<IActionResult> GetPatientbyPhoneNumberAsync([FromQuery] string phoneNumber)
         {
-            var res = await _mediator.Send(new FindWithPhoneNumberCommands { Phonenumber = phoneNumber }).ConfigureAwait(false);
-            return Ok(res);
+            var res = await _mediator.Send(new FindWithPhoneNumberCommands { PhoneNumber = phoneNumber }).ConfigureAwait(false);
+            return res.Match(
+                onSuccess: () => Result.Ok(res.Value()),
+                onFailure: error => Result.BadRequest(error)); 
         }
 
         // Update patient infomation
@@ -50,23 +48,18 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         {
             command.Id = ID;
             var res = await _mediator.Send(command).ConfigureAwait(false);
-            return Ok(res);
+            return res.Match(
+                onSuccess: () => Result.Ok(res.Value()),
+                onFailure: error => Result.BadRequest(error)); 
         }
 
-        // Delete patient
-        [HttpDelete]
-        public async Task<IActionResult> DeletePatientAsync(string phone)
-        {
-            var res = await _mediator.Send(new DeletePatientWithPhoneNumberCommands { PhoneNumber = phone }).ConfigureAwait(false);
-            return Ok(res);
-        }
-
-        // Delete patient with ID
         [HttpDelete("ID")]
         public async Task<IActionResult> DeletePatientIDAsync(Guid id)
         {
             var res = await _mediator.Send(new DeletePatientWithIDCommand { ID = id }).ConfigureAwait(false);
-            return Ok(res);
+            return res.Match(
+                onSuccess: () => Result.Ok(res.Value()),
+                onFailure: error => Result.BadRequest(error));         
         }
     }
 }

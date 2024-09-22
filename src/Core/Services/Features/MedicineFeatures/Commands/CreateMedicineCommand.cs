@@ -47,15 +47,15 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
                 Quantity = command.Quantity,
                 Price = command.Price,
                 Status = command.Status,
-                CreatedAt = DateTime.UtcNow,
-                ModifiedAt = DateTime.UtcNow
+                Type = command.Type,
             };
 
-            var response = new MedicineCreatedResponse() { Response = "Medicine created successfully" };
 
             // Add the medicine to the repository
             _unitOfWork.Medicines.Add(medicine);
             await _unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+            
+            var response = new MedicineCreatedResponse() { Response = "Medicine created successfully" };
 
             return Result.Success(response);
         }

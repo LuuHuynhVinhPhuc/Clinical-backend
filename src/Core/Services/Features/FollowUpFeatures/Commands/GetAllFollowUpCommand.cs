@@ -14,7 +14,6 @@ namespace ClinicalBackend.Services.Features.FollowUpsFeatures.Commands
     public class QueryFollowUpsResponse
     {
         public List<FollowUp> FollowUps { get; set; }
-        public int PageNumber { get; set; }
     }
 
     public class GetAllFollowUpCommandHandler : IRequestHandler<GetAllFollowUpCommand, Result<QueryFollowUpsResponse>>
@@ -29,18 +28,10 @@ namespace ClinicalBackend.Services.Features.FollowUpsFeatures.Commands
         public async Task<Result<QueryFollowUpsResponse>> Handle(GetAllFollowUpCommand request, CancellationToken cancellationToken)
         {
             var followUps = await _unitOfWork.FollowUp.GetAllAsync().ConfigureAwait(false);
-            var totalFollowUps = followUps.Count();
-
-            var paginatedFollowUps = followUps
-                .OrderByDescending(f => f.CreatedAt)
-                .Skip((request.PageNumber - 1) * request.PageSize)
-                .Take(request.PageSize)
-                .ToList();
 
             var response = new QueryFollowUpsResponse()
             {
-                FollowUps = paginatedFollowUps,
-                PageNumber = request.PageNumber,
+                FollowUps = followUps.ToList()
             };
 
             return Result.Success(response);

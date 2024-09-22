@@ -1,16 +1,17 @@
-using ClinicalBackend.Domain.Entities;
+using ClinicalBackend.Services.Common;
+using ClinicalBackend.Services.Features.MedicineFeatures.Response;
 using Domain.Interfaces;
 using MediatR;
 
 namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
 {
-    public class GetAllMedicineCommand : IRequest<(List<Medicine>, int)>
+    public class GetAllMedicineCommand : IRequest<Result<QueryMedicinesResponse>>
     {
         public int PageNumber { get; set; } = 1;
         public int PageSize { get; set; } = 10;
     }
 
-    public class GetAllMedicineCommandHandler : IRequestHandler<GetAllMedicineCommand, (List<Medicine>, int)>
+    public class GetAllMedicineCommandHandler : IRequestHandler<GetAllMedicineCommand, Result<QueryMedicinesResponse>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -19,21 +20,13 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<(List<Medicine>, int)> Handle(GetAllMedicineCommand request, CancellationToken cancellationToken)
+        public async Task<Result<QueryMedicinesResponse>> Handle(GetAllMedicineCommand request, CancellationToken cancellationToken)
         {
-            var totalMedicines = await _unitOfWork.Medicines.GetAllAsync().ConfigureAwait(false);
-            var medicines = totalMedicines
-                .OrderByDescending(m => m.CreatedAt) // Sort by CreatedAt descending
-                .Skip((request.PageNumber - 1) * request.PageSize)
-                .Take(request.PageSize)
-                .ToList();
+            var medicines = await _unitOfWork.Medicines.GetAllAsync(request.PageNumber, request.PageSize).ConfigureAwait(false);
 
-            if (medicines == null || !medicines.Any())
-            {
-                return (new List<Medicine>(), 0); // Return an empty list and 0 as the total count if no medicines found
-            }
+            var response = new QueryMedicinesResponse { Medicines = medicines.ToList() };
 
-            return (medicines, totalMedicines.Count());
+            return Result.Success(response);
         }
     }
 }

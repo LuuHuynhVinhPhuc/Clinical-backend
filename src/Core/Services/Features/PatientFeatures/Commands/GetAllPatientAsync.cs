@@ -1,18 +1,24 @@
 ﻿using ClinicalBackend.Domain.Entities;
+using ClinicalBackend.Services.Common;
 using Domain.Interfaces;
 using MediatR;
 
 namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 {
-    public class GetAllPatientAsync : IRequest<IEnumerable<Patient>>
+    public class GetAllPatientAsync : IRequest<Result<GetAllPatientResponse>>
     {
         // default pagnigation params
         public int Page { get; set; } = 1; 
         public int Limit { get; set; } = 5;  
     }
 
+    public class GetAllPatientResponse()
+    {
+        public List<Patient> Patient { get; set; }
+    }
+
     // Task
-    public class GetAllPatientHandler : IRequestHandler<GetAllPatientAsync, IEnumerable<Patient>>
+    public class GetAllPatientHandler : IRequestHandler<GetAllPatientAsync, Result<GetAllPatientResponse>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -21,14 +27,17 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<Patient>> Handle(GetAllPatientAsync request, CancellationToken cancellationToken)
+        public async Task<Result<GetAllPatientResponse>> Handle(GetAllPatientAsync request, CancellationToken cancellationToken)
         {
-            var PatientList = await _unitOfWork.Patient.GetAllAsync().ConfigureAwait(false);
+            // get all patient
+            var patients = await _unitOfWork.Patient.GetAllAsync(request.Page, request.Limit).ConfigureAwait(false);
 
-            // pagnigation
-            var pagedPatient = PatientList.Skip((request.Page - 1) * request.Limit) // bỏ qua các phần tử trước đó
-                .Take(request.Limit).ToList(); // lấy các phần tử của trang hiện tại
-            return pagedPatient.OrderByDescending(p => p.CreatedAt).ToList(); // sort with newest patient depend on createAt
+            var res = new GetAllPatientResponse()
+            {
+                Patient = patients.ToList()
+            };
+
+            return Result.Success(res);
         }
     }
 }

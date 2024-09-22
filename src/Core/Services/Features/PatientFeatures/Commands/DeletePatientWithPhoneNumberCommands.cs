@@ -35,10 +35,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
             }
 
             // remove patient 
-            foreach (var items in patient.ToList())
-            {
-                _unitOfWork.Patient.Remove(items);
-            }
+            _unitOfWork.Patient.Remove(patient);
             // save changes
             await _unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
             // return value 

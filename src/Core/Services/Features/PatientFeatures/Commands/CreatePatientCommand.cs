@@ -37,19 +37,10 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
         public async Task<Result<PatientCreatedResponse>> Handle(CreatePatientCommand command, CancellationToken cancellationToken)
         {
 
-            // Check if the patient already exists
-            var existingPatient = await _unitOfWork.Patient.GetByCondition(m => m.Name == command.Name)
-                                                          .FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
-
             // Check phone number
-            var phone = await _unitOfWork.Patient.FindWithPhoneNumberAsync(command.PhoneNumber).ConfigureAwait(false);
+            var phone = await _unitOfWork.Patient.GetByCondition(m => m.PhoneNumber == command.PhoneNumber).FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
 
-            if (existingPatient != null)  // check existing name 
-            {
-                return Result.Failure<PatientCreatedResponse>(PatientError.PatientNameExist);
-            }
-
-            if (phone.PhoneNumber == command.PhoneNumber) // check existing number
+            if (phone != null) // check existing number
             {
                 return Result.Failure<PatientCreatedResponse>(PatientError.AlreadyExistPhone(command.PhoneNumber));
             }

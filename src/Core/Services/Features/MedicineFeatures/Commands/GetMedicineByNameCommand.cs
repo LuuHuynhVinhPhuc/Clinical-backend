@@ -25,8 +25,20 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
         public async Task<Result<QueryMedicinesResponse>> Handle(GetMedicineByNameCommand request, CancellationToken cancellationToken)
         {
             var medicines = await _unitOfWork.Medicines.SearchByNameAsync(request.Name, request.PageNumber, request.PageSize);
+            
+            var totalItems = await _unitOfWork.Medicines.GetTotalCountAsync().ConfigureAwait(false);
 
-            var response = new QueryMedicinesResponse { Medicines = medicines };
+            var response = new QueryMedicinesResponse
+            {
+                Medicines = medicines.ToList(),
+                Pagination = new PaginationInfo
+                {
+                    TotalItems = totalItems,
+                    TotalItemsPerPage = request.PageSize,
+                    CurrentPage = request.PageNumber,
+                    TotalPages = (int)Math.Ceiling((double)totalItems / request.PageSize)
+                }
+            };
             
             return Result.Success(response);
         }

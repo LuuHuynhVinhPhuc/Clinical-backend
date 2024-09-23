@@ -37,5 +37,10 @@ namespace ClinicalBackend.Persistence.Repositories
                 .ToListAsync()
                 .ConfigureAwait(false);
         }
+
+        public async Task<int> GetTotalCountAsync()
+        {
+            return await dbSet.CountAsync().ConfigureAwait(false);
+        }
     }
 }

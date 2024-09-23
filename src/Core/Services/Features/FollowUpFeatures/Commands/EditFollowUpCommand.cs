@@ -29,14 +29,12 @@ namespace ClinicalBackend.Services.Features.FollowUpsFeatures.Commands
 
         public async Task<Result<FollowUpEditedResponse>> Handle(EditFollowUpCommand command, CancellationToken cancellationToken)
         {
-            // Check if the ReExamination exists
             var existingFollowUp = await _unitOfWork.FollowUp.GetByIdAsync(command.Id).ConfigureAwait(false);
             if (existingFollowUp == null)
             {
                 return Result.Failure<FollowUpEditedResponse>(FollowUpErrors.NotFound(command.Id.ToString()));
             }
 
-            // Update the existing ReExamination entity
             existingFollowUp.CheckUp = command.CheckUp;
             existingFollowUp.History = command.History;
             existingFollowUp.Diagnosis = command.Diagnosis;

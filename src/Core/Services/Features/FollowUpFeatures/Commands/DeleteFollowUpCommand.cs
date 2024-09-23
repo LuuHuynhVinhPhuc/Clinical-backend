@@ -26,16 +26,14 @@ namespace ClinicalBackend.Services.Features.FollowUpsFeatures.Commands
 
         public async Task<Result<FollowUpDeletedResponse>> Handle(DeleteFollowUpCommand command, CancellationToken cancellationToken)
         {
-            // Check if the FollowUp exists
             var existingFollowUp = await _unitOfWork.FollowUp.GetByIdAsync(command.Id).ConfigureAwait(false);
             if (existingFollowUp == null)
             {
                 return Result.Failure<FollowUpDeletedResponse>(FollowUpErrors.NotFound(command.Id.ToString()));
             }
 
-            // Remove the existing FollowUp entity
             _unitOfWork.FollowUp.Remove(existingFollowUp);
-            // Save changes to the repository
+            
             await _unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
             var response = new FollowUpDeletedResponse() { Response = $"Successfully deleted follow-up ID {command.Id} " };
             return Result.Success(response);

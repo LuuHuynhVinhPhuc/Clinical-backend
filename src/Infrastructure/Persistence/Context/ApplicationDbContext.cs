@@ -15,6 +15,7 @@ namespace ClinicalBackend.Persistence.Context
         public DbSet<Patient> PatientsInfo { get; set; }
         public DbSet<Medicine> Medicines { get; set; }
         public DbSet<FollowUp> FollowUps { get; set; }
+        public DbSet<Prescription> Prescriptions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

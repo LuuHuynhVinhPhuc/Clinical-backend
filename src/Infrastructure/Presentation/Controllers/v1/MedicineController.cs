@@ -22,9 +22,9 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         }
 
         [HttpGet("{Id}")]
-        public async Task<IActionResult> GetMedicineByIdAsync(Guid id)
+        public async Task<IActionResult> GetMedicineByIdAsync(Guid Id)
         {
-            var result = await _mediator.Send(new GetMedicineByIdCommand { Id = id }).ConfigureAwait(false);
+            var result = await _mediator.Send(new GetMedicineByIdCommand { Id = Id }).ConfigureAwait(false);
             return result.Match(
                 onSuccess: () => Result.Ok(result.Value()),
                 onFailure: error => Result.BadRequest(error));
@@ -48,19 +48,20 @@ namespace ClinicalBackend.Presentation.Controllers.v1
                 onSuccess: () => Result.Ok(result.Value()),
                 onFailure: error => Result.BadRequest(error));
         }
+
         [HttpDelete("{Id}")]
-        public async Task<IActionResult> DeleteMedicineAsync(Guid id)
+        public async Task<IActionResult> DeleteMedicineAsync(Guid Id)
         {
-            var result = await _mediator.Send(new DeleteMedicineCommand { Id = id }).ConfigureAwait(false);
+            var result = await _mediator.Send(new DeleteMedicineCommand { Id = Id }).ConfigureAwait(false);
             return result.Match(
                 onSuccess: () => Result.Ok(result.Value()),
                 onFailure: error => Result.BadRequest(error));
         }
 
         [HttpGet("Name/{Name}")]
-        public async Task<IActionResult> GetMedicineByNameAsync([FromQuery] string name, [FromQuery] int page = 1, [FromQuery] int limit = 10)
+        public async Task<IActionResult> GetMedicineByNameAsync(string Name, [FromQuery] int page = 1, [FromQuery] int limit = 10)
         {
-            var result = await _mediator.Send(new GetMedicineByNameCommand { Name = name, PageNumber = page, PageSize = limit }).ConfigureAwait(false);
+            var result = await _mediator.Send(new GetMedicineByNameCommand { Name = Name, PageNumber = page, PageSize = limit }).ConfigureAwait(false);
 
             return result.Match(
                 onSuccess: () => Result.Ok(result.Value()),

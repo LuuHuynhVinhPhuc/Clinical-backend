@@ -45,5 +45,10 @@ namespace ClinicalBackend.Persistence.Repositories
         {
             return await dbSet.FirstOrDefaultAsync(p => p.PhoneNumber == phoneNumber);
         }
+
+        public async Task<int> GetTotalCountAsync()
+        {
+            return await dbSet.CountAsync().ConfigureAwait(false);
+        }
     }
 }

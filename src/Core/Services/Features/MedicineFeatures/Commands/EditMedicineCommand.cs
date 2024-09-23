@@ -39,20 +39,12 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
                 return Result.Failure<MedicineEditedResponse>(MedicineErrors.IdNotFound(command.Id));
             }
             
-            var duplicate = await _unitOfWork.Medicines.GetByCondition(m => m.Name == command.Name).FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
-            if (duplicate != null)
-            {
-                return Result.Failure<MedicineEditedResponse>(MedicineErrors.MedicineNameExist);
-            }
-            // Update the existing Medicine entity
-            existingMedicine.Name = command.Name;
-            existingMedicine.Company = command.Company;
+            existingMedicine.Name = command.Name ?? existingMedicine.Name; 
+            existingMedicine.Company = command.Company ?? existingMedicine.Company; 
             existingMedicine.Quantity = command.Quantity;
             existingMedicine.Price = command.Price;
-            existingMedicine.Status = command.Status;
-            existingMedicine.Type = command.Type;
-
-
+            existingMedicine.Status = command.Status ?? existingMedicine.Status;
+            existingMedicine.Type = command.Type ?? existingMedicine.Type;
 
             // Save changes to the repository
             await _unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);

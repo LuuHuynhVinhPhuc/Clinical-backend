@@ -48,10 +48,11 @@ namespace ClinicalBackend.Presentation.Controllers.v1
                 onSuccess: () => Result.Ok(result.Value()),
                 onFailure: error => Result.BadRequest(error));
         }
+
         [HttpDelete("{Id}")]
-        public async Task<IActionResult> DeleteMedicineAsync(Guid id)
+        public async Task<IActionResult> DeleteMedicineAsync(Guid Id)
         {
-            var result = await _mediator.Send(new DeleteMedicineCommand { Id = id }).ConfigureAwait(false);
+            var result = await _mediator.Send(new DeleteMedicineCommand { Id = Id }).ConfigureAwait(false);
             return result.Match(
                 onSuccess: () => Result.Ok(result.Value()),
                 onFailure: error => Result.BadRequest(error));

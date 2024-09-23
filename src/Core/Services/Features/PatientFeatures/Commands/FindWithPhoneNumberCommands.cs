@@ -14,7 +14,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 
     public class FindWithPhoneReponse
     {
-        public List<Patient> Patients { get; set; }
+        public List<Patient> Patient { get; set; }
     }
     // Task
     public class FindWithPhoneNumberHandler : IRequestHandler<FindWithPhoneNumberCommands, Result<FindWithPhoneReponse>>
@@ -34,7 +34,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
             if (patient == null)
                 return Result.Failure<FindWithPhoneReponse>(PatientError.NotFoundPhone(request.PhoneNumber.ToString()));
 
-            var res = new FindWithPhoneReponse { Patients = new List<Patient> { patient } };
+            var res = new FindWithPhoneReponse { Patient = new List<Patient> { patient } };
             return Result.Success(res);
         }
     }

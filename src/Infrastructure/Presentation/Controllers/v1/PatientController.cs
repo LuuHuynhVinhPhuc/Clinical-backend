@@ -34,9 +34,9 @@ namespace ClinicalBackend.Presentation.Controllers.v1
 
         // Find patient with Phone number and show it
         [HttpGet("Phone/{Phone}")]
-        public async Task<IActionResult> GetPatientbyPhoneNumberAsync([FromQuery] string phoneNumber)
+        public async Task<IActionResult> GetPatientbyPhoneNumberAsync(string Phone)
         {
-            var res = await _mediator.Send(new FindWithPhoneNumberCommands { PhoneNumber = phoneNumber }).ConfigureAwait(false);
+            var res = await _mediator.Send(new FindWithPhoneNumberCommands { PhoneNumber = Phone }).ConfigureAwait(false);
             return res.Match(
                 onSuccess: () => Result.Ok(res.Value()),
                 onFailure: error => Result.BadRequest(error)); 
@@ -54,9 +54,9 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         }
 
         [HttpDelete("ID")]
-        public async Task<IActionResult> DeletePatientIDAsync(Guid id)
+        public async Task<IActionResult> DeletePatientIDAsync(Guid ID)
         {
-            var res = await _mediator.Send(new DeletePatientWithIDCommand { ID = id }).ConfigureAwait(false);
+            var res = await _mediator.Send(new DeletePatientWithIDCommand { ID = ID }).ConfigureAwait(false);
             return res.Match(
                 onSuccess: () => Result.Ok(res.Value()),
                 onFailure: error => Result.BadRequest(error));         

@@ -1,4 +1,5 @@
 using ClinicalBackend.Services.Common;
+using ClinicalBackend.Services.Features.FollowUpFeatures.Commands;
 using ClinicalBackend.Services.Features.FollowUpsFeatures.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +26,15 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         public async Task<IActionResult> GetAllFollowUpAsync([FromQuery] int page = 1, [FromQuery] int limit = 10)
         {
             var result = await _mediator.Send(new GetAllFollowUpCommand { PageNumber = page, PageSize = limit }).ConfigureAwait(false);
+            return result.Match(
+                onSuccess: () => Result.Ok(result.Value()),
+                onFailure: error => Result.BadRequest(error));
+        }
+
+        [HttpGet("{ID}")]
+        public async Task<IActionResult> GetFollowUpByIDAsync([FromRoute] Guid ID)
+        {
+            var result = await _mediator.Send(new GetFollowUpByIDCommand { PatientId = ID }).ConfigureAwait(false);
             return result.Match(
                 onSuccess: () => Result.Ok(result.Value()),
                 onFailure: error => Result.BadRequest(error));

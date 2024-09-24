@@ -31,10 +31,10 @@ namespace ClinicalBackend.Presentation.Controllers.v1
                 onFailure: error => Result.BadRequest(error));
         }
 
-        [HttpGet("{ID}")]
-        public async Task<IActionResult> GetFollowUpByIDAsync([FromRoute] Guid ID)
+        [HttpGet("{Id}")]
+        public async Task<IActionResult> GetFollowUpByIdAsync([FromRoute] Guid Id)
         {
-            var result = await _mediator.Send(new GetFollowUpByIDCommand { PatientId = ID }).ConfigureAwait(false);
+            var result = await _mediator.Send(new GetFollowUpByIdCommand { PatientId = Id }).ConfigureAwait(false);
             return result.Match(
                 onSuccess: () => Result.Ok(result.Value()),
                 onFailure: error => Result.BadRequest(error));

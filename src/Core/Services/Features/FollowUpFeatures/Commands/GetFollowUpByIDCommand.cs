@@ -1,60 +1,51 @@
-﻿using ClinicalBackend.Services.Common;
-using ClinicalBackend.Domain.Entities;
+﻿using ClinicalBackend.Domain.Entities;
+using ClinicalBackend.Services.Common;
+using ClinicalBackend.Services.Features.FollowUps;
 using Domain.Interfaces;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using ClinicalBackend.Services.Features.FollowUps;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace ClinicalBackend.Services.Features.FollowUpFeatures.Commands
 {
-    public class GetFollowUpByIDCommand : IRequest<Result<GetFollowUPbyIDResponse>>
+    public class GetFollowUpByIdCommand : IRequest<Result<GetFollowUpByIdResponse>>
     {
         public Guid PatientId { get; set; }
-       
     }
 
-    public class GetFollowUPbyIDResponse
+    public class GetFollowUpByIdResponse
     {
-        public List<FollowUp> FollowUpDetails { get; set; }
+        public List<FollowUp> FollowUp { get; set; }
     }
 
-    // task 
-    public class GetFollowUpByIDHandler : IRequestHandler<GetFollowUpByIDCommand, Result<GetFollowUPbyIDResponse>>
+    // task
+    public class GetFollowUpByIdHandler : IRequestHandler<GetFollowUpByIdCommand, Result<GetFollowUpByIdResponse>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public GetFollowUpByIDHandler(IUnitOfWork unitOfWork)
+        public GetFollowUpByIdHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Result<GetFollowUPbyIDResponse>> Handle(GetFollowUpByIDCommand request, CancellationToken cancellationToken)
+        public async Task<Result<GetFollowUpByIdResponse>> Handle(GetFollowUpByIdCommand request, CancellationToken cancellationToken)
         {
-            // find with id 
             var patient = await _unitOfWork.FollowUp.GetByCondition(m => m.PatientId == request.PatientId).FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false); ;
-            
-            // Check if _unitOfWork or FollowUp is null
-            if (_unitOfWork?.FollowUp == null)
+
+            if (_unitOfWork.FollowUp == null)
             {
                 throw new InvalidOperationException("UnitOfWork or FollowUp repository is not initialized.");
             }
-            // check if not exist => this patient do not have a follow check
+
             if (patient == null)
-                return Result.Failure<GetFollowUPbyIDResponse>(error: FollowUpErrors.FollowUpNotExists(request.PatientId));
-            // return a list 
-            var res = new GetFollowUPbyIDResponse
+                return Result.Failure<GetFollowUpByIdResponse>(error: FollowUpErrors.FollowUpNotExists(request.PatientId));
+
+            // return a list
+            var res = new GetFollowUpByIdResponse
             {
-                FollowUpDetails = new List<FollowUp> { patient }
+                FollowUp = new List<FollowUp> { patient }
             };
 
             return Result.Success(res);
-
         }
     }
 }

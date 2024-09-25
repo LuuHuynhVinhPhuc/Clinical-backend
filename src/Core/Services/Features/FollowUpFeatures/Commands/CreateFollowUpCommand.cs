@@ -10,15 +10,10 @@ namespace ClinicalBackend.Services.Features.FollowUpsFeatures.Commands
     public class CreateFollowUpCommand : IRequest<Result<FollowUpCreatedResponse>>
     {
         public Guid PatientId { get; set; }
-
-        //Tổng quát
-        public string? CheckUp { get; set; }
-
-        //Tiền căn
+        public string? Reason { get; set; }
         public string? History { get; set; }
-
-        //Chuẩn đoán
         public string? Diagnosis { get; set; }
+        public string? Summary { get; set; }
     }
 
     public class FollowUpCreatedResponse
@@ -50,18 +45,17 @@ namespace ClinicalBackend.Services.Features.FollowUpsFeatures.Commands
                 return Result.Failure<FollowUpCreatedResponse>(FollowUpErrors.FollowUpExists);
             }
 
-            // Create a new FollowUp entity
-            var FollowUp = new FollowUp
+            var followUp = new FollowUp
             {
                 PatientId = command.PatientId,
-                CheckUp = command.CheckUp,
+                Reason = command.Reason,
                 History = command.History,
                 Diagnosis = command.Diagnosis,
+                Summary = command.Summary
             };
 
-
-            // Add the medicine to the repository
-            _unitOfWork.FollowUp.Add(FollowUp);
+            // Add the FollowUp to the repository
+            _unitOfWork.FollowUp.Add(followUp);
             await _unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
             var response = new FollowUpCreatedResponse() { Response = "Follow-up created successfully" };
 

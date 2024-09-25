@@ -31,7 +31,10 @@ namespace ClinicalBackend.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("CheckUp")
+                    b.Property<string>("Reason")
+                        .HasColumnType("text");
+
+                    b.Property<string>("History")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
@@ -40,7 +43,7 @@ namespace ClinicalBackend.Persistence.Migrations
                     b.Property<string>("Diagnosis")
                         .HasColumnType("text");
 
-                    b.Property<string>("History")
+                    b.Property<string>("Summary")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("ModifiedAt")

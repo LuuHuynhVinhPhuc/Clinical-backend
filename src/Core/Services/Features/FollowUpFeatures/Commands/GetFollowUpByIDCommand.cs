@@ -29,7 +29,7 @@ namespace ClinicalBackend.Services.Features.FollowUpFeatures.Commands
 
         public async Task<Result<GetFollowUpByIdResponse>> Handle(GetFollowUpByIdCommand request, CancellationToken cancellationToken)
         {
-            var patient = await _unitOfWork.FollowUp.GetByCondition(m => m.PatientId == request.PatientId).FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false); ;
+            var patient = await _unitOfWork.FollowUp.GetByCondition(m => m.PatientId == request.PatientId).FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
 
             if (_unitOfWork.FollowUp == null)
             {

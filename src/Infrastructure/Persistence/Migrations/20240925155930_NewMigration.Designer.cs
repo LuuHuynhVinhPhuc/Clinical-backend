@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ClinicalBackend.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240916105033_NewMigration")]
+    [Migration("20240925155930_NewMigration")]
     partial class NewMigration
     {
         /// <inheritdoc />
@@ -31,19 +31,13 @@ namespace ClinicalBackend.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Reason")
-                        .HasColumnType("text");
-
-                    b.Property<string>("History")
-                        .HasColumnType("text");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Diagnosis")
                         .HasColumnType("text");
 
-                    b.Property<string>("Summary")
+                    b.Property<string>("History")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("ModifiedAt")
@@ -52,7 +46,15 @@ namespace ClinicalBackend.Persistence.Migrations
                     b.Property<Guid?>("PatientId")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("Reason")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Summary")
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("PatientId");
 
                     b.ToTable("FollowUps");
                 });
@@ -127,6 +129,39 @@ namespace ClinicalBackend.Persistence.Migrations
                     b.ToTable("PatientsInfo");
                 });
 
+            modelBuilder.Entity("ClinicalBackend.Domain.Entities.Prescription", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("MedicineId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid[]>("Medicines")
+                        .IsRequired()
+                        .HasColumnType("uuid[]");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("PatientID")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MedicineId");
+
+                    b.HasIndex("PatientID");
+
+                    b.ToTable("Prescriptions");
+                });
+
             modelBuilder.Entity("ClinicalBackend.Domain.Entities.Role", b =>
                 {
                     b.Property<int>("Id")
@@ -166,6 +201,34 @@ namespace ClinicalBackend.Persistence.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("ClinicalBackend.Domain.Entities.FollowUp", b =>
+                {
+                    b.HasOne("ClinicalBackend.Domain.Entities.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId");
+
+                    b.Navigation("Patient");
+                });
+
+            modelBuilder.Entity("ClinicalBackend.Domain.Entities.Prescription", b =>
+                {
+                    b.HasOne("ClinicalBackend.Domain.Entities.Medicine", "Medicine")
+                        .WithMany()
+                        .HasForeignKey("MedicineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ClinicalBackend.Domain.Entities.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Medicine");
+
+                    b.Navigation("Patient");
                 });
 
             modelBuilder.Entity("ClinicalBackend.Domain.Entities.User", b =>

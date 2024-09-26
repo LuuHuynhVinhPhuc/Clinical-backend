@@ -1,3 +1,6 @@
+using AutoMapper;
+using ClinicalBackend.Contracts.DTOs;
+using ClinicalBackend.Domain.Entities;
 using ClinicalBackend.Services.Common;
 using ClinicalBackend.Services.Features.FollowUpFeatures.Commands;
 using ClinicalBackend.Services.Features.FollowUpsFeatures.Commands;
@@ -8,9 +11,10 @@ namespace ClinicalBackend.Presentation.Controllers.v1
 {
     public class FollowUpController : BaseApiController
     {
-        public FollowUpController(IMediator mediator) : base(mediator)
+        public FollowUpController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
         {
             _mediator = mediator;
+            _mapper = mapper;
         }
 
         [HttpPost]

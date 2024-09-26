@@ -1,4 +1,5 @@
-﻿using ClinicalBackend.Domain.Entities;
+﻿using AutoMapper;
+using ClinicalBackend.Domain.Entities;
 using ClinicalBackend.Services.Common;
 using ClinicalBackend.Services.Features.FollowUps;
 using Domain.Interfaces;
@@ -21,10 +22,14 @@ namespace ClinicalBackend.Services.Features.FollowUpFeatures.Commands
     public class GetFollowUpByIdHandler : IRequestHandler<GetFollowUpByIdCommand, Result<GetFollowUpByIdResponse>>
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public GetFollowUpByIdHandler(IUnitOfWork unitOfWork)
+
+        public GetFollowUpByIdHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
+
         }
 
         public async Task<Result<GetFollowUpByIdResponse>> Handle(GetFollowUpByIdCommand request, CancellationToken cancellationToken)

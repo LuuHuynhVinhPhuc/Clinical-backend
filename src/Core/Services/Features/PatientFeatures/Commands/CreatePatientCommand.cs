@@ -65,6 +65,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
                 Address = command.Address,
                 PhoneNumber = command.PhoneNumber,
                 Age = age,
+                CheckStatus = "not_examined"
             };
 
             // Add to repository

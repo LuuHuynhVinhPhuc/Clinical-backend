@@ -7,7 +7,7 @@ using MediatR;
 
 namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 {
-    public class FindWithPhoneNumberCommands : IRequest<Result<FindWithPhoneReponse>>
+    public class GetPatientbyPhoneNumber : IRequest<Result<FindWithPhoneReponse>>
     {
         public string PhoneNumber { get; set; }
     }
@@ -17,7 +17,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
         public List<Patient> Patient { get; set; }
     }
     // Task
-    public class FindWithPhoneNumberHandler : IRequestHandler<FindWithPhoneNumberCommands, Result<FindWithPhoneReponse>>
+    public class FindWithPhoneNumberHandler : IRequestHandler<GetPatientbyPhoneNumber, Result<FindWithPhoneReponse>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -26,13 +26,13 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Result<FindWithPhoneReponse>> Handle(FindWithPhoneNumberCommands request, CancellationToken cancellationToken)
+        public async Task<Result<FindWithPhoneReponse>> Handle(GetPatientbyPhoneNumber request, CancellationToken cancellationToken)
         {
             var patient = await _unitOfWork.Patient.FindWithPhoneNumberAsync(request.PhoneNumber).ConfigureAwait(false);
 
             // check exist
             if (patient == null)
-                return Result.Failure<FindWithPhoneReponse>(PatientError.NotFoundPhone(request.PhoneNumber.ToString()));
+                return Result.Failure<FindWithPhoneReponse>(PatientError.PhoneNotFound(request.PhoneNumber.ToString()));
 
             var res = new FindWithPhoneReponse { Patient = new List<Patient> { patient } };
             return Result.Success(res);

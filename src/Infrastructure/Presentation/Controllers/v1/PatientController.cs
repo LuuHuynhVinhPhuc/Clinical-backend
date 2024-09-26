@@ -26,7 +26,7 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         [HttpGet]
         public async Task<IActionResult> GetAllPatientAsync([FromQuery] int page = 1, [FromQuery] int limit = 5)
         {
-            var result = await _mediator.Send(new GetAllPatientAsync { Page = page, Limit = limit }).ConfigureAwait(false);
+            var result = await _mediator.Send(new GetAllPatientCommands { Page = page, Limit = limit }).ConfigureAwait(false);
             return result.Match(
                 onSuccess: () => Result.Ok(result.Value()),
                 onFailure: error => Result.BadRequest(error));
@@ -36,7 +36,7 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         [HttpGet("Phone/{Phone}")]
         public async Task<IActionResult> GetPatientbyPhoneNumberAsync(string Phone)
         {
-            var res = await _mediator.Send(new FindWithPhoneNumberCommands { PhoneNumber = Phone }).ConfigureAwait(false);
+            var res = await _mediator.Send(new GetPatientbyPhoneNumber { PhoneNumber = Phone }).ConfigureAwait(false);
             return res.Match(
                 onSuccess: () => Result.Ok(res.Value()),
                 onFailure: error => Result.BadRequest(error)); 
@@ -54,9 +54,9 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         }
 
         [HttpDelete("ID")]
-        public async Task<IActionResult> DeletePatientIDAsync(Guid ID)
+        public async Task<IActionResult> DeletePatientbyIDAsync(Guid ID)
         {
-            var res = await _mediator.Send(new DeletePatientWithIDCommand { ID = ID }).ConfigureAwait(false);
+            var res = await _mediator.Send(new DeletePatientbyIDCommand { ID = ID }).ConfigureAwait(false);
             return res.Match(
                 onSuccess: () => Result.Ok(res.Value()),
                 onFailure: error => Result.BadRequest(error));         

@@ -36,7 +36,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
             var patient = await _unitOfWork.Patient.GetByIdAsync(command.Id).ConfigureAwait(false);
 
             if (patient == null)
-                return Result.Failure<UpdatePatientResponse>(PatientError.NotFoundID(command.Id));
+                return Result.Failure<UpdatePatientResponse>(PatientError.IDNotFound(command.Id));
 
             if (!DateOnly.TryParseExact(command.dob, "dd-MM-yyyy", out DateOnly dob))
             {

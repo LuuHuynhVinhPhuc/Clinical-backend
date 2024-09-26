@@ -5,7 +5,7 @@ using MediatR;
 
 namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 {
-    public class GetAllPatientAsync : IRequest<Result<GetAllPatientResponse>>
+    public class GetAllPatientCommands : IRequest<Result<GetAllPatientResponse>>
     {
         // default pagnigation params
         public int Page { get; set; } = 1; 
@@ -25,7 +25,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
         public int TotalPages { get; set; }
     }
     // Task
-    public class GetAllPatientHandler : IRequestHandler<GetAllPatientAsync, Result<GetAllPatientResponse>>
+    public class GetAllPatientHandler : IRequestHandler<GetAllPatientCommands, Result<GetAllPatientResponse>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -33,7 +33,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
         {
             _unitOfWork = unitOfWork;
         }
-        public async Task<Result<GetAllPatientResponse>> Handle(GetAllPatientAsync request, CancellationToken cancellationToken)
+        public async Task<Result<GetAllPatientResponse>> Handle(GetAllPatientCommands request, CancellationToken cancellationToken)
         {
             // get all patient
             var patients = await _unitOfWork.Patient.GetAllAsync(request.Page, request.Limit).ConfigureAwait(false);

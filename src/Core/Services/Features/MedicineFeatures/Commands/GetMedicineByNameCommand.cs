@@ -26,17 +26,15 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
         {
             var medicines = await _unitOfWork.Medicines.SearchByNameAsync(request.Name, request.PageNumber, request.PageSize);
             
-            var totalItems = await _unitOfWork.Medicines.GetTotalCountAsync().ConfigureAwait(false);
-
             var response = new QueryMedicinesResponse
             {
                 Medicines = medicines.ToList(),
                 Pagination = new PaginationInfo
                 {
-                    TotalItems = totalItems,
+                    TotalItems = medicines.Count(),
                     TotalItemsPerPage = request.PageSize,
                     CurrentPage = request.PageNumber,
-                    TotalPages = (int)Math.Ceiling((double)totalItems / request.PageSize)
+                    TotalPages = (int)Math.Ceiling((double)medicines.Count() / request.PageSize)
                 }
             };
             

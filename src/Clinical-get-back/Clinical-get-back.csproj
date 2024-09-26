@@ -11,6 +11,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="AutoMapper" Version="13.0.1" />
 		<PackageReference Include="MediatR" Version="12.4.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.7">
 		  <PrivateAssets>all</PrivateAssets>
@@ -33,6 +34,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Core\Services\Services.csproj" />
+		<ProjectReference Include="..\Core\Contracts\Contracts.csproj" />
 		<ProjectReference Include="..\Infrastructure\Persistence\Persistence.csproj" />
 		<ProjectReference Include="..\Infrastructure\Presentation\Presentation.csproj" />
 	</ItemGroup>

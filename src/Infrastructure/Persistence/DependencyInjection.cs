@@ -1,4 +1,5 @@
-﻿using ClinicalBackend.Domain.Repositories;
+﻿using AutoMapper;
+using ClinicalBackend.Domain.Repositories;
 using ClinicalBackend.Persistence.Context;
 using ClinicalBackend.Persistence.Interceptors;
 using ClinicalBackend.Persistence.Repositories;
@@ -14,10 +15,12 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IMapper, Mapper>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IMedicineRepository, MedicineRepository>();
             services.AddScoped<IPatientRepository, PatientRepository>();
+            services.AddScoped<IPrescriptionRepository, PrescriptionRepository>();
             services.AddScoped<IFollowUpRepository, FollowUpRepository>();
             services.AddScoped<AuditableEntitiesInterceptor>();
 

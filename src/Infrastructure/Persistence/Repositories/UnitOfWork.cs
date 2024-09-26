@@ -12,8 +12,9 @@ namespace ClinicalBackend.Persistence.Repositories
         public IMedicineRepository Medicines { get; }
         public IPatientRepository Patient { get; }
         public IFollowUpRepository FollowUp { get; }
+        public IPrescriptionRepository Prescription { get; }
 
-        public UnitOfWork(ApplicationDbContext context, IUserRepository users, IRoleRepository roles, IMedicineRepository medicines, IPatientRepository patientInfo, IFollowUpRepository followUp)
+        public UnitOfWork(ApplicationDbContext context, IUserRepository users, IRoleRepository roles, IMedicineRepository medicines, IPatientRepository patientInfo, IFollowUpRepository followUp, IPrescriptionRepository prescription)
         {
             _context = context;
             Users = users;
@@ -21,6 +22,7 @@ namespace ClinicalBackend.Persistence.Repositories
             Medicines = medicines;
             Patient = patientInfo;
             FollowUp = followUp;
+            Prescription = prescription;
         }
 
         public void Dispose()

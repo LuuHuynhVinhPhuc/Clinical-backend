@@ -18,13 +18,16 @@ namespace ClinicalBackend.Persistence.Repositories
                 .OrderByDescending(f => f.CreatedAt)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
+                .Include(f => f.Patient)
                 .ToListAsync()
                 .ConfigureAwait(false);
         }
 
         public async Task<FollowUp> GetByIdAsync(Guid Id)
         {
-            return await dbSet.FindAsync(Id).ConfigureAwait(false);
+            return await dbSet.Include(f => f.Patient)
+                .FirstOrDefaultAsync(p => p.Id == Id)
+                .ConfigureAwait(false);
         }
 
         public async Task<int> GetTotalCountAsync() // Add this method

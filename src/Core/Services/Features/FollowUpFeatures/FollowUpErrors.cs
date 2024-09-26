@@ -9,5 +9,8 @@ namespace ClinicalBackend.Services.Features.FollowUps
 
         public static Error NotFound(string Id) => new Error(
         "FollowUp.NotFound", $"The follow-up with ID '{Id}' was not found");
+
+        public static Error FollowUpNotExists(Guid id) => new Error(
+           "FollowUp.NotFound", $"No medical record found for patient ID: {id}");
     }
 }

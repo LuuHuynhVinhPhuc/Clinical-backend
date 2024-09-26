@@ -6,12 +6,18 @@ namespace ClinicalBackend.Domain.Entities
     public class FollowUp : BaseEntitty<Guid>, IAuditable
     {
         public Guid? PatientId { get; set; }
+
         //Tổng quát
-        public string? CheckUp { get; set; }
+        public string? Reason { get; set; }
+
         //Tiền căn
         public string? History { get; set; }
+
         //Chuẩn đoán
         public string? Diagnosis { get; set; }
+
+        public string? Summary { get; set; }
+
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
 

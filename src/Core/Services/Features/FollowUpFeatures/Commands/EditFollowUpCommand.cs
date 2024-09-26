@@ -7,10 +7,11 @@ namespace ClinicalBackend.Services.Features.FollowUpsFeatures.Commands
 {
     public class EditFollowUpCommand : IRequest<Result<FollowUpEditedResponse>>
     {
-        public Guid Id;
-        public string? CheckUp { get; set; }
+        public Guid Id { get; set; }
+        public string? Reason { get; set; }
         public string? History { get; set; }
         public string? Diagnosis { get; set; }
+        public string? Summary { get; set; } // Added Summary property
     }
 
     public class FollowUpEditedResponse
@@ -35,13 +36,12 @@ namespace ClinicalBackend.Services.Features.FollowUpsFeatures.Commands
                 return Result.Failure<FollowUpEditedResponse>(FollowUpErrors.NotFound(command.Id.ToString()));
             }
 
-            existingFollowUp.CheckUp = command.CheckUp;
+            existingFollowUp.Reason = command.Reason;
             existingFollowUp.History = command.History;
             existingFollowUp.Diagnosis = command.Diagnosis;
+            existingFollowUp.Summary = command.Summary; // Update Summary
 
-            // Save changes to the repository
             await _unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-
             var response = new FollowUpEditedResponse() { Response = "Follow-up edited successfully" };
 
             return Result.Success(response);

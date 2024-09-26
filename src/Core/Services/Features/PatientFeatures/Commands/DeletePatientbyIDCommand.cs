@@ -4,7 +4,7 @@ using MediatR;
 
 namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 {
-    public class DeletePatientWithIDCommand : IRequest<Result<DeletePatientWithIDResponse>>
+    public class DeletePatientbyIDCommand : IRequest<Result<DeletePatientWithIDResponse>>
     {
         public Guid ID { get; set; }
     }
@@ -14,7 +14,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
         public string response { get; set; }
     }
     // task 
-    public class DeletewithIDHandler : IRequestHandler<DeletePatientWithIDCommand, Result<DeletePatientWithIDResponse>>
+    public class DeletewithIDHandler : IRequestHandler<DeletePatientbyIDCommand, Result<DeletePatientWithIDResponse>>
     {
         private readonly IUnitOfWork _unitOfWork;
         public DeletewithIDHandler(IUnitOfWork unitOfWork)
@@ -22,12 +22,12 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Result<DeletePatientWithIDResponse>> Handle(DeletePatientWithIDCommand request, CancellationToken cancellationToken)
+        public async Task<Result<DeletePatientWithIDResponse>> Handle(DeletePatientbyIDCommand request, CancellationToken cancellationToken)
         {
             // find all patient 
             var patient = await _unitOfWork.Patient.GetByIdAsync(request.ID).ConfigureAwait(false);
             if (patient == null)
-                return Result.Failure<DeletePatientWithIDResponse>(PatientError.NotFoundID(request.ID));
+                return Result.Failure<DeletePatientWithIDResponse>(PatientError.IDNotFound(request.ID));
 
             // remove patient when it exits
             _unitOfWork.Patient.Remove(patient);

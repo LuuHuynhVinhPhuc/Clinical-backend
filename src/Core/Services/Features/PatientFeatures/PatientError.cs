@@ -10,15 +10,15 @@ namespace ClinicalBackend.Services.Features.PatientFeatures
         "Patient.NotFound", $"Patient with the name '{Name}' was not found");
 
         // Patient phone number is not exist
-        public static Error NotFoundPhone(string phone) => new Error(
+        public static Error PhoneNotFound(string phone) => new Error(
         "Patient.NotFound", $"Patient with the phone number '{phone}' was not found");
 
         // Patient phone number is already used
-        public static Error AlreadyExistPhone(string phone) => new Error(
+        public static Error PhoneAlreadyExisted(string phone) => new Error(
             "Patient.ExistPhoneNumber", $"Phone number: {phone} has already been used by another patient");
 
         // Patient ID is not exist
-        public static Error NotFoundID(Guid ID) => new Error(
+        public static Error IDNotFound(Guid ID) => new Error(
         "Patient.NotFound", $"Patient with the ID '{ID}' was not found");
 
         // Invalid date of birth format

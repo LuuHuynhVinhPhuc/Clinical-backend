@@ -42,7 +42,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 
             if (phone != null) // check existing number
             {
-                return Result.Failure<PatientCreatedResponse>(PatientError.AlreadyExistPhone(command.PhoneNumber));
+                return Result.Failure<PatientCreatedResponse>(PatientError.PhoneAlreadyExisted(command.PhoneNumber));
             }
 
             if (!DateOnly.TryParseExact(command.DOB, "dd-MM-yyyy", out DateOnly dob)) // check date time format
@@ -65,6 +65,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
                 Address = command.Address,
                 PhoneNumber = command.PhoneNumber,
                 Age = age,
+                CheckStatus = "not_examined"
             };
 
             // Add to repository

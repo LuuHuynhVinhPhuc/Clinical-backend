@@ -14,5 +14,11 @@ namespace ClinicalBackend.Domain.Entities
         // Get DateTime for signin 
         public DateTime CreatedAt { get; set; } // Ngày tạo 
         public DateTime ModifiedAt { get; set; }  // Thời gian sửa
+
+        // advance property
+        public string CheckStatus { get; set; } // đã khám hay 
+
+        //public string Discharge { get; set; }  // xuất viện 
+
     }
 }

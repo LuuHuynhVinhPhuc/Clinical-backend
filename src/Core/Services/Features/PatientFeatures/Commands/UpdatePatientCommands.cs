@@ -11,6 +11,8 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
         public string dob { get; set; }
         public string address { get; set; }
         public string? phoneNumber { get; set; }
+
+        public string CheckStatus { get; set; }
     }
 
     public class UpdatePatientResponse
@@ -34,7 +36,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
             var patient = await _unitOfWork.Patient.GetByIdAsync(command.Id).ConfigureAwait(false);
 
             if (patient == null)
-                return Result.Failure<UpdatePatientResponse>(PatientError.NotFoundID(command.Id));
+                return Result.Failure<UpdatePatientResponse>(PatientError.IDNotFound(command.Id));
 
             if (!DateOnly.TryParseExact(command.dob, "dd-MM-yyyy", out DateOnly dob))
             {
@@ -55,6 +57,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
             patient.Address = command.address;
             patient.PhoneNumber = command.phoneNumber;
             patient.ModifiedAt = DateTime.UtcNow;
+            patient.CheckStatus = command.CheckStatus;
 
             // reponse result
 

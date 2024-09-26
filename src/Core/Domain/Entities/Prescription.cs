@@ -1,18 +1,20 @@
 ﻿using Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Domain.Interfaces;
 
 namespace ClinicalBackend.Domain.Entities
 {
-    public class Prescription : BaseEntitty<int>
+    public class Prescription : BaseEntitty<int>, IAuditable
     {
-        public string name { get; set; }
+        public Guid PatientID { get; set; }
+
+        public ICollection<Guid> Medicines { get; set; }
         
 
+        public DateTime CreatedAt { get; set; }
+        public DateTime ModifiedAt { get; set; }
 
-        public Guid PatientID { get; set; }
+        //Navigation property
+        public virtual Medicine Medicine { get; set; }
+        public virtual Patient Patient { get; set; }
     }
 }

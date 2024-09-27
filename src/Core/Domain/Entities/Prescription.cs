@@ -6,8 +6,6 @@ namespace ClinicalBackend.Domain.Entities
     public class Prescription : BaseEntitty<int>, IAuditable
     {
         public Guid PatientID { get; set; }
-
-        public ICollection<Guid> Medicines { get; set; }
         
 
         public DateTime CreatedAt { get; set; }

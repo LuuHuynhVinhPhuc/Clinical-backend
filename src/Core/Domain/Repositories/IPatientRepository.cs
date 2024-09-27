@@ -13,7 +13,7 @@ namespace ClinicalBackend.Domain.Repositories
 
         // search with phone number 
         Task<Patient> FindWithPhoneNumberAsync(string phoneNumber);
-        Task<int> GetTotalCountAsync(); 
-
+        Task<int> GetTotalCountAsync();
+        Task<IEnumerable<Patient>> GetPatientByDateAsync(DateTime dateStart, DateTime dateEnd);
     }
 }

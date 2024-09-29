@@ -42,6 +42,16 @@ namespace ClinicalBackend.Presentation.Controllers.v1
                 onFailure: error => Result.BadRequest(error)); 
         }
 
+        // Get patient by date
+        [HttpGet("{DateStart}/{DateEnd}")]
+        public async Task<IActionResult> GetPatientByDateAsync(DateTime dateStart, DateTime dateEnd)
+        {
+            var res = await _mediator.Send(new GetPatientByDateCommand { DateStart = dateStart, DateEnd = dateEnd }).ConfigureAwait(false);
+            return res.Match(
+                onSuccess: () => Result.Ok(res.Value()),
+                onFailure: error => Result.BadRequest(error));
+        }
+
         // Update patient infomation
         [HttpPut("{ID}")]
         public async Task<IActionResult> UpdatePatientDetailsAsync(Guid ID, [FromBody] UpdatePatientCommands command)

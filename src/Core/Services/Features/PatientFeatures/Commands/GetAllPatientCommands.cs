@@ -2,6 +2,7 @@
 using ClinicalBackend.Services.Common;
 using Domain.Interfaces;
 using MediatR;
+using System.Globalization;
 
 namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 {

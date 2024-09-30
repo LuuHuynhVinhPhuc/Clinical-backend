@@ -3,7 +3,8 @@ using Domain.Interfaces;
 using MediatR;
 using ClinicalBackend.Domain.Entities;
 using System;
-using Microsoft.EntityFrameworkCore; // Add this at the top of the file
+using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 {
@@ -31,8 +32,8 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
         public async Task<Result<GetPatientByDateResponse>> Handle(GetPatientByDateCommand request, CancellationToken cancellationToken)
         {
 
-            var dateStart = DateTime.ParseExact(request.DateStart, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.AdjustToUniversal);
-            var dateEnd = DateTime.ParseExact(request.DateEnd, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.AdjustToUniversal);
+            var dateStart = DateTime.ParseExact(request.DateStart, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
+            var dateEnd = DateTime.ParseExact(request.DateEnd, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
 
 
             var patients = await _unitOfWork.Patient.GetByCondition(p =>

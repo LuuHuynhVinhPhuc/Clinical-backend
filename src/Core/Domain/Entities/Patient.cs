@@ -18,6 +18,7 @@ namespace ClinicalBackend.Domain.Entities
         // advance property
         public string CheckStatus { get; set; } // đã khám hay 
 
+        public ICollection<FollowUp> FollowUps { get; set; }  // điều hướng 
         //public string Discharge { get; set; }  // xuất viện 
 
     }

@@ -17,7 +17,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 
     public class GetByIDResponse
     {
-        public List<Patient> Patient { get; set; }
+        public Patient Patient { get; set; }
     }
 
     // Task 
@@ -37,7 +37,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
             if (patient == null)
                 return Result.Failure<GetByIDResponse>(PatientError.IDNotFound(request.ID));
 
-            var res = new GetByIDResponse() { Patient = new List<Patient> { patient } };
+            var res = new GetByIDResponse() { Patient = patient };
             return Result.Success(res);
         }
     }

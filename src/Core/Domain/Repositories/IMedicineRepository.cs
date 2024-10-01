@@ -9,6 +9,6 @@ namespace ClinicalBackend.Domain.Repositories
         Task<IEnumerable<Medicine>> GetAllAsync(int pageNumber, int pageSize);
         Task<Medicine> GetByIdAsync(Guid Id);
         Task<int> GetTotalCountAsync(); 
-
+        Task<int> GetTotalCountByNameAsync(string Name);
     }
 }

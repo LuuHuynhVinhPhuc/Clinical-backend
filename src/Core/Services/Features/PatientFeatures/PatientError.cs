@@ -28,7 +28,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures
         public static readonly Error InputDateInvalidFormat = new Error("Patient.InputDateInvalid", "Input date is not in the right format");
 
         // No patient found for the given date
-        public static Error NoPatientFoundForDate(DateTime date) => new Error(
-        "Patient.NotFound", $"No patient found for the date: {date.ToShortDateString()}");
+        public static Error NoPatientFoundForDate(string date) => new Error(
+        "Patient.NotFound", $"No patient found for the date: {date}");
     }
 }

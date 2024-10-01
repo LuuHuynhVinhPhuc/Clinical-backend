@@ -2,6 +2,7 @@
 using ClinicalBackend.Services.Common;
 using Domain.Interfaces;
 using MediatR;
+using System.Globalization;
 
 namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 {
@@ -41,7 +42,19 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 
             var res = new GetAllPatientResponse()
             {
-                Patient = patients.ToList(),
+                Patient = patients.Select(p => new Patient
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Age = p.Age,
+                    DOB = p.DOB,
+                    Address = p.Address,
+                    PhoneNumber = p.PhoneNumber,
+                    CreatedAt = p.CreatedAt,
+                    ModifiedAt = p.ModifiedAt,
+                    CheckStatus = p.CheckStatus,
+                    FollowUps = p.FollowUps
+                }).ToList(),
                 Pagination = new PaginationInfo
                 {
                     TotalItems = totalItems,
@@ -53,5 +66,10 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 
             return Result.Success(res);
         }
+
+        // private DateOnly ConvertToDateOnly(DateOnly dateTime){
+        //     DateOnly date = DateOnly.ParseExact(dateTime.ToString(), "dd-MM-yyyy", CultureInfo.InvariantCulture);
+        //     return date;
+        // }
     }
 }

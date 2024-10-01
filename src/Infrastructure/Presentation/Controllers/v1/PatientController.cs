@@ -19,7 +19,7 @@ namespace ClinicalBackend.Presentation.Controllers.v1
             var result = await _mediator.Send(command).ConfigureAwait(false);
             return result.Match(
                 onSuccess: () => Result.Ok(result.Value()),
-                onFailure: error => Result.BadRequest(error)); 
+                onFailure: error => Result.BadRequest(error));
         }
 
         // Find all Patients and show it with JSON list
@@ -32,6 +32,16 @@ namespace ClinicalBackend.Presentation.Controllers.v1
                 onFailure: error => Result.BadRequest(error));
         }
 
+        // Find patient with ID
+        [HttpGet("ID")]
+        public async Task<IActionResult> GetPatientbyIDAsync([FromQuery] Guid id)
+        {
+            var result = await _mediator.Send(new GetPatientByIDCommand { ID = id }).ConfigureAwait(false);
+            return result.Match(
+                onSuccess: () => Result.Ok(result.Value()),
+                onFailure: error => Result.BadRequest(error));
+        }
+
         // Find patient with Phone number and show it
         [HttpGet("Phone/{Phone}")]
         public async Task<IActionResult> GetPatientbyPhoneNumberAsync(string Phone)
@@ -39,12 +49,12 @@ namespace ClinicalBackend.Presentation.Controllers.v1
             var res = await _mediator.Send(new GetPatientbyPhoneNumber { PhoneNumber = Phone }).ConfigureAwait(false);
             return res.Match(
                 onSuccess: () => Result.Ok(res.Value()),
-                onFailure: error => Result.BadRequest(error)); 
+                onFailure: error => Result.BadRequest(error));
         }
 
         // Get patient by date
-        [HttpGet("{DateStart}/{DateEnd}")]
-        public async Task<IActionResult> GetPatientByDateAsync(DateTime dateStart, DateTime dateEnd)
+        [HttpGet("Date")]
+        public async Task<IActionResult> GetPatientByDateAsync([FromQuery] string dateStart, [FromQuery] string dateEnd)
         {
             var res = await _mediator.Send(new GetPatientByDateCommand { DateStart = dateStart, DateEnd = dateEnd }).ConfigureAwait(false);
             return res.Match(
@@ -60,7 +70,7 @@ namespace ClinicalBackend.Presentation.Controllers.v1
             var res = await _mediator.Send(command).ConfigureAwait(false);
             return res.Match(
                 onSuccess: () => Result.Ok(res.Value()),
-                onFailure: error => Result.BadRequest(error)); 
+                onFailure: error => Result.BadRequest(error));
         }
 
         [HttpDelete("ID")]
@@ -69,7 +79,7 @@ namespace ClinicalBackend.Presentation.Controllers.v1
             var res = await _mediator.Send(new DeletePatientbyIDCommand { ID = ID }).ConfigureAwait(false);
             return res.Match(
                 onSuccess: () => Result.Ok(res.Value()),
-                onFailure: error => Result.BadRequest(error));         
+                onFailure: error => Result.BadRequest(error));
         }
     }
 }

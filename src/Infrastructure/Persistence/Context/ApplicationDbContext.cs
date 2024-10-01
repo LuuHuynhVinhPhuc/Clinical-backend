@@ -22,6 +22,12 @@ namespace ClinicalBackend.Persistence.Context
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Patient>()
+                .HasMany(p => p.FollowUps)
+                .WithOne(f => f.Patient)
+                .HasForeignKey(f => f.PatientId)
+                .OnDelete(DeleteBehavior.Cascade);  // Cascade delete
         }
     }
 }

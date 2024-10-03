@@ -3,15 +3,14 @@ using ClinicalBackend.Services.Common;
 using Domain.Interfaces;
 using MediatR;
 using System.Globalization;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 {
     public class GetAllPatientCommands : IRequest<Result<GetAllPatientResponse>>
     {
         // default pagnigation params
-        public int Page { get; set; } = 1; 
-        public int Limit { get; set; } = 5;  
+        public int Page { get; set; } = 1;
+        public int Limit { get; set; } = 5;
     }
 
     public class GetAllPatientResponse()
@@ -71,8 +70,9 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 
         private DateOnly ConvertToDateOnly(DateOnly dateTime)
         {
-            bool isParsed = DateOnly.TryParseExact(dateTime.ToString(), "dd-MM-yyyy", out DateOnly date);
-            return isParsed ? date : dateTime; // Return parsed date if successful, otherwise return original dateTime
+            // Return parsed date if successful, otherwise return original dateTime
+            DateOnly res = DateOnly.ParseExact(dateTime.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            return res;
         }
     }
 }

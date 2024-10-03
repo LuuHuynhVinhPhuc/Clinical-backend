@@ -52,6 +52,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 
             // save data in Client 
             patient.Name = command.name;
+            // Update DOB only if it has changed
             patient.DOB = dob;
             patient.Age = age;
             patient.Address = command.address;

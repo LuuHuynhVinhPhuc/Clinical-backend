@@ -5,7 +5,6 @@ using ClinicalBackend.Domain.Entities;
 using System;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 {
@@ -32,28 +31,24 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 
         public async Task<Result<GetPatientByDateResponse>> Handle(GetPatientByDateCommand request, CancellationToken cancellationToken)
         {
-            DateOnly dateStart, dateEnd;
+            // convert to DateTime
+            DateTime dateStart = DateTime.Parse(request.DateStart).ToUniversalTime();
+            DateTime dateEnd = DateTime.Parse(request.DateEnd).ToUniversalTime();
+            
+            // check valid date 
 
-            if (!DateOnly.TryParseExact(request.DateStart, "dd-MM-yyyy 00:00", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateStart) ||
-                !DateOnly.TryParseExact(request.DateEnd, "dd-MM-yyyy 00:00", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateEnd))
+            if (dateStart > dateEnd) 
             {
                 return Result.Failure<GetPatientByDateResponse>(PatientError.InputDateInvalidFormat);
             }
 
-            if (dateStart > dateEnd)
-            {
-                return Result.Failure<GetPatientByDateResponse>(PatientError.InvalidDateRange);
-            }
-
-            var patients = await _unitOfWork.Patient.GetByCondition(p =>
-                p.CreatedAt.Date >= dateStart.ToDateTime(TimeOnly.MinValue)
-                && p.CreatedAt.Date <= dateEnd.ToDateTime(TimeOnly.MinValue)
-                && p.CheckStatus == "examined").ToListAsync(cancellationToken).ConfigureAwait(false);
+            // how to get patient list depend on date Start and date End?
+            var patients = await _unitOfWork.Patient.GetPatientByDateAsync(dateStart, dateEnd).ConfigureAwait(false);
 
             return Result.Success(new GetPatientByDateResponse
             {
-                TotalPatient = patients.Count,
-                Patients = patients
+                TotalPatient = patients.Count(),
+                Patients = patients.ToList()
             });
         }
     }

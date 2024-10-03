@@ -34,8 +34,8 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
         {
             DateOnly dateStart, dateEnd;
 
-            if (!DateOnly.TryParseExact(request.DateStart, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateStart) ||
-                !DateOnly.TryParseExact(request.DateEnd, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateEnd))
+            if (!DateOnly.TryParseExact(request.DateStart, "dd-MM-yyyy 00:00", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateStart) ||
+                !DateOnly.TryParseExact(request.DateEnd, "dd-MM-yyyy 00:00", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateEnd))
             {
                 return Result.Failure<GetPatientByDateResponse>(PatientError.InputDateInvalidFormat);
             }

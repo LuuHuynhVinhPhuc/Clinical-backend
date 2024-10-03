@@ -3,6 +3,7 @@ using ClinicalBackend.Services.Common;
 using Domain.Interfaces;
 using MediatR;
 using System.Globalization;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 {
@@ -47,7 +48,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
                     Id = p.Id,
                     Name = p.Name,
                     Age = p.Age,
-                    DOB = p.DOB,
+                    DOB = ConvertToDateOnly(p.DOB),
                     Address = p.Address,
                     PhoneNumber = p.PhoneNumber,
                     CreatedAt = p.CreatedAt,
@@ -55,6 +56,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
                     CheckStatus = p.CheckStatus,
                     FollowUps = p.FollowUps
                 }).ToList(),
+
                 Pagination = new PaginationInfo
                 {
                     TotalItems = totalItems,
@@ -67,9 +69,10 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
             return Result.Success(res);
         }
 
-        // private DateOnly ConvertToDateOnly(DateOnly dateTime){
-        //     DateOnly date = DateOnly.ParseExact(dateTime.ToString(), "dd-MM-yyyy", CultureInfo.InvariantCulture);
-        //     return date;
-        // }
+        private DateOnly ConvertToDateOnly(DateOnly dateTime)
+        {
+            bool isParsed = DateOnly.TryParseExact(dateTime.ToString(), "dd-MM-yyyy", out DateOnly date);
+            return isParsed ? date : dateTime; // Return parsed date if successful, otherwise return original dateTime
+        }
     }
 }

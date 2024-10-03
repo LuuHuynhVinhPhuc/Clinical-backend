@@ -5,6 +5,7 @@ using ClinicalBackend.Domain.Entities;
 using System;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 {
@@ -31,20 +32,28 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 
         public async Task<Result<GetPatientByDateResponse>> Handle(GetPatientByDateCommand request, CancellationToken cancellationToken)
         {
+            DateOnly dateStart, dateEnd;
 
-            var dateStart = DateTime.ParseExact(request.DateStart, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
-            var dateEnd = DateTime.ParseExact(request.DateEnd, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
+            if (!DateOnly.TryParseExact(request.DateStart, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateStart) ||
+                !DateOnly.TryParseExact(request.DateEnd, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateEnd))
+            {
+                return Result.Failure<GetPatientByDateResponse>(PatientError.InputDateInvalidFormat);
+            }
 
+            if (dateStart > dateEnd)
+            {
+                return Result.Failure<GetPatientByDateResponse>(PatientError.InvalidDateRange);
+            }
 
             var patients = await _unitOfWork.Patient.GetByCondition(p =>
-                p.CreatedAt.Date >= dateStart
-                && p.CreatedAt.Date <= dateEnd
+                p.CreatedAt.Date >= dateStart.ToDateTime(TimeOnly.MinValue)
+                && p.CreatedAt.Date <= dateEnd.ToDateTime(TimeOnly.MinValue)
                 && p.CheckStatus == "examined").ToListAsync(cancellationToken).ConfigureAwait(false);
 
-            return Result.Success<GetPatientByDateResponse>(new GetPatientByDateResponse
+            return Result.Success(new GetPatientByDateResponse
             {
                 TotalPatient = patients.Count,
-                Patients = patients.ToList()
+                Patients = patients
             });
         }
     }

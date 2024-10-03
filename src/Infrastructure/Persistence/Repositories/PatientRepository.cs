@@ -53,10 +53,15 @@ namespace ClinicalBackend.Persistence.Repositories
         }
 
         // Get patient by date start and date end and check status is "examined"
-        public async Task<IEnumerable<Patient>> GetPatientByDateAsync(DateTime dateStart, DateTime dateEnd)
+        public async Task<IEnumerable<Patient>> GetPatientByDateAsync(DateTime dateStart, DateTime dateEnd, int pageNumber, int pageSize)
         {
-            return await dbSet.Where(p => p.CreatedAt >= dateStart && p.CreatedAt <= dateEnd && p.CheckStatus == "examined")
-                .ToListAsync().ConfigureAwait(false);
+            return await dbSet
+                .Where(p => p.CreatedAt >= dateStart && p.CreatedAt <= dateEnd && p.CheckStatus == "examined")
+                .OrderByDescending(p => p.CreatedAt)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync()
+                .ConfigureAwait(false);
         }
     }
 }

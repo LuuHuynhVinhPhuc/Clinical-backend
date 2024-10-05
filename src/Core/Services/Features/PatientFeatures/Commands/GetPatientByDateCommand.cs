@@ -44,34 +44,41 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 
         public async Task<Result<GetPatientByDateResponse>> Handle(GetPatientByDateCommand request, CancellationToken cancellationToken)
         {
-            // convert to DateTime
-            DateTime dateStart = DateTime.Parse(request.DateStart).ToUniversalTime();
-            DateTime dateEnd = DateTime.Parse(request.DateEnd).ToUniversalTime();
+            try
+            {
+                // convert to DateTime with format dd-MM-yyyy
+                DateTime dateStart = DateTime.ParseExact(request.DateStart, "dd-MM-yyyy", CultureInfo.InvariantCulture).ToUniversalTime();
+                DateTime dateEnd = DateTime.ParseExact(request.DateEnd, "dd-MM-yyyy", CultureInfo.InvariantCulture).ToUniversalTime();
 
-            var totalItems = await _unitOfWork.Patient.GetTotalCountAsync().ConfigureAwait(false);
+                var totalItems = await _unitOfWork.Patient.GetTotalCountAsync().ConfigureAwait(false);
 
-            // check valid date 
+                // check valid date 
 
-            if (dateStart > dateEnd)
+                if (dateStart > dateEnd)
+                {
+                    return Result.Failure<GetPatientByDateResponse>(PatientError.InputDateInvalidFormat);
+                }
+
+                // how to get patient list depend on date Start and date End?
+                var patients = await _unitOfWork.Patient.GetPatientByDateAsync(dateStart, dateEnd, request.Page, request.Limit).ConfigureAwait(false);
+
+                return Result.Success(new GetPatientByDateResponse
+                {
+                    Patients = patients.ToList(),
+
+                    Pagination = new PaginationsInfo
+                    {
+                        TotalItems = totalItems,
+                        TotalItemsPerPage = request.Page,
+                        CurrentPage = request.Limit,
+                        TotalPages = (int)Math.Ceiling((double)totalItems / request.Limit)
+                    }
+                });
+            }
+            catch (FormatException)
             {
                 return Result.Failure<GetPatientByDateResponse>(PatientError.InputDateInvalidFormat);
             }
-
-            // how to get patient list depend on date Start and date End?
-            var patients = await _unitOfWork.Patient.GetPatientByDateAsync(dateStart, dateEnd, request.Page, request.Limit).ConfigureAwait(false);
-
-            return Result.Success(new GetPatientByDateResponse
-            {
-                Patients = patients.ToList(),
-
-                Pagination = new PaginationsInfo
-                {
-                    TotalItems = totalItems,
-                    TotalItemsPerPage = request.Page,
-                    CurrentPage = request.Limit,
-                    TotalPages = (int)Math.Ceiling((double)totalItems / request.Limit)
-                }
-            });
         }
     }
 }

@@ -15,7 +15,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 
     public class GetAllPatientResponse()
     {
-        public List<Patient> Patient { get; set; }
+        public List<Patient> Patients { get; set; }
         public PaginationInfo Pagination { get; set; }
     }
     public class PaginationInfo
@@ -42,7 +42,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 
             var res = new GetAllPatientResponse()
             {
-                Patient = patients.Select(p => new Patient
+                Patients = patients.Select(p => new Patient
                 {
                     Id = p.Id,
                     Name = p.Name,

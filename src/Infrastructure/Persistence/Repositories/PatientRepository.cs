@@ -3,7 +3,6 @@ using ClinicalBackend.Domain.Repositories;
 using ClinicalBackend.Persistence.Context;
 using Domain.Common;
 using Microsoft.EntityFrameworkCore;
-using System.Threading;
 
 namespace ClinicalBackend.Persistence.Repositories
 {
@@ -44,7 +43,7 @@ namespace ClinicalBackend.Persistence.Repositories
         // Find with Phone number 
         public async Task<Patient> FindWithPhoneNumberAsync(string phoneNumber)
         {
-            return await dbSet.FirstOrDefaultAsync(p => p.PhoneNumber == phoneNumber);
+            return await dbSet.FirstOrDefaultAsync(p => p.PhoneNumber == phoneNumber).ConfigureAwait(false);
         }
 
         public async Task<int> GetTotalCountAsync()

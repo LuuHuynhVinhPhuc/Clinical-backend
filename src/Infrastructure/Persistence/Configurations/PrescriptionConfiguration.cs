@@ -10,13 +10,16 @@ namespace ClinicalBackend.Persistence.Configurations
         {
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
-            builder.Property(x => x.PatientID).IsRequired();
+
+            builder.HasOne(x => x.FollowUp).WithMany().HasForeignKey(x => x.FollowUpID);
+            builder.HasOne(x => x.Patient).WithMany().HasForeignKey(x => x.PatientID);
 
             builder.OwnsMany(p => p.PrescriptionDrugs, pd =>
             {
-                pd.WithOwner().HasForeignKey("PrescriptionId");
-                pd.Property<int>("Id").ValueGeneratedOnAdd();
-                pd.HasKey("Id");
+                pd.WithOwner().HasForeignKey(pd => pd.PrescriptionID);
+                pd.Property(x => x.Id).ValueGeneratedOnAdd();
+                pd.HasKey(x => x.Id);
+                pd.HasOne(x => x.Medicine).WithMany().HasForeignKey(x => x.MedicineID);
             });
         }
     }

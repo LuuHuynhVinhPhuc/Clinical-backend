@@ -43,7 +43,7 @@ namespace ClinicalBackend.Persistence.Repositories
         // Find with Phone number 
         public async Task<Patient> FindWithPhoneNumberAsync(string phoneNumber)
         {
-            return await dbSet.FirstOrDefaultAsync(p => p.PhoneNumber == phoneNumber);
+            return await dbSet.FirstOrDefaultAsync(p => p.PhoneNumber == phoneNumber).ConfigureAwait(false);
         }
 
         public async Task<int> GetTotalCountAsync()
@@ -52,9 +52,15 @@ namespace ClinicalBackend.Persistence.Repositories
         }
 
         // Get patient by date start and date end and check status is "examined"
-        public async Task<IEnumerable<Patient>> GetPatientByDateAsync(DateOnly dateStart, DateOnly dateEnd)
+        public async Task<IEnumerable<Patient>> GetPatientByDateAsync(DateTime dateStart, DateTime dateEnd, int pageNumber, int pageSize)
         {
-            return await dbSet.Where(p => p.CreatedAt.Date >= dateStart.ToDateTime(TimeOnly.MinValue) && p.CreatedAt.Date <= dateEnd.ToDateTime(TimeOnly.MaxValue) && p.CheckStatus == "examined").ToListAsync().ConfigureAwait(false);
+            return await dbSet
+                .Where(p => p.CreatedAt >= dateStart && p.CreatedAt <= dateEnd && p.CheckStatus == "examined")
+                .OrderByDescending(p => p.CreatedAt)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync()
+                .ConfigureAwait(false);
         }
     }
 }

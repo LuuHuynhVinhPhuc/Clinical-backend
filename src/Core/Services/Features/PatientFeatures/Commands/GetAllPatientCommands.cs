@@ -9,13 +9,13 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
     public class GetAllPatientCommands : IRequest<Result<GetAllPatientResponse>>
     {
         // default pagnigation params
-        public int Page { get; set; } = 1; 
-        public int Limit { get; set; } = 5;  
+        public int Page { get; set; } = 1;
+        public int Limit { get; set; } = 5;
     }
 
     public class GetAllPatientResponse()
     {
-        public List<Patient> Patient { get; set; }
+        public List<Patient> Patients { get; set; }
         public PaginationInfo Pagination { get; set; }
     }
     public class PaginationInfo
@@ -42,12 +42,12 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 
             var res = new GetAllPatientResponse()
             {
-                Patient = patients.Select(p => new Patient
+                Patients = patients.Select(p => new Patient
                 {
                     Id = p.Id,
                     Name = p.Name,
                     Age = p.Age,
-                    DOB = p.DOB,
+                    DOB = ConvertToDateOnly(p.DOB),
                     Address = p.Address,
                     PhoneNumber = p.PhoneNumber,
                     CreatedAt = p.CreatedAt,
@@ -55,6 +55,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
                     CheckStatus = p.CheckStatus,
                     FollowUps = p.FollowUps
                 }).ToList(),
+
                 Pagination = new PaginationInfo
                 {
                     TotalItems = totalItems,
@@ -67,9 +68,11 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
             return Result.Success(res);
         }
 
-        // private DateOnly ConvertToDateOnly(DateOnly dateTime){
-        //     DateOnly date = DateOnly.ParseExact(dateTime.ToString(), "dd-MM-yyyy", CultureInfo.InvariantCulture);
-        //     return date;
-        // }
+        private DateOnly ConvertToDateOnly(DateOnly dateTime)
+        {
+            // Return parsed date if successful, otherwise return original dateTime
+            DateOnly res = DateOnly.ParseExact(dateTime.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            return res;
+        }
     }
 }

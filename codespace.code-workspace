@@ -1,0 +1,53 @@
+{
+    "folders": [
+        {
+            "path": "src/Infrastructure/Persistence",
+            "name": "Persistence"
+        },
+        {
+            "path": "src/Infrastructure/Presentation",
+            "name": "Presentation"
+        },
+        {
+            "path": "src/Core/Domain",
+            "name": "Domain"
+        },
+        {
+            "path": "src/Core/Services",
+            "name": "Services"
+        },
+        {
+            "path": "src/Clinical-get-back",
+            "name": "Application"
+        },
+        {
+            "path": ".",
+            "name": "root"
+        }
+    ],
+    "settings": {
+        "editor.formatOnSave": true,
+        "files.associations": {
+            "*.cs": "csharp"
+        },
+        "editor.insertSpaces": true,
+        "editor.detectIndentation": false,
+        "editor.codeActionsOnSave": {
+            "source.fixAll.eslint": "explicit"
+        },
+        "dotnet.diagnostics.enable": true,
+        "dotnet.formatting.enable": true,
+        "[shellscript]": {
+            "editor.defaultFormatter": "shakram02.bash-beautify"
+        }
+    },
+    "extensions": {
+        "recommendations": [
+            "ms-dotnettools.csharp",
+            "editorconfig.editorconfig",
+            "eamodio.gitlens",
+            "esbenp.prettier-vscode",
+            "dbaeumer.vscode-eslint"
+        ]
+    }
+}

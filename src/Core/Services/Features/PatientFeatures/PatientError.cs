@@ -30,5 +30,8 @@ namespace ClinicalBackend.Services.Features.PatientFeatures
         // No patient found for the given date
         public static Error NoPatientFoundForDate(string date) => new Error(
         "Patient.NotFound", $"No patient found for the date: {date}");
+
+        // date start and date end not correct 
+        public static readonly Error InvalidDateRange = new Error("Patient.InvalidDate","Date start and date end are not correct");
     }
 }

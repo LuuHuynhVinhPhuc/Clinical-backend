@@ -138,16 +138,10 @@ namespace ClinicalBackend.Persistence.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Address")
-                        .HasColumnType("text");
-
-                    b.Property<int>("Age")
-                        .HasColumnType("integer");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("MedicineId")
+                    b.Property<Guid>("FollowUpID")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("ModifiedAt")
@@ -156,18 +150,9 @@ namespace ClinicalBackend.Persistence.Migrations
                     b.Property<Guid>("PatientID")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("PatientName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Summary")
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("MedicineId");
+                    b.HasIndex("FollowUpID");
 
                     b.HasIndex("PatientID");
 
@@ -227,9 +212,9 @@ namespace ClinicalBackend.Persistence.Migrations
 
             modelBuilder.Entity("ClinicalBackend.Domain.Entities.Prescription", b =>
                 {
-                    b.HasOne("ClinicalBackend.Domain.Entities.Medicine", "Medicine")
+                    b.HasOne("ClinicalBackend.Domain.Entities.FollowUp", "FollowUp")
                         .WithMany()
-                        .HasForeignKey("MedicineId")
+                        .HasForeignKey("FollowUpID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -250,24 +235,18 @@ namespace ClinicalBackend.Persistence.Migrations
                             b1.Property<Guid>("MedicineID")
                                 .HasColumnType("uuid");
 
-                            b1.Property<int>("Morning")
-                                .HasColumnType("integer");
-
                             b1.Property<string>("Name")
                                 .IsRequired()
                                 .HasColumnType("text");
 
-                            b1.Property<int>("Night")
-                                .HasColumnType("integer");
-
-                            b1.Property<int>("Noon")
-                                .HasColumnType("integer");
-
                             b1.Property<string>("Note")
                                 .HasColumnType("text");
 
-                            b1.Property<int>("PrescriptionId")
+                            b1.Property<int>("PrescriptionID")
                                 .HasColumnType("integer");
+
+                            b1.Property<string>("Time")
+                                .HasColumnType("text");
 
                             b1.Property<string>("Usage")
                                 .HasColumnType("text");
@@ -276,7 +255,7 @@ namespace ClinicalBackend.Persistence.Migrations
 
                             b1.HasIndex("MedicineID");
 
-                            b1.HasIndex("PrescriptionId");
+                            b1.HasIndex("PrescriptionID");
 
                             b1.ToTable("PrescriptionDrug");
 
@@ -287,12 +266,12 @@ namespace ClinicalBackend.Persistence.Migrations
                                 .IsRequired();
 
                             b1.WithOwner()
-                                .HasForeignKey("PrescriptionId");
+                                .HasForeignKey("PrescriptionID");
 
                             b1.Navigation("Medicine");
                         });
 
-                    b.Navigation("Medicine");
+                    b.Navigation("FollowUp");
 
                     b.Navigation("Patient");
 

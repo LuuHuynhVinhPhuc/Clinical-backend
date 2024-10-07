@@ -1,6 +1,7 @@
 ﻿using ClinicalBackend.Domain.Entities;
 using ClinicalBackend.Services.Common;
 using Domain.Interfaces;
+using MapsterMapper;
 using MediatR;
 using System.Globalization;
 
@@ -29,10 +30,11 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
     public class GetAllPatientHandler : IRequestHandler<GetAllPatientCommands, Result<GetAllPatientResponse>>
     {
         private readonly IUnitOfWork _unitOfWork;
-
-        public GetAllPatientHandler(IUnitOfWork unitOfWork)
+        private readonly IMapper _mapper;
+        public GetAllPatientHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _unitOfWork = unitOfWork;
+            _unitOfWork = unitOfWork;            
+            _mapper = mapper;
         }
         public async Task<Result<GetAllPatientResponse>> Handle(GetAllPatientCommands request, CancellationToken cancellationToken)
         {

@@ -4,6 +4,7 @@ using ClinicalBackend.Services.Features.MedicineFeatures.Response;
 using ClinicalBackend.Services.Features.MedicineFeatures;
 using Domain.Interfaces;
 using MediatR;
+using MapsterMapper;
 
 namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 {
@@ -20,10 +21,12 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
     public class FindWithPhoneNumberHandler : IRequestHandler<GetPatientbyPhoneNumber, Result<FindWithPhoneReponse>>
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public FindWithPhoneNumberHandler(IUnitOfWork unitOfWork)
+        public FindWithPhoneNumberHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task<Result<FindWithPhoneReponse>> Handle(GetPatientbyPhoneNumber request, CancellationToken cancellationToken)

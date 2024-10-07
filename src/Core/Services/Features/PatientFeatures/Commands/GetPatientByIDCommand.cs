@@ -1,6 +1,7 @@
 ﻿using ClinicalBackend.Domain.Entities;
 using ClinicalBackend.Services.Common;
 using Domain.Interfaces;
+using MapsterMapper;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -24,10 +25,12 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
     public class GetPatientByIDHandler : IRequestHandler<GetPatientByIDCommand, Result<GetByIDResponse>>
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public GetPatientByIDHandler(IUnitOfWork unitOfWork)
+        public GetPatientByIDHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task<Result<GetByIDResponse>> Handle(GetPatientByIDCommand request, CancellationToken cancellationToken)

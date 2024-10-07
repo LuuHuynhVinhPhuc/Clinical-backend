@@ -1,6 +1,7 @@
 using ClinicalBackend.Services.Common;
 using ClinicalBackend.Services.Features.MedicineFeatures.Response;
 using Domain.Interfaces;
+using MapsterMapper;
 using MediatR;
 
 namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
@@ -14,10 +15,12 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
     public class GetAllMedicineCommandHandler : IRequestHandler<GetAllMedicineCommand, Result<QueryMedicinesResponse>>
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public GetAllMedicineCommandHandler(IUnitOfWork unitOfWork)
+        public GetAllMedicineCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task<Result<QueryMedicinesResponse>> Handle(GetAllMedicineCommand request, CancellationToken cancellationToken)

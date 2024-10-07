@@ -5,6 +5,7 @@ using ClinicalBackend.Domain.Entities;
 using System;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
+using MapsterMapper;
 
 namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 {
@@ -36,10 +37,12 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
     public class GetPatientByDateHandler : IRequestHandler<GetPatientByDateCommand, Result<GetPatientByDateResponse>>
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public GetPatientByDateHandler(IUnitOfWork unitOfWork)
+        public GetPatientByDateHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task<Result<GetPatientByDateResponse>> Handle(GetPatientByDateCommand request, CancellationToken cancellationToken)

@@ -1,6 +1,7 @@
 using ClinicalBackend.Domain.Entities;
 using ClinicalBackend.Services.Common;
 using Domain.Interfaces;
+using MapsterMapper;
 using MediatR;
 
 namespace ClinicalBackend.Services.Features.FollowUpsFeatures.Commands
@@ -16,6 +17,7 @@ namespace ClinicalBackend.Services.Features.FollowUpsFeatures.Commands
         public List<FollowUp> FollowUps { get; set; }
         public PaginationInfo Pagination { get; set; }
     }
+
     public class PaginationInfo
     {
         public int TotalItems { get; set; }
@@ -27,10 +29,12 @@ namespace ClinicalBackend.Services.Features.FollowUpsFeatures.Commands
     public class GetAllFollowUpCommandHandler : IRequestHandler<GetAllFollowUpCommand, Result<QueryFollowUpsResponse>>
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public GetAllFollowUpCommandHandler(IUnitOfWork unitOfWork)
+        public GetAllFollowUpCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task<Result<QueryFollowUpsResponse>> Handle(GetAllFollowUpCommand request, CancellationToken cancellationToken)

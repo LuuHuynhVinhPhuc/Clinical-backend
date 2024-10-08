@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿using MapsterMapper;
 using MediatR;
 
 namespace ClinicalBackend.Presentation.Controllers.v1

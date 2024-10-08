@@ -1,9 +1,7 @@
-using AutoMapper;
-using ClinicalBackend.Contracts.DTOs;
-using ClinicalBackend.Domain.Entities;
 using ClinicalBackend.Services.Common;
 using ClinicalBackend.Services.Features.FollowUpFeatures.Commands;
 using ClinicalBackend.Services.Features.FollowUpsFeatures.Commands;
+using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

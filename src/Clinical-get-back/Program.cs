@@ -1,11 +1,9 @@
 using ClinicalBackend.Persistence;
 using ClinicalBackend.Presentation.Controllers;
 using Serilog;
-using ClinicalBackend.Contracts.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddApplication();
 

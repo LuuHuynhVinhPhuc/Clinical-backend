@@ -1,6 +1,8 @@
+using ClinicalBackend.Contracts.DTOs.FollowUp;
 using ClinicalBackend.Domain.Entities;
 using ClinicalBackend.Services.Common;
 using Domain.Interfaces;
+using Mapster;
 using MapsterMapper;
 using MediatR;
 
@@ -42,6 +44,8 @@ namespace ClinicalBackend.Services.Features.FollowUpsFeatures.Commands
             var followUps = await _unitOfWork.FollowUp.GetAllAsync().ConfigureAwait(false);
             var totalItems = await _unitOfWork.FollowUp.GetTotalCountAsync().ConfigureAwait(false);
 
+            var followUpDto = followUps.Adapt<List<FollowUpDto>>();
+
             var response = new QueryFollowUpsResponse()
             {
                 FollowUps = followUps.ToList(),
@@ -51,7 +55,7 @@ namespace ClinicalBackend.Services.Features.FollowUpsFeatures.Commands
                     TotalItemsPerPage = request.PageSize,
                     CurrentPage = request.PageNumber,
                     TotalPages = (int)Math.Ceiling((double)totalItems / request.PageSize)
-                }
+                },
             };
 
             return Result.Success(response);

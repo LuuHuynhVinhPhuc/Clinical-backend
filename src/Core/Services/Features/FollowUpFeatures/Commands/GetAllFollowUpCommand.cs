@@ -2,7 +2,6 @@ using ClinicalBackend.Contracts.DTOs.FollowUp;
 using ClinicalBackend.Domain.Entities;
 using ClinicalBackend.Services.Common;
 using Domain.Interfaces;
-using Mapster;
 using MapsterMapper;
 using MediatR;
 
@@ -41,10 +40,10 @@ namespace ClinicalBackend.Services.Features.FollowUpsFeatures.Commands
 
         public async Task<Result<QueryFollowUpsResponse>> Handle(GetAllFollowUpCommand request, CancellationToken cancellationToken)
         {
-            var followUps = await _unitOfWork.FollowUp.GetAllAsync().ConfigureAwait(false);
+            var followUps = await _unitOfWork.FollowUp.GetAllAsync(cancellationToken).ConfigureAwait(false);
             var totalItems = await _unitOfWork.FollowUp.GetTotalCountAsync().ConfigureAwait(false);
 
-            var followUpDto = followUps.Adapt<List<FollowUpDto>>();
+            var followUpDto = _mapper.Map<List<FollowUpDto>>(followUps);
 
             var response = new QueryFollowUpsResponse()
             {

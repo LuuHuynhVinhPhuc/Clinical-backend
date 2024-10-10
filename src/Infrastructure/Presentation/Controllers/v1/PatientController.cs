@@ -1,5 +1,6 @@
 ﻿using ClinicalBackend.Services.Common;
 using ClinicalBackend.Services.Features.PatientFeatures.Commands;
+using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,9 +8,10 @@ namespace ClinicalBackend.Presentation.Controllers.v1
 {
     public class PatientController : BaseApiController
     {
-        public PatientController(IMediator mediator) : base(mediator)
+        public PatientController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
         {
             _mediator = mediator;
+            _mapper = mapper;
         }
 
         // Create with Entity elements
@@ -33,10 +35,10 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         }
 
         // Find patient with ID
-        [HttpGet("ID")]
-        public async Task<IActionResult> GetPatientbyIDAsync([FromQuery] Guid id)
+        [HttpGet("{Id}")]
+        public async Task<IActionResult> GetPatientbyIDAsync(Guid Id)
         {
-            var result = await _mediator.Send(new GetPatientByIDCommand { ID = id }).ConfigureAwait(false);
+            var result = await _mediator.Send(new GetPatientByIDCommand { ID = Id }).ConfigureAwait(false);
             return result.Match(
                 onSuccess: () => Result.Ok(result.Value()),
                 onFailure: error => Result.BadRequest(error));
@@ -53,8 +55,8 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         }
 
         // Get patient by date
-        [HttpGet("Date")]
-        public async Task<IActionResult> GetPatientByDateAsync([FromQuery] string dateStart, [FromQuery] string dateEnd, [FromQuery] int page = 1, [FromQuery] int limit = 5)
+        [HttpGet("Date/{dateStart}&{dateEnd}")]
+        public async Task<IActionResult> GetPatientByDateAsync(string dateStart, string dateEnd, [FromQuery] int page = 1, [FromQuery] int limit = 5)
         {
             var res = await _mediator.Send(new GetPatientByDateCommand { DateStart = dateStart, DateEnd = dateEnd, Page = page, Limit = limit }).ConfigureAwait(false);
             return res.Match(
@@ -63,20 +65,20 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         }
 
         // Update patient infomation
-        [HttpPut("{ID}")]
-        public async Task<IActionResult> UpdatePatientDetailsAsync(Guid ID, [FromBody] UpdatePatientCommands command)
+        [HttpPut("{Id}")]
+        public async Task<IActionResult> UpdatePatientDetailsAsync(Guid Id, [FromBody] UpdatePatientCommands command)
         {
-            command.Id = ID;
+            command.Id = Id;
             var res = await _mediator.Send(command).ConfigureAwait(false);
             return res.Match(
                 onSuccess: () => Result.Ok(res.Value()),
                 onFailure: error => Result.BadRequest(error));
         }
 
-        [HttpDelete("ID")]
-        public async Task<IActionResult> DeletePatientbyIDAsync(Guid ID)
+        [HttpDelete("{Id}")]
+        public async Task<IActionResult> DeletePatientbyIDAsync(Guid Id)
         {
-            var res = await _mediator.Send(new DeletePatientbyIDCommand { ID = ID }).ConfigureAwait(false);
+            var res = await _mediator.Send(new DeletePatientbyIDCommand { ID = Id }).ConfigureAwait(false);
             return res.Match(
                 onSuccess: () => Result.Ok(res.Value()),
                 onFailure: error => Result.BadRequest(error));

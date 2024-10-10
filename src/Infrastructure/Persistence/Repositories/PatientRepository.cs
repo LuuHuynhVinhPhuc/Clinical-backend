@@ -14,13 +14,16 @@ namespace ClinicalBackend.Persistence.Repositories
 
         public async Task<Patient> GetByIdAsync(Guid id)
         {
-            return await dbSet.FindAsync(id).ConfigureAwait(false);
+            return await dbSet
+                .FindAsync(id)
+                .ConfigureAwait(false);
         }
 
         // find all           
         public async Task<IEnumerable<Patient>> GetAllAsync(int pageNumber, int pageSize)
         {
             return await dbSet
+                .Include(f => f.FollowUps)
                 .OrderByDescending(m => m.CreatedAt)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
@@ -32,6 +35,7 @@ namespace ClinicalBackend.Persistence.Repositories
         public async Task<IEnumerable<Patient>> FindWithNameAsync(string name, int pageNumber, int pageSize)
         {
             return await dbSet
+                .Include(f => f.FollowUps)
                 .Where(m => m.Name.Contains(name))
                 .OrderByDescending(m => m.CreatedAt)
                 .Skip((pageNumber - 1) * pageSize)
@@ -43,7 +47,10 @@ namespace ClinicalBackend.Persistence.Repositories
         // Find with Phone number 
         public async Task<Patient> FindWithPhoneNumberAsync(string phoneNumber)
         {
-            return await dbSet.FirstOrDefaultAsync(p => p.PhoneNumber == phoneNumber).ConfigureAwait(false);
+            return await dbSet
+                    .Include(f => f.FollowUps)
+                    .FirstOrDefaultAsync(p => p.PhoneNumber == phoneNumber)
+                    .ConfigureAwait(false);
         }
 
         public async Task<int> GetTotalCountAsync()
@@ -55,6 +62,7 @@ namespace ClinicalBackend.Persistence.Repositories
         public async Task<IEnumerable<Patient>> GetPatientByDateAsync(DateTime dateStart, DateTime dateEnd, int pageNumber, int pageSize)
         {
             return await dbSet
+                .Include(f => f.FollowUps)
                 .Where(p => p.CreatedAt >= dateStart && p.CreatedAt <= dateEnd && p.CheckStatus == "examined")
                 .OrderByDescending(p => p.CreatedAt)
                 .Skip((pageNumber - 1) * pageSize)

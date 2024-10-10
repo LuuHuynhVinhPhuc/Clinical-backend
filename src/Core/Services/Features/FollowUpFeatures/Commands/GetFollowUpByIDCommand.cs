@@ -1,4 +1,5 @@
-﻿using ClinicalBackend.Domain.Entities;
+﻿using ClinicalBackend.Contracts.DTOs.FollowUp;
+using ClinicalBackend.Domain.Entities;
 using ClinicalBackend.Services.Common;
 using ClinicalBackend.Services.Features.FollowUps;
 using Domain.Interfaces;
@@ -15,7 +16,7 @@ namespace ClinicalBackend.Services.Features.FollowUpFeatures.Commands
 
     public class GetFollowUpByIdResponse
     {
-        public List<FollowUp> FollowUp { get; set; }
+        public List<FollowUpDto> FollowUp { get; set; }
     }
 
     // task
@@ -32,20 +33,20 @@ namespace ClinicalBackend.Services.Features.FollowUpFeatures.Commands
 
         public async Task<Result<GetFollowUpByIdResponse>> Handle(GetFollowUpByIdCommand request, CancellationToken cancellationToken)
         {
-            var patient = await _unitOfWork.FollowUp.GetByCondition(m => m.PatientId == request.PatientId).FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
+            var followUps = await _unitOfWork.FollowUp.GetByCondition(m => m.PatientId == request.PatientId).FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
 
             if (_unitOfWork.FollowUp == null)
             {
                 throw new InvalidOperationException("UnitOfWork or FollowUp repository is not initialized.");
             }
 
-            if (patient == null)
+            if (followUps == null)
                 return Result.Failure<GetFollowUpByIdResponse>(error: FollowUpErrors.FollowUpNotExists(request.PatientId));
 
             // return a list
             var res = new GetFollowUpByIdResponse
             {
-                FollowUp = new List<FollowUp> { patient }
+                FollowUp = _mapper.Map<List<FollowUpDto>>(followUps)
             };
 
             return Result.Success(res);

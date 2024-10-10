@@ -49,7 +49,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
             {
                 return Result.Failure<PatientCreatedResponse>(PatientError.InputDateInvalidFormat);
             }
-             
+
             int age = CalculateAge(dob);
 
             if (age < 0)

@@ -12,20 +12,21 @@ namespace ClinicalBackend.Persistence.Repositories
         {
         }
 
-        public async Task<IEnumerable<FollowUp>> GetAllAsync(int pageNumber, int pageSize)
+        public override async Task<IEnumerable<FollowUp>> GetAllAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default)
         {
             return await dbSet
+                .Include(f => f.Patient)
                 .OrderByDescending(f => f.CreatedAt)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
-                .Include(f => f.Patient)
                 .ToListAsync()
                 .ConfigureAwait(false);
         }
 
         public async Task<FollowUp> GetByIdAsync(Guid Id)
         {
-            return await dbSet.Include(f => f.Patient)
+            return await dbSet
+                .Include(f => f.Patient)
                 .FirstOrDefaultAsync(p => p.Id == Id)
                 .ConfigureAwait(false);
         }

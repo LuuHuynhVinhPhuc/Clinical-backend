@@ -1,11 +1,9 @@
-﻿using ClinicalBackend.Services.Common;
+﻿using ClinicalBackend.Contracts.DTOs.Patient;
+using ClinicalBackend.Services.Common;
 using Domain.Interfaces;
-using MediatR;
-using ClinicalBackend.Domain.Entities;
-using System;
-using Microsoft.EntityFrameworkCore;
-using System.Globalization;
 using MapsterMapper;
+using MediatR;
+using System.Globalization;
 
 namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 {
@@ -16,12 +14,13 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 
         // default pagnigation params
         public int Page { get; set; } = 1;
+
         public int Limit { get; set; } = 5;
     }
 
     public class GetPatientByDateResponse
     {
-        public List<Patient> Patients { get; set; }
+        public List<PatientsDto> Patients { get; set; }
         public PaginationsInfo Pagination { get; set; }
     }
 
@@ -32,7 +31,6 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
         public int CurrentPage { get; set; }
         public int TotalPages { get; set; }
     }
-
 
     public class GetPatientByDateHandler : IRequestHandler<GetPatientByDateCommand, Result<GetPatientByDateResponse>>
     {
@@ -49,13 +47,12 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
         {
             try
             {
-                // convert to DateTime with format dd-MM-yyyy
                 DateTime dateStart = DateTime.ParseExact(request.DateStart, "dd-MM-yyyy", CultureInfo.InvariantCulture).ToUniversalTime();
                 DateTime dateEnd = DateTime.ParseExact(request.DateEnd, "dd-MM-yyyy", CultureInfo.InvariantCulture).ToUniversalTime();
 
                 var totalItems = await _unitOfWork.Patient.GetTotalCountAsync().ConfigureAwait(false);
 
-                // check valid date 
+                // check valid date
 
                 if (dateStart > dateEnd)
                 {
@@ -67,8 +64,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 
                 return Result.Success(new GetPatientByDateResponse
                 {
-                    Patients = patients.ToList(),
-
+                    Patients = _mapper.Map<List<PatientsDto>>(patients),
                     Pagination = new PaginationsInfo
                     {
                         TotalItems = totalItems,

@@ -9,10 +9,13 @@ namespace ClinicalBackend.Services.Configs.Mappers
         public void Register(TypeAdapterConfig config)
         {
             config.NewConfig<Patient, PatientDto>()
-                .Map(dest => dest.Id, src => src.Id)
-                .Map(dest => dest.age, src => src.Age)
-                .Map(dest => dest.Address, src => src.Address)
-                .Map(dest => dest.PhoneNumber, src => src.PhoneNumber);
+                .MapWith(src => new PatientDto(
+                                src.Id,
+                                src.Age,
+                                src.DOB,
+                                src.Address,
+                                src.PhoneNumber));
+
         }
     }
 }

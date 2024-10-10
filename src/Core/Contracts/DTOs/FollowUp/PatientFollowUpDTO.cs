@@ -1,12 +1,11 @@
-using ClinicalBackend.Contracts.DTOs.Patient;
-
 namespace ClinicalBackend.Contracts.DTOs.FollowUp
 {
-    public record struct FollowUpDto(
+    public record struct PatientFollowUpDto
+    (
         Guid Id, 
-        PatientDto? Patient, 
         string Reason, 
         string History,
         string Diagnosis, 
-        string Summary);
+        string Summary
+    );
 }

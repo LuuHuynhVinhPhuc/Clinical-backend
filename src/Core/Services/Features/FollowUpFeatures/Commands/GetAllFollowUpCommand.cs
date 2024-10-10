@@ -1,5 +1,4 @@
 using ClinicalBackend.Contracts.DTOs.FollowUp;
-using ClinicalBackend.Domain.Entities;
 using ClinicalBackend.Services.Common;
 using Domain.Interfaces;
 using MapsterMapper;
@@ -15,7 +14,7 @@ namespace ClinicalBackend.Services.Features.FollowUpsFeatures.Commands
 
     public class QueryFollowUpsResponse
     {
-        public List<FollowUp> FollowUps { get; set; }
+        public List<FollowUpDto> FollowUps { get; set; }
         public PaginationInfo Pagination { get; set; }
     }
 
@@ -40,14 +39,12 @@ namespace ClinicalBackend.Services.Features.FollowUpsFeatures.Commands
 
         public async Task<Result<QueryFollowUpsResponse>> Handle(GetAllFollowUpCommand request, CancellationToken cancellationToken)
         {
-            var followUps = await _unitOfWork.FollowUp.GetAllAsync(cancellationToken).ConfigureAwait(false);
+            var followUps = await _unitOfWork.FollowUp.GetAllAsync(request.PageNumber, request.PageSize, cancellationToken).ConfigureAwait(false);
             var totalItems = await _unitOfWork.FollowUp.GetTotalCountAsync().ConfigureAwait(false);
-
-            var followUpDto = _mapper.Map<List<FollowUpDto>>(followUps);
 
             var response = new QueryFollowUpsResponse()
             {
-                FollowUps = followUps.ToList(),
+                FollowUps = _mapper.Map<List<FollowUpDto>>(followUps),
                 Pagination = new PaginationInfo
                 {
                     TotalItems = totalItems,

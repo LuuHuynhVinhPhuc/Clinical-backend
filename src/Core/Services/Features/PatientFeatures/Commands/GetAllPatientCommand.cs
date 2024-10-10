@@ -1,4 +1,4 @@
-﻿using ClinicalBackend.Domain.Entities;
+﻿using ClinicalBackend.Contracts.DTOs.Patient;
 using ClinicalBackend.Services.Common;
 using Domain.Interfaces;
 using MapsterMapper;
@@ -11,14 +11,16 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
     {
         // default pagnigation params
         public int Page { get; set; } = 1;
+
         public int Limit { get; set; } = 5;
     }
 
     public class GetAllPatientResponse()
     {
-        public List<Patient> Patients { get; set; }
+        public List<PatientsDto> Patients { get; set; }
         public PaginationInfo Pagination { get; set; }
     }
+
     public class PaginationInfo
     {
         public int TotalItems { get; set; }
@@ -26,16 +28,19 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
         public int CurrentPage { get; set; }
         public int TotalPages { get; set; }
     }
+
     // Task
     public class GetAllPatientHandler : IRequestHandler<GetAllPatientCommands, Result<GetAllPatientResponse>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+
         public GetAllPatientHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _unitOfWork = unitOfWork;            
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
+
         public async Task<Result<GetAllPatientResponse>> Handle(GetAllPatientCommands request, CancellationToken cancellationToken)
         {
             // get all patient
@@ -44,20 +49,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 
             var res = new GetAllPatientResponse()
             {
-                Patients = patients.Select(p => new Patient
-                {
-                    Id = p.Id,
-                    Name = p.Name,
-                    Age = p.Age,
-                    DOB = ConvertToDateOnly(p.DOB),
-                    Address = p.Address,
-                    PhoneNumber = p.PhoneNumber,
-                    CreatedAt = p.CreatedAt,
-                    ModifiedAt = p.ModifiedAt,
-                    CheckStatus = p.CheckStatus,
-                    FollowUps = p.FollowUps
-                }).ToList(),
-
+                Patients = _mapper.Map<List<PatientsDto>>(patients),
                 Pagination = new PaginationInfo
                 {
                     TotalItems = totalItems,

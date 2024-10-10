@@ -21,7 +21,7 @@ namespace Domain.Common
             return dbSet.AsNoTracking();
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default)
+        public virtual async Task<IEnumerable<TEntity>> GetAllAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default)
         {
             return await GetAll().ToListAsync(cancellationToken).ConfigureAwait(false);
         }

@@ -2,7 +2,7 @@
 
 namespace ClinicalBackend.Domain.Entities
 {
-    public class Example : BaseEntity<string>
+    public class Example : BaseEntitty<string>
     {
     }
 }

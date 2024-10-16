@@ -2,7 +2,7 @@
 
 namespace ClinicalBackend.Domain.Entities
 {
-    public class User : BaseEntity<Guid>
+    public class User : BaseEntitty<Guid>
     {
         public string UserName { get; set; }
         public string HashPassword { get; set; }

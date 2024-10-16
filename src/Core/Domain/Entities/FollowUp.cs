@@ -3,7 +3,7 @@ using Domain.Interfaces;
 
 namespace ClinicalBackend.Domain.Entities
 {
-    public class FollowUp : BaseEntity<Guid>, IAuditable
+    public class FollowUp : BaseEntitty<Guid>, IAuditable
     {
         public Guid? PatientId { get; set; }
         public string? Reason { get; set; }

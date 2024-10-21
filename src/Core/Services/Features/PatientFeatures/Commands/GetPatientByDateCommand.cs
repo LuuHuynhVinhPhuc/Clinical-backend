@@ -9,12 +9,11 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 {
     public class GetPatientByDateCommand : IRequest<Result<GetPatientByDateResponse>>
     {
-        public string DateStart { get; set; }
-        public string DateEnd { get; set; }
+        public string StartDate { get; set; }
+        public string EndDate { get; set; }
 
         // default pagnigation params
         public int Page { get; set; } = 1;
-
         public int Limit { get; set; } = 5;
     }
 
@@ -47,10 +46,9 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
         {
             try
             {
-                DateTime dateStart = DateTime.ParseExact(request.DateStart, "dd-MM-yyyy", CultureInfo.InvariantCulture).ToUniversalTime();
-                DateTime dateEnd = DateTime.ParseExact(request.DateEnd, "dd-MM-yyyy", CultureInfo.InvariantCulture).ToUniversalTime();
+                DateTime dateStart = DateTime.ParseExact(request.StartDate, "dd-MM-yyyy", CultureInfo.InvariantCulture).ToUniversalTime();
+                DateTime dateEnd = DateTime.ParseExact(request.EndDate, "dd-MM-yyyy", CultureInfo.InvariantCulture).ToUniversalTime();
 
-                var totalItems = await _unitOfWork.Patient.GetTotalCountAsync().ConfigureAwait(false);
 
                 // check valid date
 
@@ -58,6 +56,8 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
                 {
                     return Result.Failure<GetPatientByDateResponse>(PatientError.InputDateInvalidFormat);
                 }
+                
+                var totalItems = await _unitOfWork.Patient.GetTotalCountByDateAsync(dateStart, dateEnd).ConfigureAwait(false);
 
                 // how to get patient list depend on date Start and date End?
                 var patients = await _unitOfWork.Patient.GetPatientByDateAsync(dateStart, dateEnd, request.Page, request.Limit).ConfigureAwait(false);

@@ -3,7 +3,6 @@ using ClinicalBackend.Services.Common;
 using Domain.Interfaces;
 using MapsterMapper;
 using MediatR;
-using System.Globalization;
 
 namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 {
@@ -11,11 +10,10 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
     {
         // default pagnigation params
         public int Page { get; set; } = 1;
-
         public int Limit { get; set; } = 5;
     }
 
-    public class GetAllPatientResponse()
+    public class GetAllPatientResponse
     {
         public List<PatientsDto> Patients { get; set; }
         public PaginationInfo Pagination { get; set; }
@@ -60,13 +58,6 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
             };
 
             return Result.Success(res);
-        }
-
-        private DateOnly ConvertToDateOnly(DateOnly dateTime)
-        {
-            // Return parsed date if successful, otherwise return original dateTime
-            DateOnly res = DateOnly.ParseExact(dateTime.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture), "dd/MM/yyyy", CultureInfo.InvariantCulture);
-            return res;
         }
     }
 }

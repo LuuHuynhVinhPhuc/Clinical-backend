@@ -26,7 +26,7 @@ namespace Domain.Common
             return await GetAll().ToListAsync(cancellationToken).ConfigureAwait(false);
         }
 
-        public IQueryable<TEntity> GetByCondition(Expression<Func<TEntity, bool>> expression)
+        public virtual IQueryable<TEntity> GetByCondition(Expression<Func<TEntity, bool>> expression)
         {
             return GetAll().Where(expression);
         }

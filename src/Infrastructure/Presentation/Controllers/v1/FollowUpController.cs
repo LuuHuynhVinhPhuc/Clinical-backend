@@ -34,9 +34,18 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         }
 
         [HttpGet("{Id}")]
-        public async Task<IActionResult> GetFollowUpByIdAsync([FromRoute] Guid Id)
+        public async Task<IActionResult> GetFollowUpByIdAsync(Guid Id)
         {
-            var result = await _mediator.Send(new GetFollowUpByIdCommand { PatientId = Id }).ConfigureAwait(false);
+            var result = await _mediator.Send(new GetFollowUpByIdCommand { Id = Id }).ConfigureAwait(false);
+            return result.Match(
+                onSuccess: () => Result.Ok(result.Value()),
+                onFailure: error => Result.BadRequest(error));
+        }
+
+        [HttpGet("Patient/{patientId}")]
+        public async Task<IActionResult> GetFollowUpByPatientIdAsync(Guid patientId)
+        {
+            var result = await _mediator.Send(new GetFollowUpByPatientIdCommand { PatientId = patientId }).ConfigureAwait(false);
             return result.Match(
                 onSuccess: () => Result.Ok(result.Value()),
                 onFailure: error => Result.BadRequest(error));

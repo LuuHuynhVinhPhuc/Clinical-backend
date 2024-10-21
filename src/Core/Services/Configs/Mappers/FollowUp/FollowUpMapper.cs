@@ -16,8 +16,8 @@ namespace ClinicalBackend.Services.Configs.Mappers
                                 src.Reason,
                                 src.History,
                                 src.Diagnosis,
-                                src.Summary));
-
+                                src.Summary,
+                                src.CreatedAt));
         }
     }
 }

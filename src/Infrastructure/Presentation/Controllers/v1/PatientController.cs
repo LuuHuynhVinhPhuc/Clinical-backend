@@ -55,10 +55,10 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         }
 
         // Get patient by date
-        [HttpGet("Date/{dateStart}&{dateEnd}")]
-        public async Task<IActionResult> GetPatientByDateAsync(string dateStart, string dateEnd, [FromQuery] int page = 1, [FromQuery] int limit = 5)
+        [HttpGet("Date/{startDate}&{endDate}")]
+        public async Task<IActionResult> GetPatientByDateAsync(string startDate, string endDate, [FromQuery] int page = 1, [FromQuery] int limit = 5)
         {
-            var res = await _mediator.Send(new GetPatientByDateCommand { DateStart = dateStart, DateEnd = dateEnd, Page = page, Limit = limit }).ConfigureAwait(false);
+            var res = await _mediator.Send(new GetPatientByDateCommand { StartDate = startDate, EndDate = endDate, Page = page, Limit = limit }).ConfigureAwait(false);
             return res.Match(
                 onSuccess: () => Result.Ok(res.Value()),
                 onFailure: error => Result.BadRequest(error));
@@ -66,7 +66,7 @@ namespace ClinicalBackend.Presentation.Controllers.v1
 
         // Update patient infomation
         [HttpPut("{Id}")]
-        public async Task<IActionResult> UpdatePatientDetailsAsync(Guid Id, [FromBody] UpdatePatientCommands command)
+        public async Task<IActionResult> UpdatePatientDetailsAsync(Guid Id, [FromBody] UpdatePatientCommand command)
         {
             command.Id = Id;
             var res = await _mediator.Send(command).ConfigureAwait(false);

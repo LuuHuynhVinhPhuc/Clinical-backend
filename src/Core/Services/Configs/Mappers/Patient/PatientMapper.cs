@@ -1,4 +1,3 @@
-using ClinicalBackend.Contracts.DTOs.FollowUp;
 using ClinicalBackend.Contracts.DTOs.Patient;
 using ClinicalBackend.Domain.Entities;
 using Mapster;
@@ -6,10 +5,19 @@ using System.Globalization;
 
 namespace ClinicalBackend.Services.Configs.Mappers
 {
-    public class PatientsMapper : IRegister
+    public class PatientMapper : IRegister
     {
         public void Register(TypeAdapterConfig config)
         {
+            config.NewConfig<Patient, PatientDto>()
+                .MapWith(src => new PatientDto(
+                                src.Id,
+                                src.Name,
+                                src.Age,
+                                src.DOB,
+                                src.Address,
+                                src.PhoneNumber));
+
             config.NewConfig<Patient, PatientsDto>()
                 .MapWith(src => new PatientsDto(
                                 src.Id,
@@ -18,9 +26,7 @@ namespace ClinicalBackend.Services.Configs.Mappers
                                 ConvertToDateOnly(src.DOB),
                                 src.Address,
                                 src.PhoneNumber,
-                                src.CheckStatus,
-                                src.FollowUps.Adapt<ICollection<PatientFollowUpDto>>()
-                ));
+                                src.CheckStatus));
         }
 
         private DateOnly ConvertToDateOnly(DateOnly dateTime)

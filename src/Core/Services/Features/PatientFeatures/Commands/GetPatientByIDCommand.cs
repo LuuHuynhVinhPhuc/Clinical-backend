@@ -1,13 +1,9 @@
-﻿using ClinicalBackend.Domain.Entities;
+﻿using ClinicalBackend.Contracts.DTOs.Patient;
+using ClinicalBackend.Domain.Entities;
 using ClinicalBackend.Services.Common;
 using Domain.Interfaces;
 using MapsterMapper;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 {
@@ -18,10 +14,10 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 
     public class GetByIDResponse
     {
-        public Patient Patient { get; set; }
+        public PatientsDto Patient { get; set; }
     }
 
-    // Task 
+    // Task
     public class GetPatientByIDHandler : IRequestHandler<GetPatientByIDCommand, Result<GetByIDResponse>>
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -40,7 +36,11 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
             if (patient == null)
                 return Result.Failure<GetByIDResponse>(PatientError.IDNotFound(request.ID));
 
-            var res = new GetByIDResponse() { Patient = patient };
+            var res = new GetByIDResponse() 
+            { 
+                Patient = _mapper.Map<PatientsDto>(patient) 
+            };
+            
             return Result.Success(res);
         }
     }

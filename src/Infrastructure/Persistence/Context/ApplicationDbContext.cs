@@ -9,7 +9,9 @@ namespace ClinicalBackend.Persistence.Context
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
-        { }
+        { 
+
+        }
 
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
@@ -28,6 +30,21 @@ namespace ClinicalBackend.Persistence.Context
                 .WithOne(f => f.Patient)
                 .HasForeignKey(f => f.PatientId)
                 .OnDelete(DeleteBehavior.Cascade);  // Cascade delete
+            
+            // modelBuilder.Entity<Prescription>()
+            //     .HasOne(p => p.Patient)
+            //     .WithMany()
+            //     .HasForeignKey(p => p.PatientId);
+
+            // modelBuilder.Entity<Prescription>()
+            //     .HasOne(p => p.FollowUp)
+            //     .WithMany()
+            //     .HasForeignKey(p => p.FollowUpId);
+
+            // modelBuilder.Entity<Prescription>()
+            //     .HasMany(p => p.Medicines)
+            //     .WithOne(m => m.Prescription)
+            //     .HasForeignKey(m => m.PrescriptionId);
         }
     }
 }

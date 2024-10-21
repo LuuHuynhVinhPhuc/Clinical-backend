@@ -30,6 +30,14 @@ namespace ClinicalBackend.Persistence.Repositories
                 .FirstOrDefaultAsync(p => p.Id == Id)
                 .ConfigureAwait(false);
         }
+        public async Task<IEnumerable<FollowUp>> GetByPatientIdAsync(Guid patientId)
+        {
+            return await dbSet
+                .Include(f => f.Patient)
+                .Where(p => p.PatientId == patientId)
+                .ToListAsync()
+                .ConfigureAwait(false);
+        }
 
         public async Task<int> GetTotalCountAsync() // Add this method
         {

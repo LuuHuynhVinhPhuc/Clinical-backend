@@ -15,11 +15,11 @@ namespace ClinicalBackend.Persistence.Repositories
         public async Task<Patient> GetByIdAsync(Guid id)
         {
             return await dbSet
-                .FindAsync(id)
+                .Include(f => f.FollowUps)
+                .Where(m => m.Id == id)
+                .FirstOrDefaultAsync()
                 .ConfigureAwait(false);
         }
-
-        // find all           
         public async Task<IEnumerable<Patient>> GetAllAsync(int pageNumber, int pageSize)
         {
             return await dbSet
@@ -56,6 +56,13 @@ namespace ClinicalBackend.Persistence.Repositories
         public async Task<int> GetTotalCountAsync()
         {
             return await dbSet.CountAsync().ConfigureAwait(false);
+        }
+
+        public async Task<int> GetTotalCountByDateAsync(DateTime dateStart, DateTime dateEnd)
+        {
+            return await dbSet
+                .CountAsync(p => p.CreatedAt >= dateStart && p.CreatedAt <= dateEnd && p.CheckStatus == "examined")
+                .ConfigureAwait(false);
         }
 
         // Get patient by date start and date end and check status is "examined"

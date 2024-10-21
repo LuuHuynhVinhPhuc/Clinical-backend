@@ -1,3 +1,4 @@
+using ClinicalBackend.Contracts.DTOs.Medicine;
 using ClinicalBackend.Services.Common;
 using ClinicalBackend.Services.Features.MedicineFeatures.Response;
 using Domain.Interfaces;
@@ -31,7 +32,7 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
 
             var response = new QueryMedicinesResponse
             {
-                Medicines = medicines.ToList(),
+                Medicines = _mapper.Map<List<MedicineDto>>(medicines),
                 Pagination = new PaginationInfo
                 {
                     TotalItems = totalItems,

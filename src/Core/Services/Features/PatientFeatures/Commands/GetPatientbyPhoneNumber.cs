@@ -1,10 +1,9 @@
 ﻿using ClinicalBackend.Domain.Entities;
 using ClinicalBackend.Services.Common;
-using ClinicalBackend.Services.Features.MedicineFeatures.Response;
-using ClinicalBackend.Services.Features.MedicineFeatures;
 using Domain.Interfaces;
 using MediatR;
 using MapsterMapper;
+using ClinicalBackend.Contracts.DTOs.Patient;
 
 namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 {
@@ -15,7 +14,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 
     public class FindWithPhoneReponse
     {
-        public List<Patient> Patients { get; set; }
+        public PatientsDto Patient { get; set; }
     }
     // Task
     public class FindWithPhoneNumberHandler : IRequestHandler<GetPatientbyPhoneNumber, Result<FindWithPhoneReponse>>
@@ -37,7 +36,11 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
             if (patient == null)
                 return Result.Failure<FindWithPhoneReponse>(PatientError.PhoneNotFound(request.PhoneNumber.ToString()));
 
-            var res = new FindWithPhoneReponse { Patients = new List<Patient> { patient } };
+            var res = new FindWithPhoneReponse 
+            { 
+                Patient = _mapper.Map<PatientsDto>(patient)
+            };
+            
             return Result.Success(res);
         }
     }

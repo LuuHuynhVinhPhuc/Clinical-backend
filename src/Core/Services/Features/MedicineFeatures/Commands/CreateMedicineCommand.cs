@@ -10,10 +10,11 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
     {
         public string Name { get; set; }
         public string Company { get; set; }
-        public int Quantity { get; set; }
+        public int Stock { get; set; }
         public float Price { get; set; }
         public string Status { get; set; }
         public string Type { get; set; }
+        public Instructions Instructions { get; set; }
     }
 
     public class MedicineCreatedResponse
@@ -38,16 +39,16 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
             {
                 return Result.Failure<MedicineCreatedResponse>(MedicineErrors.MedicineNameExist);
             }
-
             // Create a new Medicine entity
             var medicine = new Medicine
             {
                 Name = command.Name,
                 Company = command.Company,
-                Quantity = command.Quantity,
+                Stock = command.Stock,
                 Price = command.Price,
                 Status = command.Status,
                 Type = command.Type,
+                Instructions = command.Instructions
             };
 
 

@@ -1,3 +1,4 @@
+using ClinicalBackend.Contracts.DTOs.Medicine;
 using ClinicalBackend.Domain.Entities;
 using ClinicalBackend.Services.Common;
 using Domain.Interfaces;
@@ -13,7 +14,7 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
 
     public class GetByIdResponse
     {
-        public Medicine Medicine { get; set; }
+        public MedicineDto Medicine { get; set; }
     }
 
     public class GetMedicineByIdCommandHandler : IRequestHandler<GetMedicineByIdCommand, Result<GetByIdResponse>>
@@ -38,7 +39,7 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
 
             var response = new GetByIdResponse
             {
-                Medicine = medicine
+                Medicine = _mapper.Map<MedicineDto>(medicine)
             };
 
             return Result.Success(response);

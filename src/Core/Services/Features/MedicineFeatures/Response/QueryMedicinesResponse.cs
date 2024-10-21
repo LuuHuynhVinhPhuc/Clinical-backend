@@ -1,10 +1,10 @@
-using ClinicalBackend.Domain.Entities;
+using ClinicalBackend.Contracts.DTOs.Medicine;
 
 namespace ClinicalBackend.Services.Features.MedicineFeatures.Response
 {
     public class QueryMedicinesResponse
     {
-        public List<Medicine> Medicines { get; set; }
+        public List<MedicineDto> Medicines { get; set; }
         public PaginationInfo Pagination { get; set; }
     }
 

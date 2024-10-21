@@ -11,8 +11,8 @@ namespace ClinicalBackend.Contracts.DTOs.Patient
         DateOnly DOB,
         string? Address,
         string? PhoneNumber,
-        string Status,
-        ICollection<PatientFollowUpDto>? FollowUps
+        string Status
+        //ICollection<PatientFollowUpDto>? FollowUps
     );
 }
 

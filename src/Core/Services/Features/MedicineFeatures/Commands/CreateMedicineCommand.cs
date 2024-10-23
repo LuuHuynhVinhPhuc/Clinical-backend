@@ -12,7 +12,6 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
         public string Company { get; set; }
         public int Stock { get; set; }
         public float Price { get; set; }
-        public string Status { get; set; }
         public string Type { get; set; }
         public Instructions Instructions { get; set; }
     }
@@ -73,7 +72,7 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
                 Company = command.Company,
                 Stock = command.Stock,
                 Price = command.Price,
-                Status = command.Status,
+                Status = "NOT_SOLD",
                 Type = command.Type,
                 Instructions = command.Instructions
             };

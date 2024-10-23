@@ -65,11 +65,10 @@ namespace ClinicalBackend.Services.Features.PrescriptionFeatures.Commands
                     return Result.Failure<PrescriptionCreatedResponse>(new Error("Medicine.InsufficientStock", $"Insufficient stock for medicine '{medicine.Name}'"));
                 }
 
-                // Update the stock
                 medicine.Stock -= productDto.Quantity;
+                medicine.Status = "SOLD";
                 _unitOfWork.Medicines.Update(medicine);
 
-                // Calculate the total cost
                 totalCost += medicine.Price * productDto.Quantity;
             }
 

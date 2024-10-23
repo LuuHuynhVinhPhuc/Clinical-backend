@@ -37,7 +37,7 @@ namespace ClinicalBackend.Services.Features.PrescriptionFeatures.Commands
                 return Result.Failure<PrescriptionEditedResponse>(PrescriptionError.IDNotFound(command.Id));
             }
 
-            prescription.Products = _mapper.Map<ICollection<Product>>(command.Medicines);
+            prescription.Products = _mapper.Map<List<Product>>(command.Medicines);
             prescription.Notes = command.Notes;
 
             _unitOfWork.Prescription.Update(prescription);

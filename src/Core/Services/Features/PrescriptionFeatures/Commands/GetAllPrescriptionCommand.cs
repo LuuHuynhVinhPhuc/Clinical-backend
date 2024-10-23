@@ -41,7 +41,7 @@ namespace ClinicalBackend.Services.Features.PrescriptionFeatures.Commands
         {
             //add various check here
 
-            var prescriptions = await _unitOfWork.Prescription.GetAllAsync(request.PageNumber, request.PageSize, cancellationToken);
+            var prescriptions = await _unitOfWork.Prescription.GetAllAsync(request.PageNumber, request.PageSize, cancellationToken).ConfigureAwait(false);
             var totalItems = await _unitOfWork.Prescription.GetTotalCountAsync().ConfigureAwait(false);
 
             var response = new GetAllPrescriptionResponse

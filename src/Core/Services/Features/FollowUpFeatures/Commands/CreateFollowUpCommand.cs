@@ -32,7 +32,6 @@ namespace ClinicalBackend.Services.Features.FollowUpsFeatures.Commands
 
         public async Task<Result<FollowUpCreatedResponse>> Handle(CreateFollowUpCommand command, CancellationToken cancellationToken)
         {
-            // Check if the FollowUp already exists
             var existingPatient = await _unitOfWork.Patient.GetByIdAsync(command.PatientId).ConfigureAwait(false);
             if (existingPatient == null)
             {

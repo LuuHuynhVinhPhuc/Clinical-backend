@@ -16,5 +16,8 @@ namespace ClinicalBackend.Services.Features.PrescriptionFeatures
         // No prescription found for the given date
         public static Error NoPrescriptionFoundForDate(string date) => new Error(
         "Prescription.NotFound", $"No prescription found for the date: {date}");
+
+        public static Error PatientPhoneNotFound(string phoneNumber) => new Error(
+        "Patient.PhoneNotFound", $"Patient with the phone number '{phoneNumber}' was not found");
     }
 }

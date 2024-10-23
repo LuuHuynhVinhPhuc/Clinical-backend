@@ -154,6 +154,9 @@ namespace ClinicalBackend.Persistence.Migrations
                     b.Property<Guid>("PatientId")
                         .HasColumnType("uuid");
 
+                    b.Property<float>("TotalPrice")
+                        .HasColumnType("real");
+
                     b.HasKey("Id");
 
                     b.HasIndex("FollowUpId");

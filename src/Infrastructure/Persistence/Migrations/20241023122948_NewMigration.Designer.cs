@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ClinicalBackend.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241019143342_NewMigration")]
+    [Migration("20241023122948_NewMigration")]
     partial class NewMigration
     {
         /// <inheritdoc />
@@ -156,6 +156,9 @@ namespace ClinicalBackend.Persistence.Migrations
 
                     b.Property<Guid>("PatientId")
                         .HasColumnType("uuid");
+
+                    b.Property<float>("TotalPrice")
+                        .HasColumnType("real");
 
                     b.HasKey("Id");
 

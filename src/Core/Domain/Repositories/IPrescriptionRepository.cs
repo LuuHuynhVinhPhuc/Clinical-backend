@@ -1,11 +1,5 @@
 ﻿using ClinicalBackend.Domain.Entities;
 using Domain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ClinicalBackend.Domain.Repositories
 {
@@ -16,5 +10,7 @@ namespace ClinicalBackend.Domain.Repositories
         Task<Prescription> GetByIdAsync(Guid Id);
         Task<int> GetTotalCountAsync(); 
         Task<int> GetTotalCountByNameAsync(string Name);
+        Task<int> GetTotalCountByPatientIdAsync(Guid patientId);
+        Task<IEnumerable<Prescription>> GetByPatientIdAsync(Guid patientId);
     }
 }

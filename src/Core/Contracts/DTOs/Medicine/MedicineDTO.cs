@@ -10,6 +10,7 @@ namespace ClinicalBackend.Contracts.DTOs.Medicine
         int Stock,
         float Price,
         string? Type,
+        string? Status,
         InstructionsDto Instructions,
         DateTime CreatedAt
     );

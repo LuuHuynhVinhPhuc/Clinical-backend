@@ -10,6 +10,7 @@ namespace ClinicalBackend.Domain.Entities
         public ICollection<Product> Products { get; set; }
         public DateTime BillDate { get; set; }
         public string? Notes { get; set; }
+        public float TotalPrice { get; set; }
         // IAuditable
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
@@ -23,6 +24,8 @@ namespace ClinicalBackend.Domain.Entities
     {
         public Guid MedicineId { get; set; }
         public int Quantity { get; set; }
+
+        //Navigation property
         public virtual Medicine Medicine { get; set; }
 
     }

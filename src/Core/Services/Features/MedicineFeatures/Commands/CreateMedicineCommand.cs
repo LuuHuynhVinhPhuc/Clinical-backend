@@ -39,7 +39,34 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
             {
                 return Result.Failure<MedicineCreatedResponse>(MedicineErrors.MedicineNameExist);
             }
-            // Create a new Medicine entity
+
+            // Validate stock
+            if (command.Stock <= 0)
+            {
+                return Result.Failure<MedicineCreatedResponse>(new Error("Medicine.InvalidStock", "Stock must be a positive integer."));
+            }
+
+            // Validate price
+            if (command.Price <= 0)
+            {
+                return Result.Failure<MedicineCreatedResponse>(new Error("Medicine.InvalidPrice", "Price must be a positive value."));
+            }
+
+            // Validate instructions
+            bool isDayValid = int.TryParse(command.Instructions.Day, out int day);
+            bool isLunchValid = int.TryParse(command.Instructions.Lunch, out int lunch);
+            bool isAfternoonValid = int.TryParse(command.Instructions.Afternoon, out int afternoon);
+
+            if (!isDayValid && !isLunchValid && !isAfternoonValid)
+            {
+                return Result.Failure<MedicineCreatedResponse>(new Error("Medicine.InvalidInstructions", "At least one of Day, Lunch, or Afternoon must be a number."));
+            }
+
+            // Set default values for untyped instructions
+            command.Instructions.Day = isDayValid ? command.Instructions.Day : "0";
+            command.Instructions.Lunch = isLunchValid ? command.Instructions.Lunch : "0";
+            command.Instructions.Afternoon = isAfternoonValid ? command.Instructions.Afternoon : "0";
+
             var medicine = new Medicine
             {
                 Name = command.Name,
@@ -50,7 +77,6 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
                 Type = command.Type,
                 Instructions = command.Instructions
             };
-
 
             // Add the medicine to the repository
             _unitOfWork.Medicines.Add(medicine);

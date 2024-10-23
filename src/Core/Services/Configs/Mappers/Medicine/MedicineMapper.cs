@@ -16,6 +16,7 @@ namespace ClinicalBackend.Services.Configs.Mappers
                                 src.Stock,
                                 src.Price,
                                 src.Type,
+                                src.Status,
                                 new InstructionsDto(
                                     src.Instructions.Day,
                                     src.Instructions.Lunch,

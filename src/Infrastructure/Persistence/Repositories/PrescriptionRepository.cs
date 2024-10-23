@@ -31,6 +31,8 @@ namespace ClinicalBackend.Persistence.Repositories
             return await dbSet
                 .Include(p => p.Patient)
                 .Include(p => p.FollowUp)
+                .Include(p => p.Products)
+                .ThenInclude(p => p.Medicine)
                 .FirstOrDefaultAsync(p => p.Id == Id)
                 .ConfigureAwait(false);
         }
@@ -40,6 +42,8 @@ namespace ClinicalBackend.Persistence.Repositories
             return await dbSet
                 .Include(p => p.Patient)
                 .Include(p => p.FollowUp)
+                .Include(p => p.Products)
+                .ThenInclude(p => p.Medicine)
                 .Where(p => p.PatientId == patientId)
                 .ToListAsync()
                 .ConfigureAwait(false);
@@ -55,11 +59,19 @@ namespace ClinicalBackend.Persistence.Repositories
             return await dbSet.CountAsync(p => p.Patient.Name == Name).ConfigureAwait(false);
         }
 
+
+        public async Task<int> GetTotalCountByPatientIdAsync(Guid patientId)
+        {
+            return await dbSet.CountAsync(p => p.PatientId == patientId).ConfigureAwait(false);
+        }
+
         public async Task<IEnumerable<Prescription>> SearchByNameAsync(string Name, int pageNumber, int pageSize)
         {
             return await dbSet
                 .Include(p => p.Patient)
                 .Include(p => p.FollowUp)
+                .Include(p => p.Products)
+                .ThenInclude(p => p.Medicine)
                 .Where(p => p.Patient.Name == Name)
                 .ToListAsync()
                 .ConfigureAwait(false);

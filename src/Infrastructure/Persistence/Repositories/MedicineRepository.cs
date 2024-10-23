@@ -27,7 +27,7 @@ namespace ClinicalBackend.Persistence.Repositories
             return await dbSet.FindAsync(Id).ConfigureAwait(false);
         }
 
-        public async Task<List<Medicine>> SearchByNameAsync(string name, int pageNumber, int pageSize)
+        public async Task<IEnumerable<Medicine>> SearchByNameAsync(string name, int pageNumber, int pageSize)
         {
             return await dbSet
                 .Where(m => m.Name.Contains(name))

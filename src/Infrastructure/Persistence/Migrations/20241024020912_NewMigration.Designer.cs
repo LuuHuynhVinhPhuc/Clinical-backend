@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ClinicalBackend.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241023122948_NewMigration")]
+    [Migration("20241024020912_NewMigration")]
     partial class NewMigration
     {
         /// <inheritdoc />
@@ -220,37 +220,6 @@ namespace ClinicalBackend.Persistence.Migrations
                     b.Navigation("Patient");
                 });
 
-            modelBuilder.Entity("ClinicalBackend.Domain.Entities.Medicine", b =>
-                {
-                    b.OwnsOne("ClinicalBackend.Domain.Entities.Instructions", "Instructions", b1 =>
-                        {
-                            b1.Property<Guid>("MedicineId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<string>("Afternoon")
-                                .HasColumnType("text");
-
-                            b1.Property<string>("Day")
-                                .HasColumnType("text");
-
-                            b1.Property<string>("Lunch")
-                                .HasColumnType("text");
-
-                            b1.Property<string>("Manual")
-                                .HasColumnType("text");
-
-                            b1.HasKey("MedicineId");
-
-                            b1.ToTable("Medicines");
-
-                            b1.WithOwner()
-                                .HasForeignKey("MedicineId");
-                        });
-
-                    b.Navigation("Instructions")
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("ClinicalBackend.Domain.Entities.Prescription", b =>
                 {
                     b.HasOne("ClinicalBackend.Domain.Entities.FollowUp", "FollowUp")
@@ -296,6 +265,37 @@ namespace ClinicalBackend.Persistence.Migrations
 
                             b1.WithOwner()
                                 .HasForeignKey("PrescriptionId");
+
+                            b1.OwnsOne("ClinicalBackend.Domain.Entities.Instructions", "Instructions", b2 =>
+                                {
+                                    b2.Property<Guid>("ProductPrescriptionId")
+                                        .HasColumnType("uuid");
+
+                                    b2.Property<int>("ProductId")
+                                        .HasColumnType("integer");
+
+                                    b2.Property<string>("Afternoon")
+                                        .HasColumnType("text");
+
+                                    b2.Property<string>("Day")
+                                        .HasColumnType("text");
+
+                                    b2.Property<string>("Lunch")
+                                        .HasColumnType("text");
+
+                                    b2.Property<string>("Manual")
+                                        .HasColumnType("text");
+
+                                    b2.HasKey("ProductPrescriptionId", "ProductId");
+
+                                    b2.ToTable("Product");
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("ProductPrescriptionId", "ProductId");
+                                });
+
+                            b1.Navigation("Instructions")
+                                .IsRequired();
 
                             b1.Navigation("Medicine");
                         });

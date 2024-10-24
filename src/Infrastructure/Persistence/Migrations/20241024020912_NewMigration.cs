@@ -23,10 +23,6 @@ namespace ClinicalBackend.Persistence.Migrations
                     Price = table.Column<float>(type: "real", nullable: false),
                     Status = table.Column<string>(type: "text", nullable: true),
                     Type = table.Column<string>(type: "text", nullable: true),
-                    Instructions_Day = table.Column<string>(type: "text", nullable: true),
-                    Instructions_Lunch = table.Column<string>(type: "text", nullable: true),
-                    Instructions_Afternoon = table.Column<string>(type: "text", nullable: true),
-                    Instructions_Manual = table.Column<string>(type: "text", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -149,7 +145,11 @@ namespace ClinicalBackend.Persistence.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     MedicineId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Quantity = table.Column<int>(type: "integer", nullable: false)
+                    Quantity = table.Column<int>(type: "integer", nullable: false),
+                    Instructions_Day = table.Column<string>(type: "text", nullable: true),
+                    Instructions_Lunch = table.Column<string>(type: "text", nullable: true),
+                    Instructions_Afternoon = table.Column<string>(type: "text", nullable: true),
+                    Instructions_Manual = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {

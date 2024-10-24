@@ -27,7 +27,8 @@ namespace ClinicalBackend.Services.Configs.Mappers
                 .MapWith(src => new GetProductDto(
                     src.Medicine.Name,
                     src.Quantity,
-                    src.Medicine.Instructions.Adapt<InstructionsDto>()));
+                    src.Instructions.Adapt<InstructionsDto>()
+                ));
         }
     }
 }

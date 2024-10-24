@@ -17,12 +17,6 @@ namespace ClinicalBackend.Services.Configs.Mappers
                                 src.Price,
                                 src.Type,
                                 src.Status,
-                                new InstructionsDto(
-                                    src.Instructions.Day,
-                                    src.Instructions.Lunch,
-                                    src.Instructions.Afternoon,
-                                    src.Instructions.Manual
-                                ),
                                 src.CreatedAt));
         }
     }

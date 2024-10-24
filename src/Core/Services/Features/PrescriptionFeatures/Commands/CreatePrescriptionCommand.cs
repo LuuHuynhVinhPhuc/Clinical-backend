@@ -65,6 +65,15 @@ namespace ClinicalBackend.Services.Features.PrescriptionFeatures.Commands
                     return Result.Failure<PrescriptionCreatedResponse>(new Error("Medicine.InsufficientStock", $"Insufficient stock for medicine '{medicine.Name}'"));
                 }
 
+                bool isDayValid = int.TryParse(productDto.Instructions.Day, out int day);
+                bool isLunchValid = int.TryParse(productDto.Instructions.Lunch, out int lunch);
+                bool isAfternoonValid = int.TryParse(productDto.Instructions.Afternoon, out int afternoon);
+
+                if (!isDayValid && !isLunchValid && !isAfternoonValid)
+                {
+                    return Result.Failure<PrescriptionCreatedResponse>(new Error("Medicine.InvalidInstructions", "At least one of Day, Lunch, or Afternoon must be a number."));
+                }
+
                 medicine.Stock -= productDto.Quantity;
                 medicine.Status = "SOLD";
                 _unitOfWork.Medicines.Update(medicine);

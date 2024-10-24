@@ -1,5 +1,6 @@
 using ClinicalBackend.Domain.Entities;
 using ClinicalBackend.Services.Common;
+using ClinicalBackend.Services.Features.MedicineFeatures;
 using Domain.Interfaces;
 using MapsterMapper;
 using MediatR;
@@ -37,9 +38,40 @@ namespace ClinicalBackend.Services.Features.PrescriptionFeatures.Commands
                 return Result.Failure<PrescriptionEditedResponse>(PrescriptionError.IDNotFound(command.Id));
             }
 
+            float totalCost = 0;
+            foreach (var productDto in command.Medicines)
+            {
+                var medicine = await _unitOfWork.Medicines.GetByIdAsync(productDto.MedicineId).ConfigureAwait(false);
+                if (medicine == null)
+                {
+                    return Result.Failure<PrescriptionEditedResponse>(MedicineErrors.IdNotFound(productDto.MedicineId));
+                }
+
+                if (medicine.Stock < productDto.Quantity)
+                {
+                    return Result.Failure<PrescriptionEditedResponse>(new Error("Medicine.InsufficientStock", $"Insufficient stock for medicine '{medicine.Name}'"));
+                }
+
+                bool isDayValid = int.TryParse(productDto.Instructions.Day, out int day);
+                bool isLunchValid = int.TryParse(productDto.Instructions.Lunch, out int lunch);
+                bool isAfternoonValid = int.TryParse(productDto.Instructions.Afternoon, out int afternoon);
+
+                if (!isDayValid && !isLunchValid && !isAfternoonValid)
+                {
+                    return Result.Failure<PrescriptionEditedResponse>(new Error("Medicine.InvalidInstructions", "At least one of Day, Lunch, or Afternoon must be a number."));
+                }
+
+                medicine.Stock -= productDto.Quantity;
+                medicine.Status = "SOLD";
+                _unitOfWork.Medicines.Update(medicine);
+
+                totalCost += medicine.Price * productDto.Quantity;
+            }
+
             prescription.Products = _mapper.Map<List<Product>>(command.Medicines);
             prescription.Notes = command.Notes;
-
+            prescription.TotalPrice = totalCost;
+            
             _unitOfWork.Prescription.Update(prescription);
             await _unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 

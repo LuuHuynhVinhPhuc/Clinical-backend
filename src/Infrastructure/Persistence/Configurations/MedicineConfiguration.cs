@@ -11,14 +11,7 @@ namespace ClinicalBackend.Persistence.Configurations
             builder.HasKey(medicine => medicine.Id);
             builder.Property(medicine => medicine.Id).ValueGeneratedOnAdd();
             builder.Property(medicine => medicine.Name).IsRequired();
-            
-            builder.OwnsOne(medicine => medicine.Instructions, instructions =>
-            {
-                instructions.Property(i => i.Day);
-                instructions.Property(i => i.Lunch);
-                instructions.Property(i => i.Afternoon);
-                instructions.Property(i => i.Manual);
-            });
+        
         }
     }
 }

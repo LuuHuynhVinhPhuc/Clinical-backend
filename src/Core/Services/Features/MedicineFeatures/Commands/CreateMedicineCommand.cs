@@ -13,7 +13,6 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
         public int Stock { get; set; }
         public float Price { get; set; }
         public string Type { get; set; }
-        public Instructions Instructions { get; set; }
     }
 
     public class MedicineCreatedResponse
@@ -51,21 +50,6 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
                 return Result.Failure<MedicineCreatedResponse>(new Error("Medicine.InvalidPrice", "Price must be a positive value."));
             }
 
-            // Validate instructions
-            bool isDayValid = int.TryParse(command.Instructions.Day, out int day);
-            bool isLunchValid = int.TryParse(command.Instructions.Lunch, out int lunch);
-            bool isAfternoonValid = int.TryParse(command.Instructions.Afternoon, out int afternoon);
-
-            if (!isDayValid && !isLunchValid && !isAfternoonValid)
-            {
-                return Result.Failure<MedicineCreatedResponse>(new Error("Medicine.InvalidInstructions", "At least one of Day, Lunch, or Afternoon must be a number."));
-            }
-
-            // Set default values for untyped instructions
-            command.Instructions.Day = isDayValid ? command.Instructions.Day : "0";
-            command.Instructions.Lunch = isLunchValid ? command.Instructions.Lunch : "0";
-            command.Instructions.Afternoon = isAfternoonValid ? command.Instructions.Afternoon : "0";
-
             var medicine = new Medicine
             {
                 Name = command.Name,
@@ -74,7 +58,6 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
                 Price = command.Price,
                 Status = "NOT_SOLD",
                 Type = command.Type,
-                Instructions = command.Instructions
             };
 
             // Add the medicine to the repository

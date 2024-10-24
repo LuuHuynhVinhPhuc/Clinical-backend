@@ -13,9 +13,7 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
         public string Company { get; set; }
         public int Stock { get; set; }
         public float Price { get; set; }
-        public string Status { get; set; }
         public string Type { get; set; }
-        public Instructions Instructions { get; set; }
     }
 
     public class MedicineEditedResponse
@@ -45,15 +43,7 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
             existingMedicine.Company = command.Company ?? existingMedicine.Company; 
             existingMedicine.Stock = command.Stock;
             existingMedicine.Price = command.Price;
-            existingMedicine.Status = command.Status ?? existingMedicine.Status;
             existingMedicine.Type = command.Type ?? existingMedicine.Type;
-            existingMedicine.Instructions = new Domain.Entities.Instructions
-            {
-                Day = command.Instructions.Day,
-                Lunch = command.Instructions.Lunch,
-                Afternoon = command.Instructions.Afternoon,
-                Manual = command.Instructions.Manual
-            };
 
             // Save changes to the repository
             await _unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);

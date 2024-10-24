@@ -27,7 +27,8 @@ namespace ClinicalBackend.Contracts.DTOs.Prescription
 
     public record struct PostProductDto(
         Guid MedicineId,
-        int Quantity
+        int Quantity,
+        InstructionsDto Instructions
     );
     
     public record struct GetProductDto(

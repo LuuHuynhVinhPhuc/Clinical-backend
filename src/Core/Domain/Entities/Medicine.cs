@@ -12,8 +12,6 @@ namespace ClinicalBackend.Domain.Entities
         public string? Status { get; set; }
         public string? Type { get; set; }
 
-        public Instructions Instructions { get; set; }
-
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
 
@@ -23,11 +21,4 @@ namespace ClinicalBackend.Domain.Entities
         // public string? Contraindications { get; set; }
     }
 
-    public class Instructions
-    {
-        public string? Day { get; set; }
-        public string? Lunch { get; set; }
-        public string? Afternoon { get; set; }
-        public string? Manual { get; set; }
-    }
 }

@@ -55,7 +55,7 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         }
 
         // Get patient by date
-        [HttpGet("Date/{startDate}&{endDate}")]
+        [HttpGet("Date/Start={startDate}&End={endDate}")]
         public async Task<IActionResult> GetPatientByDateAsync(string startDate, string endDate, [FromQuery] int page = 1, [FromQuery] int limit = 5)
         {
             var res = await _mediator.Send(new GetPatientByDateCommand { StartDate = startDate, EndDate = endDate, Page = page, Limit = limit }).ConfigureAwait(false);

@@ -1,5 +1,6 @@
 using ClinicalBackend.Services.Common;
 using ClinicalBackend.Services.Features.MedicineFeatures.Commands;
+using ClinicalBackend.Services.Features.PatientFeatures.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -65,6 +66,16 @@ namespace ClinicalBackend.Presentation.Controllers.v1
 
             return result.Match(
                 onSuccess: () => Result.Ok(result.Value()),
+                onFailure: error => Result.BadRequest(error));
+        }
+
+        // Get medicines by date
+        [HttpGet("Date/Start={startDate}&End={endDate}")]
+        public async Task<IActionResult> GetMedicinesByDateAsync(string startDate, string endDate, [FromQuery] int page = 1, [FromQuery] int limit = 5)
+        {
+            var res = await _mediator.Send(new GetMedicinesbyDateCommand { StartDate = startDate, EndDate = endDate, Page = page, Limit = limit }).ConfigureAwait(false);
+            return res.Match(
+                onSuccess: () => Result.Ok(res.Value()),
                 onFailure: error => Result.BadRequest(error));
         }
     }

@@ -48,6 +48,22 @@ namespace ClinicalBackend.Persistence.Repositories
             return await dbSet.CountAsync(m => m.Name.Contains(Name)).ConfigureAwait(false);
         }
 
-        
+        public async Task<int> GetTotalCountByDateAsync(DateTime dateStart, DateTime dateEnd)
+        {
+            return await dbSet
+                .CountAsync(p => p.CreatedAt >= dateStart && p.CreatedAt <= dateEnd && p.Status == "SOLD")
+                .ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<Medicine>> GetMedicinesByDateAsync(DateTime dateStart, DateTime dateEnd, int pageNumber, int pageSize)
+        {
+            return await dbSet
+                .Where(p => p.CreatedAt >= dateStart && p.CreatedAt <= dateEnd && p.Status == "SOLD")
+                .OrderByDescending(p => p.CreatedAt)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync()
+                .ConfigureAwait(false);
+        }
     }
 }

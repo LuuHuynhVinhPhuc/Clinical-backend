@@ -14,7 +14,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 
     public class FindWithPhoneReponse
     {
-        public PatientsDto Patient { get; set; }
+        public List<PatientsDto> Patients { get; set; }
     }
     // Task
     public class FindWithPhoneNumberHandler : IRequestHandler<GetPatientbyPhoneNumber, Result<FindWithPhoneReponse>>
@@ -38,7 +38,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 
             var res = new FindWithPhoneReponse 
             { 
-                Patient = _mapper.Map<PatientsDto>(patient)
+                Patients = _mapper.Map<List<PatientsDto>>(patient)
             };
             
             return Result.Success(res);

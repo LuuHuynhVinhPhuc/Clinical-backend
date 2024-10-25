@@ -37,7 +37,7 @@ namespace ClinicalBackend.Persistence.Repositories
                 .ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<Prescription>> GetByPatientIdAsync(Guid patientId)
+        public async Task<IEnumerable<Prescription>> GetByPatientIdAsync(Guid patientId, int pageNumber, int pageSize)
         {
             return await dbSet
                 .Include(p => p.Patient)
@@ -45,6 +45,9 @@ namespace ClinicalBackend.Persistence.Repositories
                 .Include(p => p.Products)
                 .ThenInclude(p => p.Medicine)
                 .Where(p => p.PatientId == patientId)
+                .OrderByDescending(p => p.CreatedAt)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
                 .ToListAsync()
                 .ConfigureAwait(false);
         }

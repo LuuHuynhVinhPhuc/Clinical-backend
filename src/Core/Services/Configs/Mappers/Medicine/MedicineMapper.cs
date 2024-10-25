@@ -13,6 +13,7 @@ namespace ClinicalBackend.Services.Configs.Mappers
                 .MapWith(src => new MedicineDto(
                                 src.Id,
                                 src.Name,
+                                src.Company,
                                 src.Stock,
                                 src.Price,
                                 src.Type,

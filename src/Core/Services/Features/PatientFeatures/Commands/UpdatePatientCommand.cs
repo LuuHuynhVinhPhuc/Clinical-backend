@@ -11,7 +11,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
         public string DOB { get; set; }
         public string Address { get; set; }
         public string? phoneNumber { get; set; }
-        public string CheckStatus { get; set; }
+        public string Status { get; set; }
     }
 
     public class UpdatePatientResponse
@@ -57,7 +57,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
             patient.Address = command.Address;
             patient.PhoneNumber = command.phoneNumber;
             patient.ModifiedAt = DateTime.UtcNow;
-            patient.CheckStatus = command.CheckStatus;
+            patient.CheckStatus = command.Status;
 
             // reponse result
 

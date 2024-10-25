@@ -38,7 +38,7 @@ namespace ClinicalBackend.Services.Features.PrescriptionFeatures.Commands
                 return Result.Failure<GetPrescriptionByPhoneResponse>(PrescriptionError.PatientPhoneNotFound(request.PhoneNumber));
             }
 
-            var prescriptions = await _unitOfWork.Prescription.GetByPatientIdAsync(patient.Id).ConfigureAwait(false);
+            var prescriptions = await _unitOfWork.Prescription.GetByPatientIdAsync(patient.Id, request.PageNumber, request.PageSize).ConfigureAwait(false);
             var totalCount = await _unitOfWork.Prescription.GetTotalCountByPatientIdAsync(patient.Id).ConfigureAwait(false);
 
             var response = new GetPrescriptionByPhoneResponse

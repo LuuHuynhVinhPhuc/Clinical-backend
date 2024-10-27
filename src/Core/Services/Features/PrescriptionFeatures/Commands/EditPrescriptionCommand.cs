@@ -71,7 +71,7 @@ namespace ClinicalBackend.Services.Features.PrescriptionFeatures.Commands
             prescription.Products = _mapper.Map<List<Product>>(command.Medicines);
             prescription.Notes = command.Notes;
             prescription.TotalPrice = totalCost;
-            
+
             _unitOfWork.Prescription.Update(prescription);
             await _unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
@@ -80,4 +80,3 @@ namespace ClinicalBackend.Services.Features.PrescriptionFeatures.Commands
         }
     }
 }
-

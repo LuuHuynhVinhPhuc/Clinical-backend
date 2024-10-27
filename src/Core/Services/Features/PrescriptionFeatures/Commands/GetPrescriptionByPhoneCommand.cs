@@ -32,11 +32,14 @@ namespace ClinicalBackend.Services.Features.PrescriptionFeatures.Commands
 
         public async Task<Result<GetPrescriptionByPhoneResponse>> Handle(GetPrescriptionByPhoneCommand request, CancellationToken cancellationToken)
         {
-            var patient = await _unitOfWork.Patient.FindWithPhoneNumberAsync(request.PhoneNumber).ConfigureAwait(false);
-            if (patient == null)
+            var patients = await _unitOfWork.Patient.FindWithPhoneNumberAsync(request.PhoneNumber).ConfigureAwait(false);
+
+            if (!patients.Any())
             {
                 return Result.Failure<GetPrescriptionByPhoneResponse>(PrescriptionError.PatientPhoneNotFound(request.PhoneNumber));
             }
+
+            var patient = patients.First();
 
             var prescriptions = await _unitOfWork.Prescription.GetByPatientIdAsync(patient.Id, request.PageNumber, request.PageSize).ConfigureAwait(false);
             var totalCount = await _unitOfWork.Prescription.GetTotalCountByPatientIdAsync(patient.Id).ConfigureAwait(false);
@@ -57,4 +60,3 @@ namespace ClinicalBackend.Services.Features.PrescriptionFeatures.Commands
         }
     }
 }
-

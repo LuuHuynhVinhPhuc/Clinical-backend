@@ -36,7 +36,7 @@ namespace ClinicalBackend.Persistence.Repositories
         {
             return await dbSet
                 .Include(f => f.FollowUps)
-                .Where(m => m.Name.Contains(name))
+                .Where(p => p.Name.Contains(name))
                 .OrderByDescending(m => m.CreatedAt)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
@@ -45,11 +45,12 @@ namespace ClinicalBackend.Persistence.Repositories
         }
 
         // Find with Phone number 
-        public async Task<Patient> FindWithPhoneNumberAsync(string phoneNumber)
+        public async Task<IEnumerable<Patient>> FindWithPhoneNumberAsync(string phoneNumber)
         {
             return await dbSet
                     .Include(f => f.FollowUps)
-                    .FirstOrDefaultAsync(p => p.PhoneNumber == phoneNumber)
+                    .Where(p => p.PhoneNumber == phoneNumber)
+                    .ToListAsync()
                     .ConfigureAwait(false);
         }
 

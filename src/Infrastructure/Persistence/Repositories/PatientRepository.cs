@@ -20,14 +20,14 @@ namespace ClinicalBackend.Persistence.Repositories
                 .FirstOrDefaultAsync()
                 .ConfigureAwait(false);
         }
-        public async Task<IEnumerable<Patient>> GetAllAsync(int pageNumber, int pageSize)
+        public override async Task<IEnumerable<Patient>> GetAllAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default)
         {
             return await dbSet
                 .Include(f => f.FollowUps)
                 .OrderByDescending(m => m.CreatedAt)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
-                .ToListAsync()
+                .ToListAsync(cancellationToken)
                 .ConfigureAwait(false);
         }
 

@@ -1,52 +1,37 @@
-﻿
-using Domain.Interfaces;
-using ClinicalBackend.Contracts.DTOs.Medicine;
-using MediatR;
-using MapsterMapper;
+﻿using ClinicalBackend.Contracts.DTOs.Medicine;
 using ClinicalBackend.Services.Common;
-using ClinicalBackend.Services.Features.PatientFeatures.Commands;
+using ClinicalBackend.Services.Features.MedicineFeatures.Response;
 using ClinicalBackend.Services.Features.PatientFeatures;
+using Domain.Interfaces;
+using MapsterMapper;
+using MediatR;
 using System.Globalization;
-using ClinicalBackend.Contracts.DTOs.Patient;
-using ClinicalBackend.Domain.Entities;
 
 namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
 {
-    public class GetMedicinesbyDateCommand : IRequest<Result<MedicinesbyDateResponse>>
+    public class GetMedicinesbyDateCommand : IRequest<Result<QueryMedicinesResponse>>
     {
         public string StartDate { get; set; }
         public string EndDate { get; set; }
 
         // default pagnigation params
         public int Page { get; set; } = 1;
+
         public int Limit { get; set; } = 5;
     }
 
-    public class MedicinesbyDateResponse
-    {
-        public List<MedicineDto> Medicines { get; set; }
-        public PaginationsInfo Pagination { get; set; }
-    }
-
-    public class PaginationsInfo
-    {
-        public int TotalItems { get; set; }
-        public int TotalItemsPerPage { get; set; }
-        public int CurrentPage { get; set; }
-        public int TotalPages { get; set; }
-    }
-
-    public class GetMedicinesbyDateHandler : IRequestHandler<GetMedicinesbyDateCommand, Result<MedicinesbyDateResponse>>
+    public class GetMedicinesbyDateHandler : IRequestHandler<GetMedicinesbyDateCommand, Result<QueryMedicinesResponse>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+
         public GetMedicinesbyDateHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
-        public async Task<Result<MedicinesbyDateResponse>> Handle(GetMedicinesbyDateCommand request, CancellationToken cancellationToken)
+        public async Task<Result<QueryMedicinesResponse>> Handle(GetMedicinesbyDateCommand request, CancellationToken cancellationToken)
         {
             try
             {
@@ -57,29 +42,29 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
 
                 if (dateStart > dateEnd)
                 {
-                    return Result.Failure<MedicinesbyDateResponse>(PatientError.InputDateInvalidFormat);
+                    return Result.Failure<QueryMedicinesResponse>(PatientError.InputDateInvalidFormat);
                 }
 
                 var totalItems = await _unitOfWork.Medicines.GetTotalCountByDateAsync(dateStart, dateEnd).ConfigureAwait(false);
 
                 var medicines = await _unitOfWork.Medicines.GetMedicinesByDateAsync(dateStart, dateEnd, request.Page, request.Limit).ConfigureAwait(false);
 
-                return Result.Success(new MedicinesbyDateResponse
+                var response = new QueryMedicinesResponse
                 {
                     Medicines = _mapper.Map<List<MedicineDto>>(medicines),
-                    Pagination = new PaginationsInfo
+                    Pagination = new PaginationInfo
                     {
                         TotalItems = totalItems,
-                        TotalItemsPerPage = request.Page,
-                        CurrentPage = request.Limit,
+                        TotalItemsPerPage = request.Limit,
+                        CurrentPage = request.Page,
                         TotalPages = (int)Math.Ceiling((double)totalItems / request.Limit)
                     }
-                });
-
+                };
+                return Result.Success(response);
             }
-            catch(FormatException) 
+            catch (FormatException)
             {
-                return Result.Failure<MedicinesbyDateResponse>(PatientError.InputDateInvalidFormat);
+                return Result.Failure<QueryMedicinesResponse>(PatientError.InputDateInvalidFormat);
             }
         }
     }

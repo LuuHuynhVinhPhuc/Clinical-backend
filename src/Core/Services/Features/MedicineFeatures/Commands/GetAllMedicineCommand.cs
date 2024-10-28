@@ -26,7 +26,7 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
 
         public async Task<Result<QueryMedicinesResponse>> Handle(GetAllMedicineCommand request, CancellationToken cancellationToken)
         {
-            var medicines = await _unitOfWork.Medicines.GetAllAsync(request.PageNumber, request.PageSize).ConfigureAwait(false);
+            var medicines = await _unitOfWork.Medicines.GetAllAsync(request.PageNumber, request.PageSize, cancellationToken).ConfigureAwait(false);
             var totalItems = await _unitOfWork.Medicines.GetTotalCountAsync().ConfigureAwait(false);
 
             var response = new QueryMedicinesResponse

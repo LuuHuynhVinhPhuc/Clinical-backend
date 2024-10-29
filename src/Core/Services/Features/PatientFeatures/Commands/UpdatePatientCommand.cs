@@ -31,13 +31,14 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 
         public async Task<Result<UpdatePatientResponse>> Handle(UpdatePatientCommand command, CancellationToken cancellationToken)
         {
-            // find with ID 
             var patient = await _unitOfWork.Patient.GetByIdAsync(command.Id).ConfigureAwait(false);
 
             if (patient == null)
                 return Result.Failure<UpdatePatientResponse>(PatientError.IDNotFound(command.Id));
 
-            if (!DateOnly.TryParseExact(command.DOB, "dd-MM-yyyy", out DateOnly dob))
+            DateOnly dob = default;
+
+            if (!string.IsNullOrEmpty(command.DOB) && !DateOnly.TryParseExact(command.DOB, "dd-MM-yyyy", out dob))
             {
                 return Result.Failure<UpdatePatientResponse>(PatientError.InputDateInvalidFormat);
             }
@@ -49,11 +50,14 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
                 return Result.Failure<UpdatePatientResponse>(PatientError.InvalidDOBFormat);
             }
 
-            // save data in Client 
             patient.Name = command.Name;
-            // Update DOB only if it has changed
-            patient.DOB = dob;
-            patient.Age = age;
+
+            if (patient.DOB != dob)
+            {
+                patient.DOB = dob;
+                patient.Age = age;
+            }
+            
             patient.Address = command.Address;
             patient.PhoneNumber = command.phoneNumber;
             patient.ModifiedAt = DateTime.UtcNow;

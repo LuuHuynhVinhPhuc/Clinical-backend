@@ -77,5 +77,14 @@ namespace ClinicalBackend.Presentation.Controllers.v1
                 onSuccess: () => Result.Ok(res.Value()),
                 onFailure: error => Result.BadRequest(error));
         }
+
+        [HttpGet("Prescription/Range/Start={startDate}&End={endDate}")]
+        public async Task<IActionResult> GetMedicineByStatusAsync(string startDate, string endDate, [FromQuery] int page = 1, [FromQuery] int limit = 10)
+        {
+            var res = await _mediator.Send(new GetMedicineByRangeCommand { StartDate = startDate, EndDate = endDate, PageNumber = page, PageSize = limit }).ConfigureAwait(false);
+            return res.Match(
+                onSuccess: () => Result.Ok(res.Value()),
+                onFailure: error => Result.BadRequest(error));
+        }
     }
 }

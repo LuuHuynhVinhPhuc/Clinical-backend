@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using ClinicalBackend.Contracts.DTOs.FollowUp;
-
 namespace ClinicalBackend.Contracts.DTOs.Medicine
 {
     public record struct MedicineDto(
@@ -12,6 +8,16 @@ namespace ClinicalBackend.Contracts.DTOs.Medicine
         float Price,
         string? Type,
         string? Status,
+        DateTime CreatedAt
+    );
+
+    public record struct MedicineByDateDto(
+        Guid Id,
+        string? Name,
+        string? Company,
+        int Amount,
+        float CombinedPrice,
+        string? Type,
         DateTime CreatedAt
     );
 }

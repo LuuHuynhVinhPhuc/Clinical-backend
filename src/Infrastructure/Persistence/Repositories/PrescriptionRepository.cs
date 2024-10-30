@@ -79,5 +79,24 @@ namespace ClinicalBackend.Persistence.Repositories
                 .ToListAsync()
                 .ConfigureAwait(false);
         }
+
+        
+        public async Task<IEnumerable<Prescription>> GetByDateRangeAsync(DateTime dateStart, DateTime dateEnd, int pageNumber, int pageSize)
+        {
+            return await dbSet
+                .Include(p => p.Products)
+                .ThenInclude(p => p.Medicine)
+                .Where(p => p.CreatedAt >= dateStart && p.CreatedAt <= dateEnd)
+                .OrderByDescending(p => p.CreatedAt)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync()
+                .ConfigureAwait(false);
+        }
+
+        public async Task<int> GetCountByDateRangeAsync(DateTime dateStart, DateTime dateEnd)
+        {
+            return await dbSet.CountAsync(p => p.CreatedAt >= dateStart && p.CreatedAt <= dateEnd).ConfigureAwait(false);
+        }
     }
 }

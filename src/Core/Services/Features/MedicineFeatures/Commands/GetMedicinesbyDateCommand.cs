@@ -9,18 +9,17 @@ using System.Globalization;
 
 namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
 {
-    public class GetMedicinesbyDateCommand : IRequest<Result<QueryMedicinesResponse>>
+    public class GetMedicinesbyDateCommand : IRequest<Result<QueryMedicinesResponse<MedicineDto>>>
     {
         public string StartDate { get; set; }
         public string EndDate { get; set; }
 
         // default pagnigation params
         public int Page { get; set; } = 1;
-
         public int Limit { get; set; } = 5;
     }
 
-    public class GetMedicinesbyDateHandler : IRequestHandler<GetMedicinesbyDateCommand, Result<QueryMedicinesResponse>>
+    public class GetMedicinesbyDateHandler : IRequestHandler<GetMedicinesbyDateCommand, Result<QueryMedicinesResponse<MedicineDto>>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -31,7 +30,7 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
             _mapper = mapper;
         }
 
-        public async Task<Result<QueryMedicinesResponse>> Handle(GetMedicinesbyDateCommand request, CancellationToken cancellationToken)
+        public async Task<Result<QueryMedicinesResponse<MedicineDto>>> Handle(GetMedicinesbyDateCommand request, CancellationToken cancellationToken)
         {
             try
             {
@@ -42,14 +41,14 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
 
                 if (dateStart > dateEnd)
                 {
-                    return Result.Failure<QueryMedicinesResponse>(PatientError.InputDateInvalidFormat);
+                    return Result.Failure<QueryMedicinesResponse<MedicineDto>>(PatientError.InputDateInvalidFormat);
                 }
 
                 var totalItems = await _unitOfWork.Medicines.GetTotalCountByDateAsync(dateStart, dateEnd).ConfigureAwait(false);
 
                 var medicines = await _unitOfWork.Medicines.GetMedicinesByDateAsync(dateStart, dateEnd, request.Page, request.Limit).ConfigureAwait(false);
 
-                var response = new QueryMedicinesResponse
+                var response = new QueryMedicinesResponse<MedicineDto>
                 {
                     Medicines = _mapper.Map<List<MedicineDto>>(medicines),
                     Pagination = new PaginationInfo
@@ -64,7 +63,7 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
             }
             catch (FormatException)
             {
-                return Result.Failure<QueryMedicinesResponse>(PatientError.InputDateInvalidFormat);
+                return Result.Failure<QueryMedicinesResponse<MedicineDto>>(PatientError.InputDateInvalidFormat);
             }
         }
     }

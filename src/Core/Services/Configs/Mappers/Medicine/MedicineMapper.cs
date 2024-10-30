@@ -19,6 +19,16 @@ namespace ClinicalBackend.Services.Configs.Mappers
                                 src.Type,
                                 src.Status,
                                 src.CreatedAt));
+
+            config.NewConfig<Medicine, MedicineByDateDto>()
+                .MapWith(src => new MedicineByDateDto(
+                                src.Id,
+                                src.Name,
+                                src.Company,
+                                src.Stock,
+                                src.Price,
+                                src.Type,
+                                src.CreatedAt));
         }
     }
 }

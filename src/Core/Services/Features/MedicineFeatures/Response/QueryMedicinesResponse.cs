@@ -1,10 +1,8 @@
-using ClinicalBackend.Contracts.DTOs.Medicine;
-
 namespace ClinicalBackend.Services.Features.MedicineFeatures.Response
 {
-    public class QueryMedicinesResponse
+    public class QueryMedicinesResponse<TDto>
     {
-        public List<MedicineDto> Medicines { get; set; }
+        public List<TDto> Medicines { get; set; }
         public PaginationInfo Pagination { get; set; }
     }
 

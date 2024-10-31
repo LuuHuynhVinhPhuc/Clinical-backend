@@ -20,5 +20,12 @@ namespace ClinicalBackend.Contracts.DTOs.Medicine
         string? Type,
         DateTime CreatedAt
     );
+
+    public record struct Top10MedicineDto(
+        Guid Id,
+        string? Name,
+        string? Company,
+        int Amount
+    );
 }
 

@@ -86,5 +86,14 @@ namespace ClinicalBackend.Presentation.Controllers.v1
                 onSuccess: () => Result.Ok(res.Value()),
                 onFailure: error => Result.BadRequest(error));
         }
+
+        [HttpGet("Prescription/Range/Top10/Start={startDate}&End={endDate}")]
+        public async Task<IActionResult> GetTop10MedicineAsync(string startDate, string endDate)
+        {
+            var res = await _mediator.Send(new GetMedicineByTop10Command { StartDate = startDate, EndDate = endDate}).ConfigureAwait(false);
+            return res.Match(
+                onSuccess: () => Result.Ok(res.Value()),
+                onFailure: error => Result.BadRequest(error));
+        }
     }
 }

@@ -42,7 +42,6 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
                 }
 
                 var prescriptions = await _unitOfWork.Prescription.GetByDateRangeAsync(dateStart, dateEnd, request.PageNumber, request.PageSize).ConfigureAwait(false);
-                var totalItems = await _unitOfWork.Prescription.GetCountByDateRangeAsync(dateStart, dateEnd).ConfigureAwait(false);
 
                 var medicineSales = new Dictionary<Guid, Medicine>();
 
@@ -79,10 +78,10 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
                     Medicines = _mapper.Map<List<MedicineByDateDto>>(medicineSales.Values),
                     Pagination = new PaginationInfo
                     {
-                        TotalItems = totalItems,
+                        TotalItems = medicineSales.Count,
                         TotalItemsPerPage = request.PageSize,
                         CurrentPage = request.PageNumber,
-                        TotalPages = (int)Math.Ceiling((double)totalItems / request.PageSize)
+                        TotalPages = (int)Math.Ceiling((double)medicineSales.Count / request.PageSize)
                     }
                 };
 

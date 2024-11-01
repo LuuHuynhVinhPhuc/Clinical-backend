@@ -36,6 +36,11 @@ namespace ClinicalBackend.Services.Features.PrescriptionFeatures.Commands
 
         public async Task<Result<PrescriptionCreatedResponse>> Handle(CreatePrescriptionCommand command, CancellationToken cancellationToken)
         {
+            if (command.Products == null || !command.Products.Any())
+            {
+                return Result.Failure<PrescriptionCreatedResponse>(new Error("Prescription.NoProducts", "No products were provided for the prescription"));
+            }
+
             // Check if the patient exists
             var patient = await _unitOfWork.Patient.GetByIdAsync(command.PatientId).ConfigureAwait(false);
             if (patient == null)
@@ -52,6 +57,7 @@ namespace ClinicalBackend.Services.Features.PrescriptionFeatures.Commands
 
             // Check if each medicine has sufficient stock and update stock
             float totalCost = 0;
+            
             foreach (var productDto in command.Products)
             {
                 var medicine = await _unitOfWork.Medicines.GetByIdAsync(productDto.MedicineId).ConfigureAwait(false);

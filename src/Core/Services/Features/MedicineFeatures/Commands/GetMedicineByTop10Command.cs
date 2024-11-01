@@ -44,7 +44,6 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
                 }
 
                 var prescriptions = await _unitOfWork.Prescription.GetByDateRangeAsync(dateStart, dateEnd).ConfigureAwait(false);
-                var totalItems = await _unitOfWork.Prescription.GetCountByDateRangeAsync(dateStart, dateEnd).ConfigureAwait(false);
 
                 var medicineSales = new Dictionary<Guid, Medicine>();
 

@@ -57,7 +57,7 @@ namespace ClinicalBackend.Services.Features.PrescriptionFeatures.Commands
 
             // Check if each medicine has sufficient stock and update stock
             float totalCost = 0;
-            
+
             foreach (var productDto in command.Products)
             {
                 var medicine = await _unitOfWork.Medicines.GetByIdAsync(productDto.MedicineId).ConfigureAwait(false);

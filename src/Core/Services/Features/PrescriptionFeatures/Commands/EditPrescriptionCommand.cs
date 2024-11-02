@@ -1,3 +1,4 @@
+using ClinicalBackend.Contracts.DTOs.Prescription;
 using ClinicalBackend.Domain.Entities;
 using ClinicalBackend.Services.Common;
 using ClinicalBackend.Services.Features.MedicineFeatures;
@@ -10,7 +11,7 @@ namespace ClinicalBackend.Services.Features.PrescriptionFeatures.Commands
     public class EditPrescriptionCommand : IRequest<Result<PrescriptionEditedResponse>>
     {
         public Guid Id { get; set; }
-        public ICollection<Product> Medicines { get; set; }
+        public ICollection<PostProductDto> Medicines { get; set; }
         public string Notes { get; set; }
     }
 

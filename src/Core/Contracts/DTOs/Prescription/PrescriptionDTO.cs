@@ -32,6 +32,7 @@ namespace ClinicalBackend.Contracts.DTOs.Prescription
     );
     
     public record struct GetProductDto(
+        Guid MedicineId,
         string Name,
         int Quantity,
         InstructionsDto Instructions

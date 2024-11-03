@@ -39,6 +39,17 @@ namespace ClinicalBackend.Services.Features.PrescriptionFeatures.Commands
                 return Result.Failure<PrescriptionEditedResponse>(PrescriptionError.IDNotFound(command.Id));
             }
 
+            // Return quantities from existing products back to medicine stock
+            foreach (var existingProduct in prescription.Products)
+            {
+                var existingMedicine = await _unitOfWork.Medicines.GetByIdAsync(existingProduct.Medicine.Id).ConfigureAwait(false);
+                if (existingMedicine != null)
+                {
+                    existingMedicine.Stock += existingProduct.Quantity;
+                    _unitOfWork.Medicines.Update(existingMedicine);
+                }
+            }
+
             float totalCost = 0;
             foreach (var productDto in command.Medicines)
             {

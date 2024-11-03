@@ -41,7 +41,7 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
                     return Result.Failure<QueryMedicinesResponse<MedicineByDateDto>>(PatientError.InputDateInvalidFormat);
                 }
 
-                var prescriptions = await _unitOfWork.Prescription.GetByDateRangeAsync(dateStart, dateEnd, request.PageNumber, request.PageSize).ConfigureAwait(false);
+                var prescriptions = await _unitOfWork.Prescription.GetByDateRangeAsync(dateStart, dateEnd).ConfigureAwait(false);
 
                 var medicineSales = new Dictionary<Guid, Medicine>();
 
@@ -73,15 +73,22 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
                     }
                 }
 
+                var totalCount = medicineSales.Count;
+                var topMedicines = medicineSales.Values
+                    .OrderByDescending(m => m.Stock)
+                    .Skip((request.PageNumber - 1) * request.PageSize)
+                    .Take(request.PageSize)
+                    .ToList();
+
                 var response = new QueryMedicinesResponse<MedicineByDateDto>
                 {
-                    Medicines = _mapper.Map<List<MedicineByDateDto>>(medicineSales.Values),
+                    Medicines = _mapper.Map<List<MedicineByDateDto>>(topMedicines),
                     Pagination = new PaginationInfo
                     {
-                        TotalItems = medicineSales.Count,
+                        TotalItems = totalCount,
                         TotalItemsPerPage = request.PageSize,
                         CurrentPage = request.PageNumber,
-                        TotalPages = (int)Math.Ceiling((double)medicineSales.Count / request.PageSize)
+                        TotalPages = (int)Math.Ceiling((double)totalCount / request.PageSize)
                     }
                 };
 

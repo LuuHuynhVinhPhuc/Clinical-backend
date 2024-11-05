@@ -51,8 +51,8 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
                 Pagination = new PaginationInfo
                 {
                     TotalItems = totalItems,
-                    TotalItemsPerPage = request.Page,
-                    CurrentPage = request.Limit,
+                    TotalItemsPerPage = request.Limit,
+                    CurrentPage = request.Page,
                     TotalPages = (int)Math.Ceiling((double)totalItems / request.Limit)
                 }
             };

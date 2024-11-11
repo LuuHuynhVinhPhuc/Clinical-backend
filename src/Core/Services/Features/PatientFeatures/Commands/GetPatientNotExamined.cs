@@ -9,14 +9,16 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 {
     public class GetPatientNotExaminedCommand : IRequest<Result<GetPatientNotExaminedResponse>>
     {
-        public Guid ID { get; set; }
+        public int Page { get; set; } = 1;
+        public int Limit { get; set; } = 5;
     }
 
     public class GetPatientNotExaminedResponse
     {
-        public List<PatientsDto> Patient { get; set; }
+        public List<PatientsDto> Patients { get; set; }
+        public PaginationInfo Pagination { get; set; }
+        
     }
-
     // Task
     public class GetPatientNotExaminedHandler : IRequestHandler<GetPatientNotExaminedCommand, Result<GetPatientNotExaminedResponse>>
     {
@@ -31,14 +33,19 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 
         public async Task<Result<GetPatientNotExaminedResponse>> Handle(GetPatientNotExaminedCommand request, CancellationToken cancellationToken)
         {
-            var patient = await _unitOfWork.Patient.GetByIdAsync(request.ID).ConfigureAwait(false);
+            var patients = await _unitOfWork.Patient.GetPatientsNotExamined(request.Page, request.Limit).ConfigureAwait(false);
+            var totalItems = await _unitOfWork.Patient.GetPatientsNotExaminedCountAsync().ConfigureAwait(false);
 
-            if (patient == null)
-                return Result.Failure<GetPatientNotExaminedResponse>(PatientError.IDNotFound(request.ID));
-
-            var res = new GetPatientNotExaminedResponse() 
-            { 
-                Patient = _mapper.Map<List<PatientsDto>>(patient) 
+            var res = new GetPatientNotExaminedResponse()
+            {
+                Patients = _mapper.Map<List<PatientsDto>>(patients),
+                Pagination = new PaginationInfo
+                {
+                    TotalItems = totalItems,
+                    TotalItemsPerPage = request.Limit,
+                    CurrentPage = request.Page,
+                    TotalPages = (int)Math.Ceiling((double)totalItems / request.Limit)
+                }
             };
             
             return Result.Success(res);

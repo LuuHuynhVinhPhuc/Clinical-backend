@@ -10,7 +10,7 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
         public string? Name { get; set; }
         public string? Company { get; set; }
         public string? Specialty { get; set; }
-        public List<string> Nutritional { get; set; }
+        public string? Nutritional { get; set; }
         public string? Dosage { get; set; }
         public int Stock { get; set; }
         public float Price { get; set; }

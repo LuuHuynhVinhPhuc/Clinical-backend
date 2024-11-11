@@ -17,10 +17,10 @@ namespace ClinicalBackend.Persistence.Configurations
                 product.Property(p => p.Quantity);
                 product.OwnsOne(p => p.Instructions, i =>
                 {
+                    i.Property(p => p.NumberOfDays);
                     i.Property(p => p.Day);
                     i.Property(p => p.Lunch);
                     i.Property(p => p.Afternoon);
-                    i.Property(p => p.Manual);
                 });
             });
         }

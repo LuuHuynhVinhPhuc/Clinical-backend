@@ -78,5 +78,17 @@ namespace ClinicalBackend.Persistence.Repositories
                 .ToListAsync()
                 .ConfigureAwait(false);
         }
+
+        public async Task<IEnumerable<Patient>> GetPatientsNotExamined(int pageNumber, int pageSize)
+        {
+           return await dbSet                
+                .Include(f => f.FollowUps)
+                .Where(p => p.CheckStatus == "not_examined")
+                .OrderByDescending(p => p.CreatedAt)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync()
+                .ConfigureAwait(false);
+        }
     }
 }

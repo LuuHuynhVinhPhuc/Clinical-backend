@@ -25,10 +25,10 @@ namespace ClinicalBackend.Domain.Entities
     {
         public Guid MedicineId { get; set; }
         public int Quantity { get; set; }
+        public int NumberOfDays { get; set; }
         public Instructions Instructions { get; set; }
         //Navigation property
         public virtual Medicine Medicine { get; set; }
-
     }
     
     public class Instructions
@@ -36,6 +36,6 @@ namespace ClinicalBackend.Domain.Entities
         public string? Day { get; set; }
         public string? Lunch { get; set; }
         public string? Afternoon { get; set; }
-        public string? Manual { get; set; }
+        public int? NumberOfDays { get; set; }
     }
 }

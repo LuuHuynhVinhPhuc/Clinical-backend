@@ -8,7 +8,7 @@ namespace ClinicalBackend.Domain.Entities
         public string? Name { get; set; }
         public string? Company { get; set; }
         public string? Specialty { get; set; }
-        public IList<string> Nutritional { get; set; } = new List<string>(); // Changed to IList<string>
+        public string? Nutritional { get; set; }
         public string? Dosage { get; set; }
         public int Stock { get; set; }
         public float Price { get; set; }

@@ -90,5 +90,12 @@ namespace ClinicalBackend.Persistence.Repositories
                 .ToListAsync()
                 .ConfigureAwait(false);
         }
+
+        public async Task<int> GetPatientsNotExaminedCountAsync()
+        {
+           return await dbSet
+                .CountAsync(p => p.CheckStatus == "not_examined")
+                .ConfigureAwait(false);
+        }
     }
 }

@@ -5,7 +5,7 @@ namespace ClinicalBackend.Contracts.DTOs.Medicine
         string? Name,
         string? Company,
         string? Specialty,
-        ICollection<string> Nutritional,
+        string? Nutritional,
         string? Dosage,
         int Stock,
         float Price,

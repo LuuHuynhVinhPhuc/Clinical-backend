@@ -19,6 +19,7 @@ namespace ClinicalBackend.Services.Configs.Mappers
                     src.Products.Adapt<ICollection<GetProductDto>>(),
                     src.Notes,
                     src.TotalPrice,
+                    src.RevisitDate,
                     src.BillDate,
                     src.CreatedAt
                 ));

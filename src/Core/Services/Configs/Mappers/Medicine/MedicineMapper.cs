@@ -14,9 +14,11 @@ namespace ClinicalBackend.Services.Configs.Mappers
                                 src.Id,
                                 src.Name,
                                 src.Company,
+                                src.Specialty,
+                                src.Nutritional,
+                                src.Dosage,
                                 src.Stock,
                                 src.Price,
-                                src.Type,
                                 src.Status,
                                 src.CreatedAt));
 
@@ -27,7 +29,6 @@ namespace ClinicalBackend.Services.Configs.Mappers
                                 src.Company,
                                 src.Stock,
                                 src.Price,
-                                src.Type,
                                 src.CreatedAt));
 
             config.NewConfig<Medicine, Top10MedicineDto>()

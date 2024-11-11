@@ -20,7 +20,7 @@ namespace ClinicalBackend.Persistence.Migrations
                     Name = table.Column<string>(type: "text", nullable: false),
                     Company = table.Column<string>(type: "text", nullable: true),
                     Specialty = table.Column<string>(type: "text", nullable: true),
-                    Nutritional = table.Column<string[]>(type: "text[]", nullable: false),
+                    Nutritional = table.Column<string>(type: "text", nullable: true),
                     Dosage = table.Column<string>(type: "text", nullable: true),
                     Stock = table.Column<int>(type: "integer", nullable: false),
                     Price = table.Column<float>(type: "real", nullable: false),
@@ -149,10 +149,11 @@ namespace ClinicalBackend.Persistence.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     MedicineId = table.Column<Guid>(type: "uuid", nullable: false),
                     Quantity = table.Column<int>(type: "integer", nullable: false),
+                    NumberOfDays = table.Column<int>(type: "integer", nullable: false),
                     Instructions_Day = table.Column<string>(type: "text", nullable: true),
                     Instructions_Lunch = table.Column<string>(type: "text", nullable: true),
                     Instructions_Afternoon = table.Column<string>(type: "text", nullable: true),
-                    Instructions_Manual = table.Column<string>(type: "text", nullable: true)
+                    Instructions_NumberOfDays = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {

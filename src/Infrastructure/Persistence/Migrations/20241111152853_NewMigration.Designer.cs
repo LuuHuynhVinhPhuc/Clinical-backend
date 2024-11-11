@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ClinicalBackend.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241111081122_NewMigration")]
+    [Migration("20241111152853_NewMigration")]
     partial class NewMigration
     {
         /// <inheritdoc />
@@ -81,9 +81,8 @@ namespace ClinicalBackend.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string[]>("Nutritional")
-                        .IsRequired()
-                        .HasColumnType("text[]");
+                    b.Property<string>("Nutritional")
+                        .HasColumnType("text");
 
                     b.Property<float>("Price")
                         .HasColumnType("real");
@@ -258,6 +257,9 @@ namespace ClinicalBackend.Persistence.Migrations
                             b1.Property<Guid>("MedicineId")
                                 .HasColumnType("uuid");
 
+                            b1.Property<int>("NumberOfDays")
+                                .HasColumnType("integer");
+
                             b1.Property<int>("Quantity")
                                 .HasColumnType("integer");
 
@@ -293,8 +295,8 @@ namespace ClinicalBackend.Persistence.Migrations
                                     b2.Property<string>("Lunch")
                                         .HasColumnType("text");
 
-                                    b2.Property<string>("Manual")
-                                        .HasColumnType("text");
+                                    b2.Property<int?>("NumberOfDays")
+                                        .HasColumnType("integer");
 
                                     b2.HasKey("ProductPrescriptionId", "ProductId");
 

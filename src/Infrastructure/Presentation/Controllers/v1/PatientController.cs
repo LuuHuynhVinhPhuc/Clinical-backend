@@ -63,6 +63,14 @@ namespace ClinicalBackend.Presentation.Controllers.v1
                 onSuccess: () => Result.Ok(res.Value()),
                 onFailure: error => Result.BadRequest(error));
         }
+        [HttpGet("Status/not_examined")]
+        public async Task<IActionResult> GetPatientNotExaminedAsync([FromQuery] int page = 1, [FromQuery] int limit = 5)
+        {
+            var res = await _mediator.Send(new GetPatientNotExaminedCommand { Page = page, Limit = limit }).ConfigureAwait(false);
+            return res.Match(
+                onSuccess: () => Result.Ok(res.Value()),
+                onFailure: error => Result.BadRequest(error));
+        }
 
         // Update patient infomation
         [HttpPut("{Id}")]

@@ -2,17 +2,18 @@ using ClinicalBackend.Domain.Entities;
 using ClinicalBackend.Services.Common;
 using Domain.Interfaces;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
 {
     public class CreateMedicineCommand : IRequest<Result<MedicineCreatedResponse>>
     {
-        public string Name { get; set; }
-        public string Company { get; set; }
+        public string? Name { get; set; }
+        public string? Company { get; set; }
+        public string? Specialty { get; set; }
+        public List<string>? Nutritional { get; set; }
+        public string? Dosage { get; set; }
         public int Stock { get; set; }
         public float Price { get; set; }
-        public string Type { get; set; }
     }
 
     public class MedicineCreatedResponse
@@ -32,7 +33,7 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
         public async Task<Result<MedicineCreatedResponse>> Handle(CreateMedicineCommand command, CancellationToken cancellationToken)
         {
             // Check if the medicine already exists
-            var existingMedicine = await _unitOfWork.Medicines.GetByCondition(m => m.Name == command.Name).FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
+            var existingMedicine = await _unitOfWork.Medicines.GetByNameAsync(command.Name).ConfigureAwait(false);
             if (existingMedicine != null)
             {
                 return Result.Failure<MedicineCreatedResponse>(MedicineErrors.MedicineNameExist);
@@ -54,16 +55,19 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
             {
                 Name = command.Name,
                 Company = command.Company,
+                Specialty = command.Specialty,
+                Nutritional = command.Nutritional,
+                Dosage = command.Dosage,
                 Stock = command.Stock,
                 Price = command.Price,
                 Status = "NOT_SOLD",
-                Type = command.Type,
             };
 
             // Add the medicine to the repository
             _unitOfWork.Medicines.Add(medicine);
+
             await _unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-            
+
             var response = new MedicineCreatedResponse() { Response = "Medicine created successfully" };
 
             return Result.Success(response);

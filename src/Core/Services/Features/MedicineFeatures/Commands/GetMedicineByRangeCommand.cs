@@ -57,9 +57,12 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
                                 Id = originalMedicine.Id,
                                 Name = originalMedicine.Name,
                                 Company = originalMedicine.Company,
+                                Specialty = originalMedicine.Specialty,
+                                Dosage = originalMedicine.Dosage,
+                                Nutritional = originalMedicine.Nutritional,
+
                                 Stock = 0,
                                 Price = 0,
-                                Type = originalMedicine.Type,
                                 Status = originalMedicine.Status,
                                 CreatedAt = originalMedicine.CreatedAt,
                                 ModifiedAt = originalMedicine.ModifiedAt

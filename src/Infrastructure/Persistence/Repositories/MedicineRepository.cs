@@ -65,5 +65,28 @@ namespace ClinicalBackend.Persistence.Repositories
                 .ToListAsync()
                 .ConfigureAwait(false);
         }
+
+        public async Task<IEnumerable<Medicine>> SearchBySpecialtyAsync(string Specialty, int pageNumber, int pageSize)
+        {
+            return await dbSet
+                .Where(m => m.Specialty.Contains(Specialty))
+                .OrderByDescending(m => m.CreatedAt)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync()
+                .ConfigureAwait(false);
+        }
+
+        public async Task<int> GetTotalCountBySpecialtyAsync(string Specialty)
+        {
+            return await dbSet.CountAsync(m => m.Specialty.Contains(Specialty)).ConfigureAwait(false);
+        }
+
+        public async Task<Medicine> GetByNameAsync(string name)
+        {
+            return await dbSet
+                .FirstOrDefaultAsync(m => m.Name == name)
+                .ConfigureAwait(false);
+        }
     }
 }

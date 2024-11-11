@@ -37,7 +37,7 @@ namespace ClinicalBackend.Services.Features.PrescriptionFeatures.Commands
 
         public async Task<Result<PrescriptionCreatedResponse>> Handle(CreatePrescriptionCommand command, CancellationToken cancellationToken)
         {
-            if (command.Products == null || !command.Products.Any())
+            if (command.Products == null || command.Products.Count == 0)
             {
                 return Result.Failure<PrescriptionCreatedResponse>(new Error("Prescription.NoProducts", "No products were provided for the prescription"));
             }
@@ -72,24 +72,12 @@ namespace ClinicalBackend.Services.Features.PrescriptionFeatures.Commands
                     return Result.Failure<PrescriptionCreatedResponse>(new Error("Medicine.InsufficientStock", $"Insufficient stock for medicine '{medicine.Name}'"));
                 }
 
-                bool isDayValid = int.TryParse(productDto.Instructions.Day, out int day);
-                bool isLunchValid = int.TryParse(productDto.Instructions.Lunch, out int lunch);
-                bool isAfternoonValid = int.TryParse(productDto.Instructions.Afternoon, out int afternoon);
-
-                if (!isDayValid && !isLunchValid && !isAfternoonValid)
-                {
-                    return Result.Failure<PrescriptionCreatedResponse>(new Error("Medicine.InvalidInstructions", "At least one of Day, Lunch, or Afternoon must be a number."));
-                }
-
                 medicine.Stock -= productDto.Quantity;
                 medicine.Status = "SOLD";
                 _unitOfWork.Medicines.Update(medicine);
 
                 totalCost += medicine.Price * productDto.Quantity;
             }
-
-
-
 
             // Proceed with creating the prescription
             var prescription = new Prescription

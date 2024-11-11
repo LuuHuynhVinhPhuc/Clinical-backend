@@ -10,6 +10,7 @@ namespace ClinicalBackend.Domain.Entities
         public ICollection<Product> Products { get; set; }
         public DateTime BillDate { get; set; }
         public string? Notes { get; set; }
+        public DateTime RevisitDate { get; set; }
         public float TotalPrice { get; set; }
         // IAuditable
         public DateTime CreatedAt { get; set; }

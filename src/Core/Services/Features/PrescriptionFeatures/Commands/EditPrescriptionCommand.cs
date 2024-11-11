@@ -12,6 +12,7 @@ namespace ClinicalBackend.Services.Features.PrescriptionFeatures.Commands
     {
         public Guid Id { get; set; }
         public ICollection<PostProductDto> Medicines { get; set; }
+        public DateTime RevisitDate { get; set; }
         public string Notes { get; set; }
     }
 
@@ -82,6 +83,7 @@ namespace ClinicalBackend.Services.Features.PrescriptionFeatures.Commands
 
             prescription.Products = _mapper.Map<List<Product>>(command.Medicines);
             prescription.Notes = command.Notes;
+            prescription.RevisitDate = command.RevisitDate == default ? DateTime.Now.AddDays(5) : command.RevisitDate;
             prescription.TotalPrice = totalCost;
 
             _unitOfWork.Prescription.Update(prescription);

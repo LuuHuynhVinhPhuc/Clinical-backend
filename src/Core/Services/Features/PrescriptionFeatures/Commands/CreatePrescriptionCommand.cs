@@ -15,6 +15,7 @@ namespace ClinicalBackend.Services.Features.PrescriptionFeatures.Commands
         public Guid PatientId { get; set; }
         public Guid FollowUpId { get; set; }
         public ICollection<PostProductDto> Products { get; set; }
+        public DateTime RevisitDate { get; set; }
         public string Notes { get; set; }
     }
 
@@ -87,12 +88,16 @@ namespace ClinicalBackend.Services.Features.PrescriptionFeatures.Commands
                 totalCost += medicine.Price * productDto.Quantity;
             }
 
+
+
+
             // Proceed with creating the prescription
             var prescription = new Prescription
             {
                 PatientId = command.PatientId,
                 FollowUpId = command.FollowUpId,
                 Products = _mapper.Map<List<Product>>(command.Products),
+                RevisitDate = command.RevisitDate == default ? DateTime.Now.AddDays(5) : command.RevisitDate,
                 BillDate = DateTime.UtcNow,
                 Notes = command.Notes,
                 TotalPrice = totalCost

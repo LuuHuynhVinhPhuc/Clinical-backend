@@ -36,7 +36,8 @@ namespace ClinicalBackend.Contracts.DTOs.Prescription
         Guid MedicineId,
         string Name,
         int Quantity,
-        InstructionsDto Instructions
+        InstructionsDto Instructions,
+        int DailySum
     );
 }
 

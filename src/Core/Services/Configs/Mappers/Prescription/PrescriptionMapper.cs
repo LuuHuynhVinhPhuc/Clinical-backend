@@ -24,12 +24,17 @@ namespace ClinicalBackend.Services.Configs.Mappers
                     src.CreatedAt
                 ));
 
+
+
             config.NewConfig<Product, GetProductDto>()
                 .MapWith(src => new GetProductDto(
                     src.Medicine.Id,
                     src.Medicine.Name,
                     src.Quantity,
-                    src.Instructions.Adapt<InstructionsDto>()
+                    src.Instructions.Adapt<InstructionsDto>(),
+                    Convert.ToInt32(src.Instructions.Day)
+                    + Convert.ToInt32(src.Instructions.Lunch)
+                    + Convert.ToInt32(src.Instructions.Afternoon)
                 ));
         }
     }

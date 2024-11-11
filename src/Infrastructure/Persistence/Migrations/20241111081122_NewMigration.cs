@@ -19,10 +19,12 @@ namespace ClinicalBackend.Persistence.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
                     Company = table.Column<string>(type: "text", nullable: true),
+                    Specialty = table.Column<string>(type: "text", nullable: true),
+                    Nutritional = table.Column<string[]>(type: "text[]", nullable: false),
+                    Dosage = table.Column<string>(type: "text", nullable: true),
                     Stock = table.Column<int>(type: "integer", nullable: false),
                     Price = table.Column<float>(type: "real", nullable: false),
                     Status = table.Column<string>(type: "text", nullable: true),
-                    Type = table.Column<string>(type: "text", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -116,6 +118,7 @@ namespace ClinicalBackend.Persistence.Migrations
                     FollowUpId = table.Column<Guid>(type: "uuid", nullable: false),
                     BillDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Notes = table.Column<string>(type: "text", nullable: true),
+                    RevisitDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     TotalPrice = table.Column<float>(type: "real", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)

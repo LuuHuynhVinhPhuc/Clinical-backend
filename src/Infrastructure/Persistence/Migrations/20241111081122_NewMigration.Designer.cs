@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ClinicalBackend.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241024020912_NewMigration")]
+    [Migration("20241111081122_NewMigration")]
     partial class NewMigration
     {
         /// <inheritdoc />
@@ -71,6 +71,9 @@ namespace ClinicalBackend.Persistence.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("Dosage")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -78,17 +81,21 @@ namespace ClinicalBackend.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string[]>("Nutritional")
+                        .IsRequired()
+                        .HasColumnType("text[]");
+
                     b.Property<float>("Price")
                         .HasColumnType("real");
+
+                    b.Property<string>("Specialty")
+                        .HasColumnType("text");
 
                     b.Property<string>("Status")
                         .HasColumnType("text");
 
                     b.Property<int>("Stock")
                         .HasColumnType("integer");
-
-                    b.Property<string>("Type")
-                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -156,6 +163,9 @@ namespace ClinicalBackend.Persistence.Migrations
 
                     b.Property<Guid>("PatientId")
                         .HasColumnType("uuid");
+
+                    b.Property<DateTime>("RevisitDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<float>("TotalPrice")
                         .HasColumnType("real");

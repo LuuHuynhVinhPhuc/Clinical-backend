@@ -13,6 +13,7 @@ namespace ClinicalBackend.Contracts.DTOs.Prescription
         ICollection<GetProductDto> Products,
         string? Notes,
         float TotalPrice,
+        DateTime Revisit,
         DateTime BillDate,
         DateTime CreatedAt
     );

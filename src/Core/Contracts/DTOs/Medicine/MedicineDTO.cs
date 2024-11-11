@@ -4,9 +4,11 @@ namespace ClinicalBackend.Contracts.DTOs.Medicine
         Guid Id,
         string? Name,
         string? Company,
+        string? Specialty,
+        ICollection<string> Nutritional,
+        string? Dosage,
         int Stock,
         float Price,
-        string? Type,
         string? Status,
         DateTime CreatedAt
     );
@@ -17,7 +19,6 @@ namespace ClinicalBackend.Contracts.DTOs.Medicine
         string? Company,
         int Amount,
         float CombinedPrice,
-        string? Type,
         DateTime CreatedAt
     );
 

@@ -30,7 +30,10 @@ namespace ClinicalBackend.Services.Configs.Mappers
                 .MapWith(src => new GetProductDto(
                     src.Medicine.Id,
                     src.Medicine.Name,
-                    src.Quantity,
+                    Convert.ToInt32(src.Instructions.NumberOfDays) * 
+                    (Convert.ToInt32(src.Instructions.Day)
+                    + Convert.ToInt32(src.Instructions.Lunch)
+                    + Convert.ToInt32(src.Instructions.Afternoon)),
                     src.Instructions.Adapt<InstructionsDto>(),
                     Convert.ToInt32(src.Instructions.Day)
                     + Convert.ToInt32(src.Instructions.Lunch)

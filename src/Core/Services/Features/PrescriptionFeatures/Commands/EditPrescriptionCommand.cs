@@ -11,7 +11,7 @@ namespace ClinicalBackend.Services.Features.PrescriptionFeatures.Commands
     public class EditPrescriptionCommand : IRequest<Result<PrescriptionEditedResponse>>
     {
         public Guid Id { get; set; }
-        public ICollection<PostProductDto> Medicines { get; set; }
+        public ICollection<PostProductDto> Products { get; set; }
         public DateTime RevisitDate { get; set; }
         public string Notes { get; set; }
     }
@@ -52,36 +52,33 @@ namespace ClinicalBackend.Services.Features.PrescriptionFeatures.Commands
             }
 
             float totalCost = 0;
-            foreach (var productDto in command.Medicines)
+            foreach (var productDto in command.Products)
             {
+                var Quantity = 
+                    Convert.ToInt32(productDto.Instructions.NumberOfDays) * 
+                    (Convert.ToInt32(productDto.Instructions.Day)
+                    + Convert.ToInt32(productDto.Instructions.Lunch)
+                    + Convert.ToInt32(productDto.Instructions.Afternoon));
+
                 var medicine = await _unitOfWork.Medicines.GetByIdAsync(productDto.MedicineId).ConfigureAwait(false);
                 if (medicine == null)
                 {
                     return Result.Failure<PrescriptionEditedResponse>(MedicineErrors.IdNotFound(productDto.MedicineId));
                 }
 
-                if (medicine.Stock < productDto.Quantity)
+                if (medicine.Stock < Quantity)
                 {
                     return Result.Failure<PrescriptionEditedResponse>(new Error("Medicine.InsufficientStock", $"Insufficient stock for medicine '{medicine.Name}'"));
                 }
 
-                bool isDayValid = int.TryParse(productDto.Instructions.Day, out int day);
-                bool isLunchValid = int.TryParse(productDto.Instructions.Lunch, out int lunch);
-                bool isAfternoonValid = int.TryParse(productDto.Instructions.Afternoon, out int afternoon);
-
-                if (!isDayValid && !isLunchValid && !isAfternoonValid)
-                {
-                    return Result.Failure<PrescriptionEditedResponse>(new Error("Medicine.InvalidInstructions", "At least one of Day, Lunch, or Afternoon must be a number."));
-                }
-
-                medicine.Stock -= productDto.Quantity;
+                medicine.Stock -= Quantity;
                 medicine.Status = "SOLD";
                 _unitOfWork.Medicines.Update(medicine);
 
-                totalCost += medicine.Price * productDto.Quantity;
+                totalCost += medicine.Price * Quantity;
             }
 
-            prescription.Products = _mapper.Map<List<Product>>(command.Medicines);
+            prescription.Products = _mapper.Map<List<Product>>(command.Products);
             prescription.Notes = command.Notes;
             prescription.RevisitDate = command.RevisitDate == default ? DateTime.Now.AddDays(5) : command.RevisitDate;
             prescription.TotalPrice = totalCost;

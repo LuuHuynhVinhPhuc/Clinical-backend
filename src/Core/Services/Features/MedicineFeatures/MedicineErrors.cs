@@ -16,7 +16,7 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures
         public static Error MedicineNotFound(string Id) => new Error(
         "Medicines.NameNotFound", $"The medicine with the name '{Id}' was not found");
 
-        // date start and date end not correct 
-        public static readonly Error InvalidDateRange = new Error("Patient.InvalidDate", "Date start and date end are not correct");
+        public static Error NotFound(string Word) => new Error(
+        "Medicines.NameNotFound", $"No medicine with the detail '{Word}' were found");
     }
 }

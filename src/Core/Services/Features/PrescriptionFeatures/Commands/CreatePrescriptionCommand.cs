@@ -54,6 +54,11 @@ namespace ClinicalBackend.Services.Features.PrescriptionFeatures.Commands
                 return Result.Failure<PrescriptionCreatedResponse>(FollowUpErrors.NotFound(command.FollowUpId.ToString()));
             }
 
+            if (!DateOnly.TryParseExact(command.RevisitDate, "dd-MM-yyyy", out DateOnly revisitDate)) // check date time format
+            {
+                return Result.Failure<PrescriptionCreatedResponse>(PrescriptionError.InputDateInvalidFormat);
+            }
+            
             // Check if each medicine has sufficient stock and update stock
             float totalCost = 0;
 
@@ -71,12 +76,6 @@ namespace ClinicalBackend.Services.Features.PrescriptionFeatures.Commands
                     return Result.Failure<PrescriptionCreatedResponse>(MedicineErrors.IdNotFound(productDto.MedicineId));
                 }
 
-                var medicineByName = await _unitOfWork.Medicines.GetByNameAsync(productDto.Name).ConfigureAwait(false);
-                if (medicineByName == null || medicineByName.Id != medicine.Id) 
-                {
-                    return Result.Failure<PrescriptionCreatedResponse>(PrescriptionError.InvalidProductName(productDto.Name));
-                }
-
                 if (medicine.Stock < Quantity)
                 {
                     return Result.Failure<PrescriptionCreatedResponse>(new Error("Medicine.InsufficientStock", $"Insufficient stock for medicine '{medicine.Name}'"));
@@ -87,11 +86,6 @@ namespace ClinicalBackend.Services.Features.PrescriptionFeatures.Commands
                 _unitOfWork.Medicines.Update(medicine);
 
                 totalCost += medicine.Price * Quantity;
-            }
-
-            if (!DateOnly.TryParseExact(command.RevisitDate, "dd-MM-yyyy", out DateOnly revisitDate)) // check date time format
-            {
-                return Result.Failure<PrescriptionCreatedResponse>(PrescriptionError.InputDateInvalidFormat);
             }
 
             // Proceed with creating the prescription

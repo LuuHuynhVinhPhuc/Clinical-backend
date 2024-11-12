@@ -11,7 +11,7 @@ namespace ClinicalBackend.Services.Features.PrescriptionFeatures.Commands
     public class EditPrescriptionCommand : IRequest<Result<PrescriptionEditedResponse>>
     {
         public Guid Id { get; set; }
-        public ICollection<PostProductDto> Products { get; set; }
+        public ICollection<PutProductDto> Products { get; set; }
         public string? RevisitDate { get; set; }
         public string Notes { get; set; }
     }
@@ -40,6 +40,11 @@ namespace ClinicalBackend.Services.Features.PrescriptionFeatures.Commands
                 return Result.Failure<PrescriptionEditedResponse>(PrescriptionError.IDNotFound(command.Id));
             }
 
+            if (!DateOnly.TryParseExact(command.RevisitDate, "dd-MM-yyyy", out DateOnly revisitDate)) // check date time format
+            {
+                return Result.Failure<PrescriptionEditedResponse>(PrescriptionError.InputDateInvalidFormat);
+            }
+
             // Return quantities from existing products back to medicine stock
             foreach (var existingProduct in prescription.Products)
             {
@@ -55,15 +60,21 @@ namespace ClinicalBackend.Services.Features.PrescriptionFeatures.Commands
             foreach (var productDto in command.Products)
             {
                 var Quantity = 
-                    Convert.ToInt32(productDto.Instructions.NumberOfDays) * 
-                    (Convert.ToInt32(productDto.Instructions.Day)
-                    + Convert.ToInt32(productDto.Instructions.Lunch)
-                    + Convert.ToInt32(productDto.Instructions.Afternoon));
+                    int.Parse(productDto.Instructions.NumberOfDays) * 
+                    (int.Parse(productDto.Instructions.Day)
+                    + int.Parse(productDto.Instructions.Lunch)
+                    + int.Parse(productDto.Instructions.Afternoon));
 
                 var medicine = await _unitOfWork.Medicines.GetByIdAsync(productDto.MedicineId).ConfigureAwait(false);
                 if (medicine == null)
                 {
                     return Result.Failure<PrescriptionEditedResponse>(MedicineErrors.IdNotFound(productDto.MedicineId));
+                }
+
+                var medicineByName = await _unitOfWork.Medicines.GetByNameAsync(productDto.Name).ConfigureAwait(false);
+                if (medicineByName == null || medicineByName.Id != medicine.Id) 
+                {
+                    return Result.Failure<PrescriptionEditedResponse>(PrescriptionError.InvalidProductName(productDto.Name));
                 }
 
                 if (medicine.Stock < Quantity)
@@ -76,11 +87,6 @@ namespace ClinicalBackend.Services.Features.PrescriptionFeatures.Commands
                 _unitOfWork.Medicines.Update(medicine);
 
                 totalCost += medicine.Price * Quantity;
-            }
-
-            if (!DateOnly.TryParseExact(command.RevisitDate, "dd-MM-yyyy", out DateOnly revisitDate))
-            {
-                return Result.Failure<PrescriptionEditedResponse>(PrescriptionError.InputDateInvalidFormat);
             }
 
             prescription.Products = _mapper.Map<List<Product>>(command.Products);

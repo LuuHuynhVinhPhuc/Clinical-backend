@@ -88,5 +88,15 @@ namespace ClinicalBackend.Persistence.Repositories
                 .FirstOrDefaultAsync(m => m.Name == name)
                 .ConfigureAwait(false);
         }
+
+        public async Task<IEnumerable<Medicine>> SearchByDetailsAsync(string Word)
+        {
+            return await dbSet
+                .Where(m => m.Specialty.Contains(Word) || m.Name.Contains(Word) || m.Nutritional.Contains(Word))
+                .OrderByDescending(m => m.CreatedAt)
+                .Take(15)
+                .ToListAsync()
+                .ConfigureAwait(false);
+        }
     }
 }

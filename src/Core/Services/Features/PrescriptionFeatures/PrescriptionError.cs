@@ -9,6 +9,9 @@ namespace ClinicalBackend.Services.Features.PrescriptionFeatures
         public static Error NotFound(string Name) => new Error(
         "Prescription.NotFound", $"Prescription with the name '{Name}' was not found");
 
+        public static Error InvalidProductName(string Name) => new Error(
+        "Prescription.InvalidProductName", $"Product with the name '{Name}' has its ID not matching with the provided ID");
+
         // Prescription ID is not exist
         public static Error IDNotFound(Guid ID) => new Error(
         "Prescription.NotFound", $"Prescription with the ID '{ID}' was not found");
@@ -19,5 +22,7 @@ namespace ClinicalBackend.Services.Features.PrescriptionFeatures
 
         public static Error PatientPhoneNotFound(string phoneNumber) => new Error(
         "Patient.PhoneNotFound", $"Patient with the phone number '{phoneNumber}' was not found");
+
+        public static readonly Error InputDateInvalidFormat = new Error("Prescription.InputDateInvalid", "Input date is not in the right format");
     }
 }

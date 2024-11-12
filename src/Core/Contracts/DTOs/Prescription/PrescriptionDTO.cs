@@ -18,15 +18,12 @@ namespace ClinicalBackend.Contracts.DTOs.Prescription
         DateTime CreatedAt
     );
 
-    public record struct PostPrescriptionDto(
-        Guid PatientId,
-        Guid FollowUpId,
-        ICollection<PostProductDto> Products,
-        string? Notes,
-        DateTime BillDate
+    public record struct PostProductDto(
+        Guid MedicineId,
+        InstructionsDto Instructions
     );
 
-    public record struct PostProductDto(
+    public record struct PutProductDto(
         Guid MedicineId,
         string Name,
         InstructionsDto Instructions

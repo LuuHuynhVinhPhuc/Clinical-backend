@@ -61,22 +61,28 @@ namespace ClinicalBackend.Services.Features.PrescriptionFeatures.Commands
 
             foreach (var productDto in command.Products)
             {
+                var Quantity =
+                    Convert.ToInt32(productDto.Instructions.NumberOfDays) *
+                    (Convert.ToInt32(productDto.Instructions.Day)
+                    + Convert.ToInt32(productDto.Instructions.Lunch)
+                    + Convert.ToInt32(productDto.Instructions.Afternoon));
+
                 var medicine = await _unitOfWork.Medicines.GetByIdAsync(productDto.MedicineId).ConfigureAwait(false);
                 if (medicine == null)
                 {
                     return Result.Failure<PrescriptionCreatedResponse>(MedicineErrors.IdNotFound(productDto.MedicineId));
                 }
 
-                if (medicine.Stock < productDto.Quantity)
+                if (medicine.Stock < Quantity)
                 {
                     return Result.Failure<PrescriptionCreatedResponse>(new Error("Medicine.InsufficientStock", $"Insufficient stock for medicine '{medicine.Name}'"));
                 }
 
-                medicine.Stock -= productDto.Quantity;
+                medicine.Stock -= Quantity;
                 medicine.Status = "SOLD";
                 _unitOfWork.Medicines.Update(medicine);
 
-                totalCost += medicine.Price * productDto.Quantity;
+                totalCost += medicine.Price * Quantity;
             }
 
             // Proceed with creating the prescription

@@ -160,8 +160,8 @@ namespace ClinicalBackend.Persistence.Migrations
                     b.Property<Guid>("PatientId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("RevisitDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("RevisitDate")
+                        .HasColumnType("date");
 
                     b.Property<float>("TotalPrice")
                         .HasColumnType("real");

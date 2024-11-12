@@ -118,7 +118,7 @@ namespace ClinicalBackend.Persistence.Migrations
                     FollowUpId = table.Column<Guid>(type: "uuid", nullable: false),
                     BillDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Notes = table.Column<string>(type: "text", nullable: true),
-                    RevisitDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    RevisitDate = table.Column<DateOnly>(type: "date", nullable: false),
                     TotalPrice = table.Column<float>(type: "real", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)

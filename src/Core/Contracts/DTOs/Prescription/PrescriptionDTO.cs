@@ -13,7 +13,7 @@ namespace ClinicalBackend.Contracts.DTOs.Prescription
         ICollection<GetProductDto> Products,
         string? Notes,
         float TotalPrice,
-        DateTime Revisit,
+        DateOnly Revisit,
         DateTime BillDate,
         DateTime CreatedAt
     );
@@ -28,6 +28,7 @@ namespace ClinicalBackend.Contracts.DTOs.Prescription
 
     public record struct PostProductDto(
         Guid MedicineId,
+        string Name,
         InstructionsDto Instructions
     );
     

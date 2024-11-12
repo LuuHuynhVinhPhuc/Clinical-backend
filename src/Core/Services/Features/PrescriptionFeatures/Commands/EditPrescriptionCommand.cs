@@ -12,7 +12,7 @@ namespace ClinicalBackend.Services.Features.PrescriptionFeatures.Commands
     {
         public Guid Id { get; set; }
         public ICollection<PostProductDto> Products { get; set; }
-        public DateTime RevisitDate { get; set; }
+        public string? RevisitDate { get; set; }
         public string Notes { get; set; }
     }
 
@@ -78,9 +78,14 @@ namespace ClinicalBackend.Services.Features.PrescriptionFeatures.Commands
                 totalCost += medicine.Price * Quantity;
             }
 
+            if (!DateOnly.TryParseExact(command.RevisitDate, "dd-MM-yyyy", out DateOnly revisitDate))
+            {
+                return Result.Failure<PrescriptionEditedResponse>(PrescriptionError.InputDateInvalidFormat);
+            }
+
             prescription.Products = _mapper.Map<List<Product>>(command.Products);
             prescription.Notes = command.Notes;
-            prescription.RevisitDate = command.RevisitDate == default ? DateTime.Now.AddDays(5) : command.RevisitDate;
+            prescription.RevisitDate = revisitDate;
             prescription.TotalPrice = totalCost;
 
             _unitOfWork.Prescription.Update(prescription);

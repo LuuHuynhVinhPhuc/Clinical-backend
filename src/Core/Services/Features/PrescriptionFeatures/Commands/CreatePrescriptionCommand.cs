@@ -15,7 +15,7 @@ namespace ClinicalBackend.Services.Features.PrescriptionFeatures.Commands
         public Guid PatientId { get; set; }
         public Guid FollowUpId { get; set; }
         public ICollection<PostProductDto> Products { get; set; }
-        public DateTime RevisitDate { get; set; }
+        public string? RevisitDate { get; set; }
         public string Notes { get; set; }
     }
 
@@ -42,14 +42,12 @@ namespace ClinicalBackend.Services.Features.PrescriptionFeatures.Commands
                 return Result.Failure<PrescriptionCreatedResponse>(new Error("Prescription.NoProducts", "No products were provided for the prescription"));
             }
 
-            // Check if the patient exists
             var patient = await _unitOfWork.Patient.GetByIdAsync(command.PatientId).ConfigureAwait(false);
             if (patient == null)
             {
                 return Result.Failure<PrescriptionCreatedResponse>(PatientError.IDNotFound(command.PatientId));
             }
 
-            // Check if the follow-up belongs to the patient
             var followUp = await _unitOfWork.FollowUp.GetByIdAsync(command.FollowUpId).ConfigureAwait(false);
             if (followUp == null || followUp.PatientId != command.PatientId)
             {
@@ -73,6 +71,12 @@ namespace ClinicalBackend.Services.Features.PrescriptionFeatures.Commands
                     return Result.Failure<PrescriptionCreatedResponse>(MedicineErrors.IdNotFound(productDto.MedicineId));
                 }
 
+                var medicineByName = await _unitOfWork.Medicines.GetByNameAsync(productDto.Name).ConfigureAwait(false);
+                if (medicineByName == null || medicineByName.Id != medicine.Id) 
+                {
+                    return Result.Failure<PrescriptionCreatedResponse>(PrescriptionError.InvalidProductName(productDto.Name));
+                }
+
                 if (medicine.Stock < Quantity)
                 {
                     return Result.Failure<PrescriptionCreatedResponse>(new Error("Medicine.InsufficientStock", $"Insufficient stock for medicine '{medicine.Name}'"));
@@ -85,13 +89,18 @@ namespace ClinicalBackend.Services.Features.PrescriptionFeatures.Commands
                 totalCost += medicine.Price * Quantity;
             }
 
+            if (!DateOnly.TryParseExact(command.RevisitDate, "dd-MM-yyyy", out DateOnly revisitDate)) // check date time format
+            {
+                return Result.Failure<PrescriptionCreatedResponse>(PrescriptionError.InputDateInvalidFormat);
+            }
+
             // Proceed with creating the prescription
             var prescription = new Prescription
             {
                 PatientId = command.PatientId,
                 FollowUpId = command.FollowUpId,
                 Products = _mapper.Map<List<Product>>(command.Products),
-                RevisitDate = command.RevisitDate == default ? DateTime.Now.AddDays(5) : command.RevisitDate,
+                RevisitDate = revisitDate,
                 BillDate = DateTime.UtcNow,
                 Notes = command.Notes,
                 TotalPrice = totalCost

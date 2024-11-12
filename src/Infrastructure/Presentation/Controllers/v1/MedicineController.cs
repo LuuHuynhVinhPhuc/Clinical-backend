@@ -72,7 +72,15 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         public async Task<IActionResult> GetMedicineBySpecialtyAsync(string Specialty, [FromQuery] int page = 1, [FromQuery] int limit = 10)
         {
             var result = await _mediator.Send(new GetMedicineBySpecialtyCommand { Specialty = Specialty, PageNumber = page, PageSize = limit }).ConfigureAwait(false);
+            return result.Match(
+                onSuccess: () => Result.Ok(result.Value()),
+                onFailure: error => Result.BadRequest(error));
+        }
 
+        [HttpGet("Details/Keyword={Word}")]
+        public async Task<IActionResult> GetMedicineDetailsAsync(string Word)
+        {
+            var result = await _mediator.Send(new GetMedicineDetailsCommand { Word = Word }).ConfigureAwait(false);
             return result.Match(
                 onSuccess: () => Result.Ok(result.Value()),
                 onFailure: error => Result.BadRequest(error));

@@ -1,7 +1,6 @@
 using ClinicalBackend.Contracts.DTOs.Medicine;
 using ClinicalBackend.Domain.Entities;
 using ClinicalBackend.Services.Common;
-using ClinicalBackend.Services.Features.MedicineFeatures.Response;
 using ClinicalBackend.Services.Features.PatientFeatures;
 using Domain.Interfaces;
 using MapsterMapper;
@@ -16,7 +15,8 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
         public string EndDate { get; set; }
     }
 
-    public class Top10MedicineResponse {
+    public class Top10MedicineResponse
+    {
         public List<Top10MedicineDto> Medicines { get; set; }
     }
 
@@ -59,7 +59,7 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
                                 Id = originalMedicine.Id,
                                 Name = originalMedicine.Name,
                                 Company = originalMedicine.Company,
-                                
+
                                 Specialty = originalMedicine.Specialty,
                                 Dosage = originalMedicine.Dosage,
                                 Nutritional = originalMedicine.Nutritional,
@@ -72,8 +72,14 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
                             };
                         }
 
+                        var Quantity =
+                            Convert.ToInt32(product.Instructions.NumberOfDays) *
+                            (Convert.ToInt32(product.Instructions.Day)
+                            + Convert.ToInt32(product.Instructions.Lunch)
+                            + Convert.ToInt32(product.Instructions.Afternoon));
+
                         var current = medicineSales[product.MedicineId];
-                        current.Stock += product.Quantity;
+                        current.Stock += Quantity;
                         current.Price = current.Stock * product.Medicine.Price;
                         medicineSales[product.MedicineId] = current;
                     }

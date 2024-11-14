@@ -69,8 +69,14 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
                             };
                         }
 
+                        var Quantity =
+                            Convert.ToInt32(product.Instructions.NumberOfDays) *
+                            (Convert.ToInt32(product.Instructions.Day)
+                            + Convert.ToInt32(product.Instructions.Lunch)
+                            + Convert.ToInt32(product.Instructions.Afternoon));
+
                         var current = medicineSales[product.MedicineId];
-                        current.Stock += product.Quantity;
+                        current.Stock += Quantity;
                         current.Price = current.Stock * product.Medicine.Price;
                         medicineSales[product.MedicineId] = current;
                     }

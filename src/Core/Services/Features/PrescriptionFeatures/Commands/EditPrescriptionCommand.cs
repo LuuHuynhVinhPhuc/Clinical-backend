@@ -48,10 +48,16 @@ namespace ClinicalBackend.Services.Features.PrescriptionFeatures.Commands
             // Return quantities from existing products back to medicine stock
             foreach (var existingProduct in prescription.Products)
             {
+                var Quantity = 
+                    existingProduct.Instructions.NumberOfDays * 
+                    (int.Parse(existingProduct.Instructions.Day)
+                    + int.Parse(existingProduct.Instructions.Lunch)
+                    + int.Parse(existingProduct.Instructions.Afternoon));
+
                 var existingMedicine = await _unitOfWork.Medicines.GetByIdAsync(existingProduct.Medicine.Id).ConfigureAwait(false);
                 if (existingMedicine != null)
                 {
-                    existingMedicine.Stock += existingProduct.Quantity;
+                    existingMedicine.Stock += (int)Quantity;
                     _unitOfWork.Medicines.Update(existingMedicine);
                 }
             }

@@ -1,5 +1,6 @@
 using ClinicalBackend.Persistence;
 using ClinicalBackend.Presentation.Controllers;
+using Microsoft.AspNetCore.Mvc;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -38,6 +39,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.MapGet("/apply-migration", ([FromServices] IServiceProvider serviceProvider) =>
+{
+    Seed.ApplySeeding(serviceProvider);
+
+    return Results.Ok();
+}).AllowAnonymous();
 // Use CORS
 app.UseCors("AllowAllOrigins");
 

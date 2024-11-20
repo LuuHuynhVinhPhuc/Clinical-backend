@@ -12,7 +12,7 @@ services:
             - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
             - ASPNETCORE_Kestrel__Certificates__Default__Password=Clinical123
         ports:
-            - "8080:80"
+            - "8080:8080"
             - "8081:8081"
         volumes:
             - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
@@ -21,7 +21,15 @@ services:
         depends_on:
             - postgres
         command: >
-            /bin/sh -c "dotnet ef database update && dotnet Clinical-get-back.dll"
+            /bin/sh -c "dotnet Clinical-get-back.dll"
+    front-end:
+        build:
+            dockerfile: Dockerfile_Frontend
+            context: .
+        ports:
+            - "80:80"
+        depends_on:
+            - clinical-get-back
 
     postgres:
         image: postgres:latest

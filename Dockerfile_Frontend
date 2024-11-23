@@ -8,9 +8,7 @@ RUN apt-get update && apt-get install -y git
 WORKDIR /app
 
 # Clone the repository
-RUN git clone https://github.com/hung27422/clinic_interface.git && \
-cd clinic_interface && \
-git pull
+RUN git clone -b master https://github.com/hung27422/clinic_interface.git
 
 # Install dependencies
 RUN cd ./clinic_interface && npm install

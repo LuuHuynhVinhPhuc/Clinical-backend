@@ -22,6 +22,8 @@ services:
             - postgres
         command: >
             /bin/sh -c "dotnet Clinical-get-back.dll"
+        networks:
+            - clinical-network
     front-end:
         build:
             dockerfile: Dockerfile_Frontend
@@ -30,6 +32,8 @@ services:
             - "80:80"
         depends_on:
             - clinical-get-back
+        networks:
+            - clinical-network
 
     postgres:
         image: postgres:latest
@@ -44,3 +48,6 @@ services:
 
 volumes:
     pgdata:
+networks:
+    clinical-network:
+        driver: bridge

@@ -106,3 +106,4 @@ Thumbs.db
 Desk
 
 volume
+ssl/nginx-selfsigned.key

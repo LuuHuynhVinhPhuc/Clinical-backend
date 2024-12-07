@@ -44,16 +44,6 @@ namespace ClinicalBackend.Persistence.Repositories
                 .ConfigureAwait(false);
         }
 
-        // Find with Phone number 
-        public async Task<IEnumerable<Patient>> FindWithPhoneNumberAsync(string phoneNumber)
-        {
-            return await dbSet
-                    .Include(f => f.FollowUps)
-                    .Where(p => p.PhoneNumber == phoneNumber)
-                    .ToListAsync()
-                    .ConfigureAwait(false);
-        }
-
         public async Task<int> GetTotalCountAsync()
         {
             return await dbSet.CountAsync().ConfigureAwait(false);
@@ -97,5 +87,35 @@ namespace ClinicalBackend.Persistence.Repositories
                 .CountAsync(p => p.CheckStatus == "not_examined")
                 .ConfigureAwait(false);
         }
+
+        public async Task<IEnumerable<Patient>> GetByContactInfo(string info, int pageNumber, int pageSize)
+        {
+            return await dbSet
+                .Where(p => p.Name.Contains(info) || p.PhoneNumber.Contains(info))
+                .OrderByDescending(p => p.CreatedAt)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync()
+                .ConfigureAwait(false);
+        }
+
+        public async Task<int> GetCountByContactInfo(string info)
+        {
+            return await dbSet
+                .CountAsync(p => p.Name.Contains(info) || p.PhoneNumber.Contains(info))
+                .ConfigureAwait(false);
+        }
+
+
+        // Find with Phone number 
+        public async Task<IEnumerable<Patient>> FindWithPhoneNumberAsync(string phoneNumber)
+        {
+            return await dbSet
+                    .Include(f => f.FollowUps)
+                    .Where(p => p.PhoneNumber == phoneNumber)
+                    .ToListAsync()
+                    .ConfigureAwait(false);
+        }
+
     }
 }

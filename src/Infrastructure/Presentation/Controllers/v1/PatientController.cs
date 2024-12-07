@@ -45,10 +45,10 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         }
 
         // Find patient with Phone number and show it
-        [HttpGet("Phone/{Phone}")]
-        public async Task<IActionResult> GetPatientbyPhoneNumberAsync(string Phone)
+        [HttpGet("Info/{info}")]
+        public async Task<IActionResult> GetPatientbyContactInfoAsync(string info, [FromQuery] int page = 1, [FromQuery] int limit = 5)
         {
-            var res = await _mediator.Send(new GetPatientbyPhoneNumber { PhoneNumber = Phone }).ConfigureAwait(false);
+            var res = await _mediator.Send(new GetPatientByContactInfoCommand { ContactInfo = info, Page = page, Limit = limit }).ConfigureAwait(false);
             return res.Match(
                 onSuccess: () => Result.Ok(res.Value()),
                 onFailure: error => Result.BadRequest(error));

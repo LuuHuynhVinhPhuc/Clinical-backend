@@ -8,6 +8,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
     {
         public Guid Id { get; set; }
         public string? Name { get; set; }
+        public string Gender { get; set; }
         public string DOB { get; set; }
         public string Address { get; set; }
         public string? phoneNumber { get; set; }
@@ -57,7 +58,8 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
                 patient.DOB = dob;
                 patient.Age = age;
             }
-            
+
+            patient.Gender = command.Gender;
             patient.Address = command.Address;
             patient.PhoneNumber = command.phoneNumber;
             patient.ModifiedAt = DateTime.UtcNow;

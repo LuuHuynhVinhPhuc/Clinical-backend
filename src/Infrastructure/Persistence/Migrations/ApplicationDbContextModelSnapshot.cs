@@ -120,6 +120,9 @@ namespace ClinicalBackend.Persistence.Migrations
                     b.Property<DateOnly>("DOB")
                         .HasColumnType("date");
 
+                    b.Property<string>("Gender")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
 

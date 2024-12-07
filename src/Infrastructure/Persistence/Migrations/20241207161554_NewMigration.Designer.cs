@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ClinicalBackend.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241112112458_NewMigration")]
+    [Migration("20241207161554_NewMigration")]
     partial class NewMigration
     {
         /// <inheritdoc />
@@ -122,6 +122,9 @@ namespace ClinicalBackend.Persistence.Migrations
 
                     b.Property<DateOnly>("DOB")
                         .HasColumnType("date");
+
+                    b.Property<string>("Gender")
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");

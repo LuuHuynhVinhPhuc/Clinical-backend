@@ -14,6 +14,7 @@ namespace ClinicalBackend.Services.Configs.Mappers
                                 src.Id,
                                 src.Name,
                                 src.Age,
+                                src.Gender,
                                 src.DOB,
                                 src.Address,
                                 src.PhoneNumber));
@@ -23,6 +24,7 @@ namespace ClinicalBackend.Services.Configs.Mappers
                                 src.Id,
                                 src.Name,
                                 src.Age,
+                                src.Gender,
                                 ConvertToDateOnly(src.DOB),
                                 src.Address,
                                 src.PhoneNumber,

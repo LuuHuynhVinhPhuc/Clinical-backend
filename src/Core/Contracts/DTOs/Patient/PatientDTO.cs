@@ -8,6 +8,7 @@ namespace ClinicalBackend.Contracts.DTOs.Patient
         Guid Id, 
         string Name,
         int age, 
+        string Gender,
         DateOnly DOB, 
         string Address, 
         string PhoneNumber

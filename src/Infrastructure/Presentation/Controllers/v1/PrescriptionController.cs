@@ -49,6 +49,15 @@ namespace ClinicalBackend.Presentation.Controllers.v1
                 onSuccess: () => Result.Ok(result.Value()),
                 onFailure: error => Result.BadRequest(error));
         }
+        
+        [HttpGet("FollowUp/{FollowUpId}")]
+        public async Task<IActionResult> GetPrescriptionByFollowUpIdAsync(Guid FollowUpId)
+        {
+            var result = await _mediator.Send(new GetPrescriptionByFollowUpCommand { FollowUpId = FollowUpId }).ConfigureAwait(false);
+            return result.Match(
+                onSuccess: () => Result.Ok(result.Value()),
+                onFailure: error => Result.BadRequest(error));
+        }
 
         [HttpPut("{Id}")]
         public async Task<IActionResult> EditPrescriptionAsync(Guid Id, [FromBody] EditPrescriptionCommand command)

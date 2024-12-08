@@ -109,5 +109,17 @@ namespace ClinicalBackend.Persistence.Repositories
         {
             return await dbSet.CountAsync(p => p.CreatedAt >= dateStart && p.CreatedAt <= dateEnd).ConfigureAwait(false);
         }
+
+        public async Task<IEnumerable<Prescription>> GetByFollowUpIdAsync(Guid followUpId)
+        {
+            return await dbSet
+                .Include(p => p.Patient)
+                .Include(p => p.FollowUp)
+                .Include(p => p.Products)
+                .ThenInclude(p => p.Medicine)
+                .Where(p => p.FollowUp.Id == followUpId)
+                .ToListAsync()
+                .ConfigureAwait(false);
+        }
     }
 }

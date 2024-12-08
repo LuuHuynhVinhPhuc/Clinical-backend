@@ -15,5 +15,6 @@ namespace ClinicalBackend.Domain.Repositories
         Task<IEnumerable<Prescription>> GetByDateRangeAsync(DateTime dateStart, DateTime dateEnd, int pageNumber, int pageSize);
         Task<int> GetCountByDateRangeAsync(DateTime dateStart, DateTime dateEnd);
         Task<IEnumerable<Prescription>> GetByDateRangeAsync(DateTime dateStart, DateTime dateEnd);
+        Task<IEnumerable<Prescription>> GetByFollowUpIdAsync(Guid followUpId);
     }
 }

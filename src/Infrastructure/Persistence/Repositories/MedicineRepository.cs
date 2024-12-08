@@ -98,5 +98,12 @@ namespace ClinicalBackend.Persistence.Repositories
                 .ToListAsync()
                 .ConfigureAwait(false);
         }
+
+        public async Task<int> GetCountByDetailAsync(string Word)
+        {
+                return await dbSet
+                    .CountAsync(m => m.Specialty.Contains(Word) || m.Name.Contains(Word) || m.Nutritional.Contains(Word))
+                    .ConfigureAwait(false);
+        }
     }
 }

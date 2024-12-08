@@ -16,5 +16,7 @@ namespace ClinicalBackend.Domain.Repositories
         Task<int> GetTotalCountByDateAsync(DateTime dateStart, DateTime dateEnd);
         Task<IEnumerable<Medicine>> GetMedicinesByDateAsync(DateTime dateStart, DateTime dateEnd, int pageNumber, int pageSize);
         Task<IEnumerable<Medicine>> SearchByDetailsAsync(string Word);
+        Task<int> GetCountByDetailAsync(string Word);
+
     }
 }

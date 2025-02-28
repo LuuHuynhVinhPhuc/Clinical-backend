@@ -11,6 +11,8 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
     {
         public string Name { get; set; }
 
+        public string Gender { get; set; }
+
         public string DOB { get; set; }
 
         public string Address { get; set; }
@@ -49,7 +51,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
             {
                 return Result.Failure<PatientCreatedResponse>(PatientError.InputDateInvalidFormat);
             }
-             
+
             int age = CalculateAge(dob);
 
             if (age < 0)
@@ -61,12 +63,12 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
             var patient = new Patient
             {
                 Name = command.Name,
+                Gender = command.Gender,
                 DOB = dob, // Convert to DateOnly,
                 Address = command.Address,
                 PhoneNumber = command.PhoneNumber,
                 Age = age,
                 CheckStatus = "not_examined",
-                CreatedAt = DateTime.UtcNow.AddHours(7),
             };
 
             // Add to repository

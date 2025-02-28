@@ -39,7 +39,7 @@ namespace ClinicalBackend.Services.Features.FollowUpsFeatures.Commands
             existingFollowUp.Reason = command.Reason;
             existingFollowUp.History = command.History;
             existingFollowUp.Diagnosis = command.Diagnosis;
-            existingFollowUp.Summary = command.Summary; // Update Summary
+            existingFollowUp.Summary = command.Summary;
 
             await _unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
             var response = new FollowUpEditedResponse() { Response = "Follow-up edited successfully" };

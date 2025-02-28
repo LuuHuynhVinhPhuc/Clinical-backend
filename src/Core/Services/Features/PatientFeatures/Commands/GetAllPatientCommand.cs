@@ -1,8 +1,8 @@
-﻿using ClinicalBackend.Domain.Entities;
+﻿using ClinicalBackend.Contracts.DTOs.Patient;
 using ClinicalBackend.Services.Common;
 using Domain.Interfaces;
+using MapsterMapper;
 using MediatR;
-using System.Globalization;
 
 namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 {
@@ -13,11 +13,12 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
         public int Limit { get; set; } = 5;
     }
 
-    public class GetAllPatientResponse()
+    public class GetAllPatientResponse
     {
-        public List<Patient> Patients { get; set; }
+        public List<PatientsDto> Patients { get; set; }
         public PaginationInfo Pagination { get; set; }
     }
+
     public class PaginationInfo
     {
         public int TotalItems { get; set; }
@@ -25,15 +26,19 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
         public int CurrentPage { get; set; }
         public int TotalPages { get; set; }
     }
+
     // Task
     public class GetAllPatientHandler : IRequestHandler<GetAllPatientCommands, Result<GetAllPatientResponse>>
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public GetAllPatientHandler(IUnitOfWork unitOfWork)
+        public GetAllPatientHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
+
         public async Task<Result<GetAllPatientResponse>> Handle(GetAllPatientCommands request, CancellationToken cancellationToken)
         {
             // get all patient
@@ -42,37 +47,17 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 
             var res = new GetAllPatientResponse()
             {
-                Patients = patients.Select(p => new Patient
-                {
-                    Id = p.Id,
-                    Name = p.Name,
-                    Age = p.Age,
-                    DOB = ConvertToDateOnly(p.DOB),
-                    Address = p.Address,
-                    PhoneNumber = p.PhoneNumber,
-                    CreatedAt = p.CreatedAt,
-                    ModifiedAt = p.ModifiedAt,
-                    CheckStatus = p.CheckStatus,
-                    FollowUps = p.FollowUps
-                }).ToList(),
-
+                Patients = _mapper.Map<List<PatientsDto>>(patients),
                 Pagination = new PaginationInfo
                 {
                     TotalItems = totalItems,
-                    TotalItemsPerPage = request.Page,
-                    CurrentPage = request.Limit,
+                    TotalItemsPerPage = request.Limit,
+                    CurrentPage = request.Page,
                     TotalPages = (int)Math.Ceiling((double)totalItems / request.Limit)
                 }
             };
 
             return Result.Success(res);
-        }
-
-        private DateOnly ConvertToDateOnly(DateOnly dateTime)
-        {
-            // Return parsed date if successful, otherwise return original dateTime
-            DateOnly res = DateOnly.ParseExact(dateTime.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture), "dd/MM/yyyy", CultureInfo.InvariantCulture);
-            return res;
         }
     }
 }

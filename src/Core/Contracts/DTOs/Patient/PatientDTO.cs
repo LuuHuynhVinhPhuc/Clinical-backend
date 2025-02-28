@@ -1,14 +1,17 @@
-namespace ClinicalBackend.Contracts.DTOs
+using System;
+using System.Collections.Generic;
+using ClinicalBackend.Contracts.DTOs.FollowUp;
+
+namespace ClinicalBackend.Contracts.DTOs.Patient
 {
-    public class PatientDto 
-    {
-        public string? Name { get; set; }
-        public int Age { get; set; }
-        // day of birth
-        public DateOnly DOB { get; set; }
-        public string? Address { get; set; }
-        public string? PhoneNumber { get; set; }
-        // Get DateTime for signin 
-    }
+    public record struct PatientDto(
+        Guid Id, 
+        string Name,
+        int age, 
+        string Gender,
+        DateOnly DOB, 
+        string Address, 
+        string PhoneNumber
+    );
 }
 

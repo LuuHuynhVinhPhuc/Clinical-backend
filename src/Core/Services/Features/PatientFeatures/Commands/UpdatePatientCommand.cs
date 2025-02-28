@@ -4,15 +4,15 @@ using MediatR;
 
 namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 {
-    public class UpdatePatientCommands : IRequest<Result<UpdatePatientResponse>>
+    public class UpdatePatientCommand : IRequest<Result<UpdatePatientResponse>>
     {
         public Guid Id { get; set; }
-        public string? name { get; set; }
-        public string dob { get; set; }
-        public string address { get; set; }
+        public string? Name { get; set; }
+        public string Gender { get; set; }
+        public string DOB { get; set; }
+        public string Address { get; set; }
         public string? phoneNumber { get; set; }
-
-        public string CheckStatus { get; set; }
+        public string Status { get; set; }
     }
 
     public class UpdatePatientResponse
@@ -21,7 +21,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
     }
 
     // Task
-    public class UpdatePatientCommandHandler : IRequestHandler<UpdatePatientCommands, Result<UpdatePatientResponse>>
+    public class UpdatePatientCommandHandler : IRequestHandler<UpdatePatientCommand, Result<UpdatePatientResponse>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -30,15 +30,16 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Result<UpdatePatientResponse>> Handle(UpdatePatientCommands command, CancellationToken cancellationToken)
+        public async Task<Result<UpdatePatientResponse>> Handle(UpdatePatientCommand command, CancellationToken cancellationToken)
         {
-            // find with ID 
             var patient = await _unitOfWork.Patient.GetByIdAsync(command.Id).ConfigureAwait(false);
 
             if (patient == null)
                 return Result.Failure<UpdatePatientResponse>(PatientError.IDNotFound(command.Id));
 
-            if (!DateOnly.TryParseExact(command.dob, "dd-MM-yyyy", out DateOnly dob))
+            DateOnly dob = default;
+
+            if (!string.IsNullOrEmpty(command.DOB) && !DateOnly.TryParseExact(command.DOB, "dd-MM-yyyy", out dob))
             {
                 return Result.Failure<UpdatePatientResponse>(PatientError.InputDateInvalidFormat);
             }
@@ -50,15 +51,19 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
                 return Result.Failure<UpdatePatientResponse>(PatientError.InvalidDOBFormat);
             }
 
-            // save data in Client 
-            patient.Name = command.name;
-            // Update DOB only if it has changed
-            patient.DOB = dob;
-            patient.Age = age;
-            patient.Address = command.address;
+            patient.Name = command.Name;
+
+            if (patient.DOB != dob)
+            {
+                patient.DOB = dob;
+                patient.Age = age;
+            }
+
+            patient.Gender = command.Gender;
+            patient.Address = command.Address;
             patient.PhoneNumber = command.phoneNumber;
             patient.ModifiedAt = DateTime.UtcNow;
-            patient.CheckStatus = command.CheckStatus;
+            patient.CheckStatus = command.Status;
 
             // reponse result
 

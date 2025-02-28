@@ -1,9 +1,7 @@
-using AutoMapper;
-using ClinicalBackend.Contracts.DTOs;
-using ClinicalBackend.Domain.Entities;
 using ClinicalBackend.Services.Common;
 using ClinicalBackend.Services.Features.FollowUpFeatures.Commands;
 using ClinicalBackend.Services.Features.FollowUpsFeatures.Commands;
+using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -36,9 +34,18 @@ namespace ClinicalBackend.Presentation.Controllers.v1
         }
 
         [HttpGet("{Id}")]
-        public async Task<IActionResult> GetFollowUpByIdAsync([FromRoute] Guid Id)
+        public async Task<IActionResult> GetFollowUpByIdAsync(Guid Id)
         {
-            var result = await _mediator.Send(new GetFollowUpByIdCommand { PatientId = Id }).ConfigureAwait(false);
+            var result = await _mediator.Send(new GetFollowUpByIdCommand { Id = Id }).ConfigureAwait(false);
+            return result.Match(
+                onSuccess: () => Result.Ok(result.Value()),
+                onFailure: error => Result.BadRequest(error));
+        }
+
+        [HttpGet("Patient/{patientId}")]
+        public async Task<IActionResult> GetFollowUpByPatientIdAsync(Guid patientId)
+        {
+            var result = await _mediator.Send(new GetFollowUpByPatientIdCommand { PatientId = patientId }).ConfigureAwait(false);
             return result.Match(
                 onSuccess: () => Result.Ok(result.Value()),
                 onFailure: error => Result.BadRequest(error));

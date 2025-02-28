@@ -12,13 +12,13 @@ namespace ClinicalBackend.Persistence.Repositories
         {
         }
 
-        public async Task<IEnumerable<Medicine>> GetAllAsync(int pageNumber, int pageSize)
+        public override async Task<IEnumerable<Medicine>> GetAllAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default)
         {
             return await dbSet
                 .OrderByDescending(m => m.CreatedAt)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
-                .ToListAsync()
+                .ToListAsync(cancellationToken)
                 .ConfigureAwait(false);
         }
 
@@ -27,7 +27,7 @@ namespace ClinicalBackend.Persistence.Repositories
             return await dbSet.FindAsync(Id).ConfigureAwait(false);
         }
 
-        public async Task<List<Medicine>> SearchByNameAsync(string name, int pageNumber, int pageSize)
+        public async Task<IEnumerable<Medicine>> SearchByNameAsync(string name, int pageNumber, int pageSize)
         {
             return await dbSet
                 .Where(m => m.Name.Contains(name))
@@ -46,6 +46,64 @@ namespace ClinicalBackend.Persistence.Repositories
         public async Task<int> GetTotalCountByNameAsync(string Name)
         {
             return await dbSet.CountAsync(m => m.Name.Contains(Name)).ConfigureAwait(false);
+        }
+
+        public async Task<int> GetTotalCountByDateAsync(DateTime dateStart, DateTime dateEnd)
+        {
+            return await dbSet
+                .CountAsync(p => p.CreatedAt >= dateStart && p.CreatedAt <= dateEnd && p.Status == "SOLD")
+                .ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<Medicine>> GetMedicinesByDateAsync(DateTime dateStart, DateTime dateEnd, int pageNumber, int pageSize)
+        {
+            return await dbSet
+                .Where(p => p.CreatedAt >= dateStart && p.CreatedAt <= dateEnd && p.Status == "SOLD")
+                .OrderByDescending(p => p.CreatedAt)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync()
+                .ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<Medicine>> SearchBySpecialtyAsync(string Specialty, int pageNumber, int pageSize)
+        {
+            return await dbSet
+                .Where(m => m.Specialty.Contains(Specialty))
+                .OrderByDescending(m => m.CreatedAt)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync()
+                .ConfigureAwait(false);
+        }
+
+        public async Task<int> GetTotalCountBySpecialtyAsync(string Specialty)
+        {
+            return await dbSet.CountAsync(m => m.Specialty.Contains(Specialty)).ConfigureAwait(false);
+        }
+
+        public async Task<Medicine> GetByNameAsync(string name)
+        {
+            return await dbSet
+                .FirstOrDefaultAsync(m => m.Name == name)
+                .ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<Medicine>> SearchByDetailsAsync(string Word)
+        {
+            return await dbSet
+                .Where(m => m.Specialty.Contains(Word) || m.Name.Contains(Word) || m.Nutritional.Contains(Word))
+                .OrderByDescending(m => m.CreatedAt)
+                .Take(15)
+                .ToListAsync()
+                .ConfigureAwait(false);
+        }
+
+        public async Task<int> GetCountByDetailAsync(string Word)
+        {
+                return await dbSet
+                    .CountAsync(m => m.Specialty.Contains(Word) || m.Name.Contains(Word) || m.Nutritional.Contains(Word))
+                    .ConfigureAwait(false);
         }
     }
 }

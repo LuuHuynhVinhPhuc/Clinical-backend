@@ -4,22 +4,24 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ClinicalBackend.Persistence.Configurations
 {
-    public class PrescriptionConfiguration : IEntityTypeConfiguration<Prescription>
+    internal class PrescriptionConfiguration : IEntityTypeConfiguration<Prescription>
     {
         public void Configure(EntityTypeBuilder<Prescription> builder)
         {
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
 
-            builder.HasOne(x => x.FollowUp).WithMany().HasForeignKey(x => x.FollowUpID);
-            builder.HasOne(x => x.Patient).WithMany().HasForeignKey(x => x.PatientID);
-
-            builder.OwnsMany(p => p.PrescriptionDrugs, pd =>
+            builder.OwnsMany(p => p.Products, product =>
             {
-                pd.WithOwner().HasForeignKey(pd => pd.PrescriptionID);
-                pd.Property(x => x.Id).ValueGeneratedOnAdd();
-                pd.HasKey(x => x.Id);
-                pd.HasOne(x => x.Medicine).WithMany().HasForeignKey(x => x.MedicineID);
+                product.Property(p => p.MedicineId);
+                product.Property(p => p.Quantity);
+                product.OwnsOne(p => p.Instructions, i =>
+                {
+                    i.Property(p => p.NumberOfDays);
+                    i.Property(p => p.Day);
+                    i.Property(p => p.Lunch);
+                    i.Property(p => p.Afternoon);
+                });
             });
         }
     }

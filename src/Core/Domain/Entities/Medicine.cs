@@ -7,16 +7,20 @@ namespace ClinicalBackend.Domain.Entities
     {
         public string? Name { get; set; }
         public string? Company { get; set; }
-        public int Quantity { get; set; }
+        public string? Specialty { get; set; }
+        public string? Nutritional { get; set; }
+        public string? Dosage { get; set; }
+        public int Stock { get; set; }
         public float Price { get; set; }
         public string? Status { get; set; }
-        public string? Type { get; set; }
+
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
 
-        // public string? Dosage { get; set; }
+        // public string? Dosage { get; set; } = dạng bào chế
         // public string? Instructions { get; set; }
         // public string? SideEffects { get; set; }
         // public string? Contraindications { get; set; }
     }
+
 }

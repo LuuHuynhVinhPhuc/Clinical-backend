@@ -1,18 +1,14 @@
-using ClinicalBackend.Contracts.DTOs;
+using ClinicalBackend.Contracts.DTOs.Patient;
 
-namespace ClinicalBackend.Contracts.DTOs
+namespace ClinicalBackend.Contracts.DTOs.FollowUp
 {
-    public class FollowUpDto 
-    {
-        public string Reason { get; set; }
-        public string History { get; set; }
-        public string Diagnosis { get; set; }
-        public string Summary { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime ModifiedAt { get; set; }
-
-        //Navigation Property
-        public PatientDto Patient { get; set; }
-    }
+    public record struct FollowUpDto(
+        Guid Id,
+        PatientDto? Patient,
+        string Reason,
+        string History,
+        string Diagnosis,
+        string Summary,
+        DateTime createdAt
+        );
 }
-

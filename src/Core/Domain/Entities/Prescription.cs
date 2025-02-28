@@ -3,32 +3,39 @@ using Domain.Interfaces;
 
 namespace ClinicalBackend.Domain.Entities
 {
-    public class Prescription : BaseEntitty<int>, IAuditable
+    public class Prescription : BaseEntitty<Guid>, IAuditable
     {
-
+        public Guid PatientId { get; set; }
+        public Guid FollowUpId { get; set; }
+        public ICollection<Product> Products { get; set; }
+        public DateTime BillDate { get; set; }
+        public string? Notes { get; set; }
+        public DateOnly RevisitDate { get; set; }
+        public float TotalPrice { get; set; }
         // IAuditable
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
 
         //Navigation property
-        public Guid PatientID { get; set; }
-        public virtual required Patient Patient { get; set; }
-
-        // Follow UP
-        public Guid FollowUpID { get; set; }
+        public virtual Patient Patient { get; set; }
         public virtual FollowUp FollowUp { get; set; }
-        // Prescription
-        public List<PrescriptionDrug> PrescriptionDrugs { get; set; } = new List<PrescriptionDrug>();
     }
 
-    public class PrescriptionDrug : BaseEntitty<int>
+    public class Product
     {
-        public Guid MedicineID { get; set; }
-        public int PrescriptionID { get; set; }
+        public Guid MedicineId { get; set; }
+        public int Quantity { get; set; }
+        public int NumberOfDays { get; set; }
+        public Instructions Instructions { get; set; }
+        //Navigation property
         public virtual Medicine Medicine { get; set; }
-        public string Name { get; set; }
-        public string? Time { get; set; }
-        public string? Usage { get; set; }
-        public string? Note { get; set; }
+    }
+    
+    public class Instructions
+    {
+        public string? Day { get; set; }
+        public string? Lunch { get; set; }
+        public string? Afternoon { get; set; }
+        public int? NumberOfDays { get; set; }
     }
 }

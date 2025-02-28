@@ -1,19 +1,19 @@
 using ClinicalBackend.Services.Common;
 using Domain.Interfaces;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
 {
     public class EditMedicineCommand : IRequest<Result<MedicineEditedResponse>>
     {
-        public Guid Id { get; set; } // Added Id to identify the medicine to edit
-        public string Name { get; set; }
-        public string Company { get; set; }
-        public int Quantity { get; set; }
+        public Guid Id { get; set; }
+        public string? Name { get; set; }
+        public string? Company { get; set; }
+        public string? Specialty { get; set; }
+        public string? Nutritional { get; set; }
+        public string? Dosage { get; set; }
+        public int Stock { get; set; }
         public float Price { get; set; }
-        public string Status { get; set; }
-        public string Type { get; set; }
     }
 
     public class MedicineEditedResponse
@@ -38,13 +38,14 @@ namespace ClinicalBackend.Services.Features.MedicineFeatures.Commands
             {
                 return Result.Failure<MedicineEditedResponse>(MedicineErrors.IdNotFound(command.Id));
             }
-            
-            existingMedicine.Name = command.Name ?? existingMedicine.Name; 
-            existingMedicine.Company = command.Company ?? existingMedicine.Company; 
-            existingMedicine.Quantity = command.Quantity;
+
+            existingMedicine.Name = command.Name ?? existingMedicine.Name;
+            existingMedicine.Specialty = command.Specialty ?? existingMedicine.Specialty;
+            existingMedicine.Nutritional = command.Nutritional ?? existingMedicine.Nutritional;
+            existingMedicine.Dosage = command.Dosage ?? existingMedicine.Dosage;
+            existingMedicine.Company = command.Company ?? existingMedicine.Company;
+            existingMedicine.Stock = command.Stock;
             existingMedicine.Price = command.Price;
-            existingMedicine.Status = command.Status ?? existingMedicine.Status;
-            existingMedicine.Type = command.Type ?? existingMedicine.Type;
 
             // Save changes to the repository
             await _unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);

@@ -21,12 +21,12 @@ namespace Domain.Common
             return dbSet.AsNoTracking();
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default)
+        public virtual async Task<IEnumerable<TEntity>> GetAllAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default)
         {
             return await GetAll().ToListAsync(cancellationToken).ConfigureAwait(false);
         }
 
-        public IQueryable<TEntity> GetByCondition(Expression<Func<TEntity, bool>> expression)
+        public virtual IQueryable<TEntity> GetByCondition(Expression<Func<TEntity, bool>> expression)
         {
             return GetAll().Where(expression);
         }

@@ -67,5 +67,50 @@ namespace ClinicalBackend.Presentation.Controllers.v1
                 onSuccess: () => Result.Ok(result.Value()),
                 onFailure: error => Result.BadRequest(error));
         }
+
+        [HttpGet("Specialty/{Specialty}")]
+        public async Task<IActionResult> GetMedicineBySpecialtyAsync(string Specialty, [FromQuery] int page = 1, [FromQuery] int limit = 10)
+        {
+            var result = await _mediator.Send(new GetMedicineBySpecialtyCommand { Specialty = Specialty, PageNumber = page, PageSize = limit }).ConfigureAwait(false);
+            return result.Match(
+                onSuccess: () => Result.Ok(result.Value()),
+                onFailure: error => Result.BadRequest(error));
+        }
+
+        [HttpGet("Details/Keyword={Word}")]
+        public async Task<IActionResult> GetMedicineDetailsAsync(string Word, [FromQuery] int page = 1, [FromQuery] int limit = 10)
+        {
+            var result = await _mediator.Send(new GetMedicineDetailsCommand { Word = Word, PageNumber = page, PageSize = limit}).ConfigureAwait(false);
+            return result.Match(
+                onSuccess: () => Result.Ok(result.Value()),
+                onFailure: error => Result.BadRequest(error));
+        }
+        // Get medicines by date
+        [HttpGet("Date/Start={startDate}&End={endDate}")]
+        public async Task<IActionResult> GetMedicinesByDateAsync(string startDate, string endDate, [FromQuery] int page = 1, [FromQuery] int limit = 5)
+        {
+            var res = await _mediator.Send(new GetMedicinesbyDateCommand { StartDate = startDate, EndDate = endDate, Page = page, Limit = limit }).ConfigureAwait(false);
+            return res.Match(
+                onSuccess: () => Result.Ok(res.Value()),
+                onFailure: error => Result.BadRequest(error));
+        }
+
+        [HttpGet("Prescription/Range/Start={startDate}&End={endDate}")]
+        public async Task<IActionResult> GetMedicineByStatusAsync(string startDate, string endDate, [FromQuery] int page = 1, [FromQuery] int limit = 10)
+        {
+            var res = await _mediator.Send(new GetMedicineByRangeCommand { StartDate = startDate, EndDate = endDate, PageNumber = page, PageSize = limit }).ConfigureAwait(false);
+            return res.Match(
+                onSuccess: () => Result.Ok(res.Value()),
+                onFailure: error => Result.BadRequest(error));
+        }
+
+        [HttpGet("Prescription/Range/Top10/Start={startDate}&End={endDate}")]
+        public async Task<IActionResult> GetTop10MedicineAsync(string startDate, string endDate)
+        {
+            var res = await _mediator.Send(new GetMedicineByTop10Command { StartDate = startDate, EndDate = endDate}).ConfigureAwait(false);
+            return res.Match(
+                onSuccess: () => Result.Ok(res.Value()),
+                onFailure: error => Result.BadRequest(error));
+        }
     }
 }

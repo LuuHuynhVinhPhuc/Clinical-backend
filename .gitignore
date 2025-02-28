@@ -84,7 +84,7 @@ bower_components/
 *.env
 
 # Docker
-Dockerfile
+# Dockerfile
 docker-compose.yml
 *.dockerignore
 
@@ -106,3 +106,5 @@ Thumbs.db
 Desk
 
 volume
+ssl/nginx-selfsigned.key
+ssl/nginx-selfsigned.key

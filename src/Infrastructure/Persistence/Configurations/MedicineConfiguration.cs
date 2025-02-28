@@ -11,6 +11,7 @@ namespace ClinicalBackend.Persistence.Configurations
             builder.HasKey(medicine => medicine.Id);
             builder.Property(medicine => medicine.Id).ValueGeneratedOnAdd();
             builder.Property(medicine => medicine.Name).IsRequired();
+        
         }
     }
 }

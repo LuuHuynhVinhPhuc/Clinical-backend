@@ -1,17 +1,16 @@
-﻿using ClinicalBackend.Services.Common;
+﻿using ClinicalBackend.Contracts.DTOs.Patient;
+using ClinicalBackend.Services.Common;
 using Domain.Interfaces;
+using MapsterMapper;
 using MediatR;
-using ClinicalBackend.Domain.Entities;
-using System;
-using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 
 namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 {
     public class GetPatientByDateCommand : IRequest<Result<GetPatientByDateResponse>>
     {
-        public string DateStart { get; set; }
-        public string DateEnd { get; set; }
+        public string StartDate { get; set; }
+        public string EndDate { get; set; }
 
         // default pagnigation params
         public int Page { get; set; } = 1;
@@ -20,7 +19,7 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
 
     public class GetPatientByDateResponse
     {
-        public List<Patient> Patients { get; set; }
+        public List<PatientsDto> Patients { get; set; }
         public PaginationsInfo Pagination { get; set; }
     }
 
@@ -32,40 +31,40 @@ namespace ClinicalBackend.Services.Features.PatientFeatures.Commands
         public int TotalPages { get; set; }
     }
 
-
     public class GetPatientByDateHandler : IRequestHandler<GetPatientByDateCommand, Result<GetPatientByDateResponse>>
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public GetPatientByDateHandler(IUnitOfWork unitOfWork)
+        public GetPatientByDateHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task<Result<GetPatientByDateResponse>> Handle(GetPatientByDateCommand request, CancellationToken cancellationToken)
         {
             try
             {
-                // convert to DateTime with format dd-MM-yyyy
-                DateTime dateStart = DateTime.ParseExact(request.DateStart, "dd-MM-yyyy", CultureInfo.InvariantCulture).ToUniversalTime();
-                DateTime dateEnd = DateTime.ParseExact(request.DateEnd, "dd-MM-yyyy", CultureInfo.InvariantCulture).ToUniversalTime();
+                DateTime dateStart = DateTime.ParseExact(request.StartDate, "dd-MM-yyyy", CultureInfo.InvariantCulture).Date.ToUniversalTime();
+                DateTime dateEnd = DateTime.ParseExact(request.EndDate, "dd-MM-yyyy", CultureInfo.InvariantCulture).Date.AddDays(1).AddTicks(-1).ToUniversalTime();
 
-                var totalItems = await _unitOfWork.Patient.GetTotalCountAsync().ConfigureAwait(false);
 
-                // check valid date 
+                // check valid date
 
                 if (dateStart > dateEnd)
                 {
                     return Result.Failure<GetPatientByDateResponse>(PatientError.InputDateInvalidFormat);
                 }
+                
+                var totalItems = await _unitOfWork.Patient.GetTotalCountByDateAsync(dateStart, dateEnd).ConfigureAwait(false);
 
                 // how to get patient list depend on date Start and date End?
                 var patients = await _unitOfWork.Patient.GetPatientByDateAsync(dateStart, dateEnd, request.Page, request.Limit).ConfigureAwait(false);
 
                 return Result.Success(new GetPatientByDateResponse
                 {
-                    Patients = patients.ToList(),
-
+                    Patients = _mapper.Map<List<PatientsDto>>(patients),
                     Pagination = new PaginationsInfo
                     {
                         TotalItems = totalItems,
